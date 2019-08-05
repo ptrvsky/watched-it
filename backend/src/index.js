@@ -13,6 +13,14 @@ app.get('/', (req, res) => {
     res.json({ status: "ON" })
 });
 
+// Body parse
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
+app.use('/productions', require('../routes/productions'));
+app.use('/people', require('../routes/people'));
+
 let server = app.listen(process.env.PORT || 3000, () => {
     console.log('Listening on port', server.address().port);
 });
