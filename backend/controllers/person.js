@@ -1,4 +1,5 @@
 const Person = require('../models/person');
+const ProductionPerson = require('../models/productionPerson');
 
 // Get all productions
 exports.getPeopleList = (req, res) => {
@@ -66,6 +67,19 @@ exports.deletePerson = (req, res) => {
         .then(person => {
             console.log(`Person with id: ${req.params.id} has been removed from the database.`);
             res.status(200).end();
+        })
+        .catch(err => console.log(err));
+};
+
+// Get list of the selected person assignments 
+exports.getListOfPersonAssignments = (req, res) => {
+    ProductionPerson.findAll({
+            where: {
+                personId: req.params.personId
+            }
+        })
+        .then(productionsPeople => {
+            res.json(productionsPeople);
         })
         .catch(err => console.log(err));
 };
