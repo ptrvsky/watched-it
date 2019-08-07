@@ -1,4 +1,5 @@
 const ProductionPerson = require('../models/productionPerson');
+const productionPersonSchema = require('../schemas/productionPerson');
 
 // Get list of all production-person assignments 
 exports.getProductionPersonAssignmentsList = (req, res) => {
@@ -42,36 +43,48 @@ exports.getProductionPersonAssignment = (req, res) => {
 exports.createProductionPersonAssignment = (req, res) => {
     let { personId, productionId, role } = req.body;
 
-    ProductionPerson.create({
-            personId,
-            productionId,
-            role
-        })
-        .then(productionPerson => {
-            console.log(`Person with id: ${personId} has been assigned to the production with id ${productionId} as ${role}.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    productionPersonSchema.requiredKeys('personId', 'productionId', 'role').validate({
+        personId: personId,
+        productionId: productionId,
+        role: role
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            ProductionPerson.create(value)
+                .then(productionPerson => {
+                    console.log(`Person with id: ${personId} has been assigned to the production with id ${productionId} as ${role}.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err));
+        }
+    });
 };
 
 // Update production-person assignment
 exports.updateProductionPersonAssignment = (req, res) => {
     let { personId, productionId, role } = req.body;
 
-    ProductionPerson.update({
-            personId,
-            productionId,
-            role
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(productionPerson => {
-            console.log(`Assignment with id: ${req.params.id} has been updated.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    productionPersonSchema.validate({
+        personId: personId,
+        productionId: productionId,
+        role: role
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            ProductionPerson.update(value, {
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(productionPerson => {
+                    console.log(`Assignment with id: ${req.params.id} has been updated.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err));
+        }
+    });
 };
 
 // Delete production-person assignment
