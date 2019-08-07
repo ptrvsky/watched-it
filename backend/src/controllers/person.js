@@ -1,5 +1,6 @@
 const Person = require('../models/person');
 const ProductionPerson = require('../models/productionPerson');
+const personSchema = require('../schemas/person');
 
 // Get all productions
 exports.getPeopleList = (req, res) => {
@@ -23,38 +24,50 @@ exports.getPerson = (req, res) => {
 exports.createPerson = (req, res) => {
     let { name, dob, dod, birthplace } = req.body;
 
-    Person.create({
-            name,
-            dob,
-            dod,
-            birthplace
-        })
-        .then(person => {
-            console.log(`Person ${name} has been added to the database.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    personSchema.requiredKeys('name').validate({
+        name: name,
+        dob: dob,
+        dod: dod,
+        birthplace: birthplace
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            Person.create(value)
+                .then(person => {
+                    console.log(`Person ${value.name} has been added to the database.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err))
+        }
+    });
 };
 
 // Update person with the given id
 exports.updatePerson = (req, res) => {
     let { name, dob, dod, birthplace } = req.body;
 
-    Person.update({
-            name,
-            dob,
-            dod,
-            birthplace
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(person => {
-            console.log(`Person with id: ${req.params.id} has been updated in the database.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    personSchema.validate({
+        name: name,
+        dob: dob,
+        dod: dod,
+        birthplace: birthplace
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            Person.update(value, {
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(person => {
+                    console.log(`Person with id: ${req.params.id} has been updated in the database.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err));
+        }
+    });
 };
 
 // Delete person with the given id
