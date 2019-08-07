@@ -1,5 +1,6 @@
 const Production = require('../models/production');
 const ProductionPerson = require('../models/productionPerson');
+const productionSchema = require('../schemas/production');
 
 // Get all productions
 exports.getProductionsList = (req, res) => {
@@ -23,38 +24,50 @@ exports.getProduction = (req, res) => {
 exports.createProduction = (req, res) => {
     let { title, length, releaseDate, isSerie } = req.body;
 
-    Production.create({
-            title,
-            length,
-            releaseDate,
-            isSerie
-        })
-        .then(production => {
-            console.log(`Production ${title} has been added to the database.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    productionSchema.requiredKeys('title').validate({
+        title: title,
+        length: length,
+        releaseDate: releaseDate,
+        isSerie: isSerie
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            Production.create(value)
+                .then(production => {
+                    console.log(`Production ${value.title} has been added to the database.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err));
+        }
+    });
 };
 
 // Update production with the given id
 exports.updateProduction = (req, res) => {
     let { title, length, releaseDate, isSerie } = req.body;
 
-    Production.update({
-            title,
-            length,
-            releaseDate,
-            isSerie,
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(production => {
-            console.log(`Production with id: ${req.params.id} has been updated in the database.`);
-            res.status(200).end();
-        })
-        .catch(err => console.log(err));
+    productionSchema.validate({
+        title: title,
+        length: length,
+        releaseDate: releaseDate,
+        isSerie: isSerie
+    }, (err, value) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            Production.update(value, {
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(production => {
+                    console.log(`Production with id: ${req.params.id} has been updated in the database.`);
+                    res.status(200).end();
+                })
+                .catch(err => console.log(err));
+        }
+    });
 };
 
 // Delete production with the given id
