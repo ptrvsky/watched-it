@@ -22,13 +22,14 @@ exports.getProduction = (req, res) => {
 
 // Create production
 exports.createProduction = (req, res) => {
-    let { title, length, releaseDate, isSerie } = req.body;
-
+    let { title, length, releaseDate, isSerie, genre } = req.body;
+  
     productionSchema.requiredKeys('title').validate({
         title: title,
         length: length,
         releaseDate: releaseDate,
-        isSerie: isSerie
+        isSerie: isSerie,
+        genre: genre
     }, (err, value) => {
         if (err) {
             res.status(400).send(err.message);
@@ -45,13 +46,14 @@ exports.createProduction = (req, res) => {
 
 // Update production with the given id
 exports.updateProduction = (req, res) => {
-    let { title, length, releaseDate, isSerie } = req.body;
+    let { title, length, releaseDate, isSerie, genre } = req.body;
 
     productionSchema.validate({
         title: title,
         length: length,
         releaseDate: releaseDate,
-        isSerie: isSerie
+        isSerie: isSerie,
+        genre: genre
     }, (err, value) => {
         if (err) {
             res.status(400).send(err.message);

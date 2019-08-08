@@ -13,6 +13,13 @@ const Production = db.define('production', {
     },
     isSerie: {
         type: Sequelize.BOOLEAN
+    },
+    genre: {
+        type: Sequelize.ARRAY(Sequelize.ENUM(
+            'Action', 'Adventure', 'Animation', 'Biography', 
+            'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 
+            'History', 'Horror', 'Musical', 'Mystery', 'Romance', 
+            'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western'))
     }
 });
 
