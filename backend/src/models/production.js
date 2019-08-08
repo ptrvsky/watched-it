@@ -20,6 +20,9 @@ const Production = db.define('production', {
             'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 
             'History', 'Horror', 'Musical', 'Mystery', 'Romance', 
             'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western'))
+    },
+    description: {
+        type: Sequelize.STRING
     }
 });
 

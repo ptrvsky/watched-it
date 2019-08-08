@@ -9,7 +9,8 @@ const schema = Joi.object().keys({
         'Action', 'Adventure', 'Animation', 'Biography', 
         'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 
         'History', 'Horror', 'Musical', 'Mystery', 'Romance', 
-        'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western'))
+        'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western')),
+    description: Joi.string().max(500)
 });
 
 module.exports = schema;
