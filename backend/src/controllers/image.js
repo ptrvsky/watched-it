@@ -1,5 +1,6 @@
 const Image = require('../models/image');
 const imageSchema = require('../schemas/image')
+const upload = require('../config/upload');
 
 // Get all images
 exports.getImagesList = (req, res) => {
@@ -21,11 +22,9 @@ exports.getImage = (req, res) => {
 
 // Create image
 exports.createImage = (req, res) => {
-    let { url, productionId } = req.body;
-
     imageSchema.requiredKeys('url', 'productionId').validate({
-        url: url,
-        productionId: productionId
+        url: req.file.path.replace("\\","/"),
+        productionId: req.body.productionId
     }, (err, value) => {
         if (err) {
             res.status(400).send(err.message);
@@ -35,18 +34,15 @@ exports.createImage = (req, res) => {
                     console.log(`Image with url: ${value.url} has been added to the database.`);
                     res.status(200).end();
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
         }
     });
 };
 
 // Update image with the given id
 exports.updateImage = (req, res) => {
-    let { url, productionId } = req.body;
-
     imageSchema.validate({
-        url: url,
-        productionId: productionId
+        productionId: req.body.productionId
     }, (err, value) => {
         if (err) {
             res.status(400).send(err.message);
@@ -79,3 +75,22 @@ exports.deleteImage = (req, res) => {
         .catch(err => console.log(err));
 };
 
+// Upload image file
+exports.uploadImage = (req, res, next) => {
+    upload(req, res, next, (err) => {
+        if (err) {
+            res.status(400).send(err.message);
+        } else {
+            next();
+        }
+    })
+};
+
+// Get image file
+exports.getImageFile = (req, res) => {
+    Image.findByPk(req.params.id)
+        .then(image => {
+            res.redirect("http://localhost:5000/" + image.url);
+        })
+        .catch(err => console.log(err));
+}

@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
     res.json({ status: "ON" })
 });
 
+// Static assets
+app.use('/uploads', express.static('uploads'));
+
 // Body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
