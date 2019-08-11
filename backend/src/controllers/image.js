@@ -90,7 +90,7 @@ exports.uploadImage = (req, res, next) => {
 exports.getImageFile = (req, res) => {
     Image.findByPk(req.params.id)
         .then(image => {
-            res.redirect("http://localhost:5000/" + image.url);
+            res.redirect("http://localhost:" + process.env.PORT + "/" + image.url);
         })
         .catch(err => console.log(err));
 }

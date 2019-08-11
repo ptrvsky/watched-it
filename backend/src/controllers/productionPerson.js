@@ -11,7 +11,7 @@ exports.getProductionPersonAssignmentsList = (req, res) => {
 };
 
 // Get production-person assignment with given id
-exports.getProductionPersonAssignment = (req, res) => {
+exports.getProductionPersonAssignmentById = (req, res) => {
     ProductionPerson.findAll({
             where: {
                 id: req.params.id,
@@ -26,7 +26,7 @@ exports.getProductionPersonAssignment = (req, res) => {
 // Get assignment between production and person with given ids
 /*  There may be more than one assignment, because person 
     may be assigned to the same production in different roles (e.g. acting director) */
-    exports.getProductionPersonAssignments = (req, res) => {
+exports.getProductionPersonAssignmentsByIds = (req, res) => {
         ProductionPerson.findAll({
                 where: {
                     personId: req.params.personId,
@@ -52,7 +52,7 @@ exports.createProductionPersonAssignment = (req, res) => {
             res.status(400).send(err.message);
         } else {
             ProductionPerson.create(value)
-                .then(productionPerson => {
+                .then(productionPersonAssignment => {
                     console.log(`Person with id: ${personId} has been assigned to the production with id ${productionId} as ${role}.`);
                     res.status(200).end();
                 })
@@ -78,8 +78,8 @@ exports.updateProductionPersonAssignment = (req, res) => {
                         id: req.params.id
                     }
                 })
-                .then(productionPerson => {
-                    console.log(`Assignment with id: ${req.params.id} has been updated.`);
+                .then(productionPersonAssignment => {
+                    console.log(`Production-person ssignment with id: ${req.params.id} has been updated.`);
                     res.status(200).end();
                 })
                 .catch(err => console.log(err));
