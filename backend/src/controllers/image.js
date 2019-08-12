@@ -1,6 +1,8 @@
 const Image = require('../models/image');
+const ImagePerson = require('../models/imagePerson');
 const imageSchema = require('../schemas/image')
 const upload = require('../config/upload');
+const Op = require('sequelize').Op;
 
 // Get all images
 exports.getImagesList = (req, res) => {
@@ -16,6 +18,42 @@ exports.getImage = (req, res) => {
     Image.findByPk(req.params.id)
         .then(image => {
             res.json(image);
+        })
+        .catch(err => console.log(err));
+};
+
+// Get images assigned to selected production
+exports.getImagesByProduction = (req, res) => {
+    Image.findAll({
+            where: {
+                productionId: req.params.productionId
+            }
+        }).then(images => {
+            res.json(images);
+        })
+        .catch(err => console.log(err));
+};
+
+// Get image-person assignment for person with given id
+exports.getImagesByPerson = (req, res) => {
+    imagesIds = [];
+
+    ImagePerson.findAll({
+            where: {
+                personId: req.params.personId,
+            }
+        })
+        .then(imagePersonAssignments =>
+            imagePersonAssignments.map(value => value.dataValues.imageId)
+        )
+        .then(imagesIds => Image.findAll({
+            where: {
+                id: {
+                    [Op.or]: imagesIds
+                }
+            }
+        })).then(images => {
+            res.json(images);
         })
         .catch(err => console.log(err));
 };

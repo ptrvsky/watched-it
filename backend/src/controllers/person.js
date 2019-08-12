@@ -85,7 +85,7 @@ exports.deletePerson = (req, res) => {
 };
 
 // Get list of the selected person assignments 
-exports.getListOfPersonAssignments = (req, res) => {
+exports.getListOfPersonProductions = (req, res) => {
     ProductionPerson.findAll({
             where: {
                 personId: req.params.personId

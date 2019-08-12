@@ -1,5 +1,6 @@
 const Production = require('../models/production');
 const ProductionPerson = require('../models/productionPerson');
+const Image = require('../models/image');
 const productionSchema = require('../schemas/production');
 
 // Get all productions
@@ -89,8 +90,21 @@ exports.deleteProduction = (req, res) => {
 };
 
 // Get list of the selected production assignments 
-exports.getListOfProductionAssignments = (req, res) => {
+exports.getListOfProductionPeople = (req, res) => {
     ProductionPerson.findAll({
+            where: {
+                productionId: req.params.productionId
+            }
+        })
+        .then(productionsPeople => {
+            res.json(productionsPeople);
+        })
+        .catch(err => console.log(err));
+};
+
+// Get list of the selected production assignments 
+exports.getListOfProductionImages = (req, res) => {
+    Image.findAll({
             where: {
                 productionId: req.params.productionId
             }

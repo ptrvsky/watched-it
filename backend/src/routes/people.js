@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const PersonController = require('../controllers/person');
 const ProductionPersonController = require('../controllers/productionPerson');
+const ImageController = require('../controllers/image');
 
 // Get all people
 router.get('/', PersonController.getPeopleList);
@@ -19,9 +20,12 @@ router.put('/:id', PersonController.updatePerson);
 router.delete('/:id', PersonController.deletePerson);
 
 // Get list of the selected person assignments 
-router.get('/:personId/productions', PersonController.getListOfPersonAssignments);
+router.get('/:personId/productions', PersonController.getListOfPersonProductions);
 
-// Get assignments betweent production and person with given ids
-router.get('/:personId/productions/:productionId', ProductionPersonController.getProductionPersonAssignments);
+// Get assignments between production and person with given ids
+router.get('/:personId/productions/:productionId', ProductionPersonController.getProductionPersonAssignmentById);
+
+// Get images assisnged to the person
+router.get('/:personId/images', ImageController.getImagesByPerson);
 
 module.exports = router;
