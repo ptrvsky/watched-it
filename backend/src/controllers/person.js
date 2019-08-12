@@ -1,9 +1,11 @@
 const Person = require('../models/person');
+const Production = require('../models/production');
 const ProductionPerson = require('../models/productionPerson');
 const personSchema = require('../schemas/person');
+const Op = require('sequelize').Op;
 
 // Get all productions
-exports.getPeopleList = (req, res) => {
+exports.getAllPeople = (req, res) => {
     Person.findAll()
         .then(people => {
             res.json(people);
@@ -80,19 +82,6 @@ exports.deletePerson = (req, res) => {
         .then(person => {
             console.log(`Person with id: ${req.params.id} has been removed from the database.`);
             res.status(200).end();
-        })
-        .catch(err => console.log(err));
-};
-
-// Get list of the selected person assignments 
-exports.getListOfPersonProductions = (req, res) => {
-    ProductionPerson.findAll({
-            where: {
-                personId: req.params.personId
-            }
-        })
-        .then(productionsPeople => {
-            res.json(productionsPeople);
         })
         .catch(err => console.log(err));
 };

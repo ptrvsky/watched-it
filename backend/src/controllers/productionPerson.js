@@ -2,7 +2,7 @@ const ProductionPerson = require('../models/productionPerson');
 const productionPersonSchema = require('../schemas/productionPerson');
 
 // Get list of all production-person assignments 
-exports.getProductionPersonAssignmentsList = (req, res) => {
+exports.getAllProductionPersonAssignments = (req, res) => {
     ProductionPerson.findAll()
         .then(productionsPeopleAssignments => {
             res.json(productionsPeopleAssignments);
@@ -11,16 +11,38 @@ exports.getProductionPersonAssignmentsList = (req, res) => {
 };
 
 // Get production-person assignment with given id
-exports.getProductionPersonAssignmentById = (req, res) => {
-    ProductionPerson.findAll({
-            where: {
-                id: req.params.id,
-            }
-        })
+exports.getProductionPersonAssignment = (req, res) => {
+    ProductionPerson.findNyId(req.params.id)
         .then(productionPersonAssignment => {
             res.json(productionPersonAssignment);
         })
         .catch(err => console.log(err));
+};
+
+// Get production-person assignments of selected person
+exports.getProductionPersonAssignmentsByPerson = (req, res) => {
+    ProductionPerson.findAll({
+        where: {
+            personId: req.params.personId
+        }
+    })
+    .then(productionsPeople => {
+        res.json(productionsPeople);
+    })
+    .catch(err => console.log(err));
+};
+
+// Get production-person assignments of selected production
+exports.getProductionPersonAssignmentsByProduction = (req, res) => {
+    ProductionPerson.findAll({
+        where: {
+            productionId: req.params.productionId
+        }
+    })
+    .then(productionsPeople => {
+        res.json(productionsPeople);
+    })
+    .catch(err => console.log(err));
 };
 
 // Get assignment between production and person with given ids
@@ -79,7 +101,7 @@ exports.updateProductionPersonAssignment = (req, res) => {
                     }
                 })
                 .then(productionPersonAssignment => {
-                    console.log(`Production-person ssignment with id: ${req.params.id} has been updated.`);
+                    console.log(`Production-person assignment with id: ${req.params.id} has been updated.`);
                     res.status(200).end();
                 })
                 .catch(err => console.log(err));

@@ -1,10 +1,12 @@
 const Production = require('../models/production');
+const Person = require('../models/person');
 const ProductionPerson = require('../models/productionPerson');
 const Image = require('../models/image');
 const productionSchema = require('../schemas/production');
+const Op = require('sequelize').Op;
 
 // Get all productions
-exports.getProductionsList = (req, res) => {
+exports.getAllProductions = (req, res) => {
     Production.findAll()
         .then(productions => {
             res.json(productions);
@@ -85,32 +87,6 @@ exports.deleteProduction = (req, res) => {
         .then(production => {
             console.log(`Production with id: ${req.params.id} has been removed from the database.`);
             res.status(200).end();
-        })
-        .catch(err => console.log(err));
-};
-
-// Get list of the selected production assignments 
-exports.getListOfProductionPeople = (req, res) => {
-    ProductionPerson.findAll({
-            where: {
-                productionId: req.params.productionId
-            }
-        })
-        .then(productionsPeople => {
-            res.json(productionsPeople);
-        })
-        .catch(err => console.log(err));
-};
-
-// Get list of the selected production assignments 
-exports.getListOfProductionImages = (req, res) => {
-    Image.findAll({
-            where: {
-                productionId: req.params.productionId
-            }
-        })
-        .then(productionsPeople => {
-            res.json(productionsPeople);
         })
         .catch(err => console.log(err));
 };

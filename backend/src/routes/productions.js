@@ -5,7 +5,7 @@ const ProductionPersonController = require('../controllers/productionPerson');
 const ImageController = require('../controllers/image');
 
 // Get all productions
-router.get('/', ProductionController.getProductionsList);
+router.get('/', ProductionController.getAllProductions);
 
 // Get production with the given id
 router.get('/:id', ProductionController.getProduction);
@@ -20,7 +20,7 @@ router.put('/:id', ProductionController.updateProduction);
 router.delete('/:id', ProductionController.deleteProduction);
 
 // Get list of the selected production assignments 
-router.get('/:productionId/people', ProductionController.getListOfProductionPeople);
+router.get('/:productionId/people', ProductionPersonController.getProductionPersonAssignmentsByProduction);
 
 // Get assignments between production and person with given ids
 router.get('/:productionId/people/:personId', ProductionPersonController.getProductionPersonAssignmentsByIds);

@@ -2,7 +2,7 @@ const ImagePerson = require('../models/imagePerson');
 const imagePersonSchema = require('../schemas/imagePerson');
 
 // Get list of all image-person assignments 
-exports.getImagePersonAssignmentList = (req, res) => {
+exports.getAllImagePersonAssignments = (req, res) => {
     ImagePerson.findAll()
         .then(imagePersonAssignments => {
             res.json(imagePersonAssignments);
@@ -11,12 +11,8 @@ exports.getImagePersonAssignmentList = (req, res) => {
 };
 
 // Get image-person assignment with given assignment id
-exports.getImagePersonAssignmentById = (req, res) => {
-    ImagePerson.findAll({
-            where: {
-                id: req.params.id,
-            }
-        })
+exports.getImagePersonAssignment = (req, res) => {
+    ImagePerson.findByPk(req.params.id)
         .then(imagePersonAssignment => {
             res.json(imagePersonAssignment);
         })
@@ -36,7 +32,7 @@ exports.createImagePersonAssignment = (req, res) => {
         } else {
             ImagePerson.create(value)
                 .then(imagePersonAssignment => {
-                    console.log(`Person with id: ${personId} has been assigned to the image with id ${personId}.`);
+                    console.log(`Person with id: ${personId} has been assigned to the image with id: ${personId}.`);
                     res.status(200).end();
                 })
                 .catch(err => console.log(err));

@@ -3,10 +3,10 @@ const router = express.Router();
 const ImagePersonController = require('../controllers/imagePerson');
 
 // Get all image-person assignments
-router.get('/', ImagePersonController.getImagePersonAssignmentList);
+router.get('/', ImagePersonController.getAllImagePersonAssignments);
 
 // Get image-person assignment with the given id
-router.get('/:id', ImagePersonController.getImagePersonAssignmentById);
+router.get('/:id', ImagePersonController.getImagePersonAssignment);
 
 // Create image-person assignment
 router.post('/', ImagePersonController.createImagePersonAssignment);
