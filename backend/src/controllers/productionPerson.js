@@ -2,25 +2,25 @@ const ProductionPerson = require('../models/productionPerson');
 const productionPersonSchema = require('../schemas/productionPerson');
 
 // Get list of all production-person assignments 
-exports.getAllProductionPersonAssignments = (req, res) => {
+exports.getAllProductionPersonAssignments = (req, res, next) => {
     ProductionPerson.findAll()
         .then(productionsPeopleAssignments => {
             res.json(productionsPeopleAssignments);
         })
-        .catch(err => console.log(err));
+        .catch(next);
 };
 
 // Get production-person assignment with given id
-exports.getProductionPersonAssignment = (req, res) => {
+exports.getProductionPersonAssignment = (req, res, next) => {
     ProductionPerson.findNyId(req.params.id)
         .then(productionPersonAssignment => {
             res.json(productionPersonAssignment);
         })
-        .catch(err => console.log(err));
+        .catch(next);
 };
 
 // Get production-person assignments of selected person
-exports.getProductionPersonAssignmentsByPerson = (req, res) => {
+exports.getProductionPersonAssignmentsByPerson = (req, res, next) => {
     ProductionPerson.findAll({
         where: {
             personId: req.params.personId
@@ -29,11 +29,11 @@ exports.getProductionPersonAssignmentsByPerson = (req, res) => {
     .then(productionsPeople => {
         res.json(productionsPeople);
     })
-    .catch(err => console.log(err));
+    .catch(next);
 };
 
 // Get production-person assignments of selected production
-exports.getProductionPersonAssignmentsByProduction = (req, res) => {
+exports.getProductionPersonAssignmentsByProduction = (req, res, next) => {
     ProductionPerson.findAll({
         where: {
             productionId: req.params.productionId
@@ -42,13 +42,13 @@ exports.getProductionPersonAssignmentsByProduction = (req, res) => {
     .then(productionsPeople => {
         res.json(productionsPeople);
     })
-    .catch(err => console.log(err));
+    .catch(next);
 };
 
 // Get assignment between production and person with given ids
 /*  There may be more than one assignment, because person 
     may be assigned to the same production in different roles (e.g. acting director) */
-exports.getProductionPersonAssignmentsByIds = (req, res) => {
+exports.getProductionPersonAssignmentsByIds = (req, res, next) => {
         ProductionPerson.findAll({
                 where: {
                     personId: req.params.personId,
@@ -58,11 +58,11 @@ exports.getProductionPersonAssignmentsByIds = (req, res) => {
             .then(productionPersonAssignments => {
                 res.json(productionPersonAssignments);
             })
-            .catch(err => console.log(err));
+            .catch(next);
     };
 
 // Create production-person assignment
-exports.createProductionPersonAssignment = (req, res) => {
+exports.createProductionPersonAssignment = (req, res, next) => {
     let { personId, productionId, role } = req.body;
 
     productionPersonSchema.requiredKeys('personId', 'productionId', 'role').validate({
@@ -71,20 +71,20 @@ exports.createProductionPersonAssignment = (req, res) => {
         role: role
     }, (err, value) => {
         if (err) {
-            res.status(400).send(err.message);
+            next(err);
         } else {
             ProductionPerson.create(value)
                 .then(productionPersonAssignment => {
                     console.log(`Person with id: ${personId} has been assigned to the production with id ${productionId} as ${role}.`);
                     res.status(200).end();
                 })
-                .catch(err => console.log(err));
+                .catch(next);
         }
     });
 };
 
 // Update production-person assignment
-exports.updateProductionPersonAssignment = (req, res) => {
+exports.updateProductionPersonAssignment = (req, res, next) => {
     let { personId, productionId, role } = req.body;
 
     productionPersonSchema.validate({
@@ -93,7 +93,7 @@ exports.updateProductionPersonAssignment = (req, res) => {
         role: role
     }, (err, value) => {
         if (err) {
-            res.status(400).send(err.message);
+            next(err);
         } else {
             ProductionPerson.update(value, {
                     where: {
@@ -104,13 +104,13 @@ exports.updateProductionPersonAssignment = (req, res) => {
                     console.log(`Production-person assignment with id: ${req.params.id} has been updated.`);
                     res.status(200).end();
                 })
-                .catch(err => console.log(err));
+                .catch(next);
         }
     });
 };
 
 // Delete production-person assignment
-exports.deleteProductionPersonAssignment = (req, res) => {
+exports.deleteProductionPersonAssignment = (req, res, next) => {
     ProductionPerson.destroy({
             where: {
                 id: req.params.id
@@ -120,5 +120,5 @@ exports.deleteProductionPersonAssignment = (req, res) => {
             console.log(`Assignment with id: ${req.params.id} has been deleted.`);
             res.status(200).end();
         })
-        .catch(err => console.log(err));
+        .catch(next);
 };

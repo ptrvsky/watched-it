@@ -27,6 +27,15 @@ app.use('/productions-people', require('./routes/productions-people'));
 app.use('/images', require('./routes/images'));
 app.use('/images-people/', require('./routes/images-people'));
 
+// Error handling
+app.use((err, req, res, next) => {
+    if (process.env.NODE_ENV === "production") {
+        res.status(400).json({ error: err.message });
+    } else {
+        res.status(400).json({ error: err });
+    }
+});
+
 let server = app.listen(process.env.PORT || 3000, () => {
     console.log('Listening on port', server.address().port);
 });
