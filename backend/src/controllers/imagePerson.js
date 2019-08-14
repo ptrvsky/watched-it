@@ -33,7 +33,7 @@ exports.createImagePersonAssignment = (req, res, next) => {
             ImagePerson.create(value)
                 .then(imagePersonAssignment => {
                     console.log(`Person with id: ${personId} has been assigned to the image with id: ${personId}.`);
-                    res.status(200).end();
+                    res.status(201).json(imagePersonAssignment);
                 })
                 .catch(next);
         }

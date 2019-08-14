@@ -41,7 +41,7 @@ exports.createProduction = (req, res, next) => {
             Production.create(value)
                 .then(production => {
                     console.log(`Production ${value.title} has been added to the database.`);
-                    res.status(200).end();
+                    res.status(201).json(production);
                 })
                 .catch(next);
         }

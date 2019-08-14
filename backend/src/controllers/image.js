@@ -68,7 +68,7 @@ exports.createImage = (req, res, next) => {
             Image.create(value)
                 .then(image => {
                     console.log(`Image with url: ${value.url} has been added to the database.`);
-                    res.status(200).end();
+                    res.status(201).json(image);
                 })
                 .catch(next);
         }

@@ -38,7 +38,7 @@ exports.createPerson = (req, res, next) => {
             Person.create(value)
                 .then(person => {
                     console.log(`Person ${value.name} has been added to the database.`);
-                    res.status(200).end();
+                    res.status(201).json(person);
                 })
                 .catch(next)
         }

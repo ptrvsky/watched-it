@@ -76,7 +76,7 @@ exports.createProductionPersonAssignment = (req, res, next) => {
             ProductionPerson.create(value)
                 .then(productionPersonAssignment => {
                     console.log(`Person with id: ${personId} has been assigned to the production with id ${productionId} as ${role}.`);
-                    res.status(200).end();
+                    res.status(201).json(productionPersonAssignment);
                 })
                 .catch(next);
         }
