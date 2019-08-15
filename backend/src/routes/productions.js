@@ -16,6 +16,9 @@ router.post('/', ProductionController.createProduction);
 // Update production with the given id
 router.put('/:id', ProductionController.updateProduction);
 
+// Patch production with the given id
+router.patch('/:id', ProductionController.patchProduction);
+
 // Delete production with the given id
 router.delete('/:id', ProductionController.deleteProduction);
 

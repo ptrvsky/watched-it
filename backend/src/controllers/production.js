@@ -52,6 +52,36 @@ exports.createProduction = (req, res, next) => {
 exports.updateProduction = (req, res, next) => {
     let { title, length, releaseDate, isSerie, genre, description } = req.body;
 
+    productionSchema.requiredKeys('title').validate({
+        title: title,
+        length: length,
+        releaseDate: releaseDate,
+        isSerie: isSerie,
+        genre: genre,
+        description: description
+    }, (err, value) => {
+        if (err) {
+            next(err);
+        } else {
+            Production.update(value, {
+                    returning: true,
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(([propsUpdated, [production]]) => {
+                    console.log(`Production with id: ${req.params.id} has been updated in the database.`);
+                    res.status(200).end();
+                })
+                .catch(next);
+        }
+    });
+};
+
+// Patch production with the given id
+exports.patchProduction = (req, res, next) => {
+    let { title, length, releaseDate, isSerie, genre, description } = req.body;
+
     productionSchema.validate({
         title: title,
         length: length,
@@ -68,9 +98,9 @@ exports.updateProduction = (req, res, next) => {
                         id: req.params.id
                     }
                 })
-                .then(production => {
-                    console.log(`Production with id: ${req.params.id} has been updated in the database.`);
-                    res.status(200).end();
+                .then(() => {
+                    console.log(`Production with id: ${req.params.id} has been patched in the database.`);
+                    res.status(204).jend();
                 })
                 .catch(next);
         }

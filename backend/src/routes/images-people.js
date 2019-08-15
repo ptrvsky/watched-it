@@ -14,6 +14,9 @@ router.post('/', ImagePersonController.createImagePersonAssignment);
 // Update image-person assignment with the given id
 router.put('/:id', ImagePersonController.updateImagePersonAssignment);
 
+// Patch image-person assignment with the given id
+router.patch('/:id', ImagePersonController.patchImagePersonAssignment);
+
 // Delete image-person assignemtn with the given id
 router.delete('/:id', ImagePersonController.deleteImagePersonAssignment);
 

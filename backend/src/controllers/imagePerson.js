@@ -44,6 +44,32 @@ exports.createImagePersonAssignment = (req, res, next) => {
 exports.updateImagePersonAssignment = (req, res, next) => {
     let { imageId, personId} = req.body;
 
+    imagePersonSchema.requiredKeys('imageId', 'personId').validate({
+        imageId: imageId,
+        personId: personId
+    }, (err, value) => {
+        if (err) {
+            next(err);
+        } else {
+            ImagePerson.update(value, {
+                    returning: true,
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(([propsUpdated, [imagePersonAssignment]]) => {
+                    console.log(`Image-person assignment with id: ${req.params.id} has been updated.`);
+                    res.status(200).json(imagePersonAssignment);
+                })
+                .catch(next);
+        }
+    });
+};
+
+// Patch image-person assignment
+exports.patchImagePersonAssignment = (req, res, next) => {
+    let { imageId, personId} = req.body;
+
     imagePersonSchema.validate({
         imageId: imageId,
         personId: personId
@@ -56,9 +82,9 @@ exports.updateImagePersonAssignment = (req, res, next) => {
                         id: req.params.id
                     }
                 })
-                .then(imagePersonAssignment => {
-                    console.log(`Image-person assignment with id: ${req.params.id} has been updated.`);
-                    res.status(200).end();
+                .then(() => {
+                    console.log(`Image-person assignment with id: ${req.params.id} has been patched.`);
+                    res.status(204).end();
                 })
                 .catch(next);
         }

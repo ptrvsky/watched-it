@@ -16,6 +16,9 @@ router.post('/', PersonController.createPerson);
 // Update production with the given id
 router.put('/:id', PersonController.updatePerson);
 
+// Patch production with the given id
+router.patch('/:id', PersonController.patchPerson);
+
 // Delete production with the given id
 router.delete('/:id', PersonController.deletePerson);
 

@@ -15,7 +15,10 @@ router.get('/:id/file', ImageController.getImageFile);
 router.post('/', ImageController.uploadImage, ImageController.createImage);
 
 // Update image with the given id
-router.put('/:id', ImageController.updateImage);
+router.put('/:id', ImageController.uploadImage, ImageController.updateImage);
+
+// Patch image with the given id
+router.patch('/:id', ImageController.patchImage);
 
 // Delete image with the given id
 router.delete('/:id', ImageController.deleteImage);

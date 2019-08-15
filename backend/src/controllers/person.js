@@ -49,6 +49,34 @@ exports.createPerson = (req, res, next) => {
 exports.updatePerson = (req, res, next) => {
     let { name, dob, dod, birthplace } = req.body;
 
+    personSchema.requiredKeys('name').validate({
+        name: name,
+        dob: dob,
+        dod: dod,
+        birthplace: birthplace
+    }, (err, value) => {
+        if (err) {
+            next(err)
+        } else {
+            Person.update(value, {
+                    returning: true,
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(([propsUpdated, [person]])=> {
+                    console.log(`Person with id: ${req.params.id} has been updated in the database.`);
+                    res.status(200).json(person);
+                })
+                .catch(next);
+        }
+    });
+};
+
+// Patch person with the given id
+exports.patchPerson = (req, res, next) => {
+    let { name, dob, dod, birthplace } = req.body;
+
     personSchema.validate({
         name: name,
         dob: dob,
@@ -63,9 +91,9 @@ exports.updatePerson = (req, res, next) => {
                         id: req.params.id
                     }
                 })
-                .then(person => {
-                    console.log(`Person with id: ${req.params.id} has been updated in the database.`);
-                    res.status(200).end();
+                .then(()=> {
+                    console.log(`Person with id: ${req.params.id} has been patched in the database.`);
+                    res.status(204).end();
                 })
                 .catch(next);
         }

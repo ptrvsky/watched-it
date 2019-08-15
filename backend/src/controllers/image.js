@@ -77,6 +77,30 @@ exports.createImage = (req, res, next) => {
 
 // Update image with the given id
 exports.updateImage = (req, res, next) => {
+    imageSchema.requiredKeys('url', 'productionId').validate({
+        url: req.file.path.replace("\\","/"),
+        productionId: req.body.productionId
+    }, (err, value) => {
+        if (err) {
+            next(err);
+        } else {
+            Image.update(value, {
+                    returning: true,
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(([propsUpdated, [image]]) => {
+                    console.log(`Image with id: ${req.params.id} has been updated in the database.`);
+                    res.status(200).json(image);
+                })
+                .catch(next);
+        }
+    });
+};
+
+// Patch image with the given id
+exports.patchImage = (req, res, next) => {
     imageSchema.validate({
         productionId: req.body.productionId
     }, (err, value) => {
@@ -88,9 +112,9 @@ exports.updateImage = (req, res, next) => {
                         id: req.params.id
                     }
                 })
-                .then(image => {
-                    console.log(`Image with id: ${req.params.id} has been updated in the database.`);
-                    res.status(200).end();
+                .then(() => {
+                    console.log(`Image with id: ${req.params.id} has been patched in the database.`);
+                    res.status(204).end();
                 })
                 .catch(next);
         }

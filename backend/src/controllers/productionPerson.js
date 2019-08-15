@@ -87,6 +87,33 @@ exports.createProductionPersonAssignment = (req, res, next) => {
 exports.updateProductionPersonAssignment = (req, res, next) => {
     let { personId, productionId, role } = req.body;
 
+    productionPersonSchema.requiredKeys('personId', 'productionId', 'role').validate({
+        personId: personId,
+        productionId: productionId,
+        role: role
+    }, (err, value) => {
+        if (err) {
+            next(err);
+        } else {
+            ProductionPerson.update(value, {
+                    returning: true,
+                    where: {
+                        id: req.params.id
+                    }
+                })
+                .then(([propsUpdated, [productionPersonAssignment]]) => {
+                    console.log(`Production-person assignment with id: ${req.params.id} has been updated.`);
+                    res.status(200).json(productionPersonAssignment);
+                })
+                .catch(next);
+        }
+    });
+};
+
+// Patch production-person assignment
+exports.patchProductionPersonAssignment = (req, res, next) => {
+    let { personId, productionId, role } = req.body;
+
     productionPersonSchema.validate({
         personId: personId,
         productionId: productionId,
@@ -100,9 +127,9 @@ exports.updateProductionPersonAssignment = (req, res, next) => {
                         id: req.params.id
                     }
                 })
-                .then(productionPersonAssignment => {
-                    console.log(`Production-person assignment with id: ${req.params.id} has been updated.`);
-                    res.status(200).end();
+                .then(() => {
+                    console.log(`Production-person assignment with id: ${req.params.id} has been patched.`);
+                    res.status(204).end();
                 })
                 .catch(next);
         }
