@@ -1,6 +1,13 @@
 const Sequelize = require('sequelize');
+let dbName = process.env.DEVELOPMENT_DB_NAME;
 
-module.exports = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+if (process.env.NODE_ENV === 'production') {
+    dbName = process.env.PRODUCTION_DB_NAME;
+}
+
+const db = new Sequelize(dbName, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: 'localhost',
-    dialect: 'postgres'
+    dialect: 'postgres',
 });
+
+module.exports = db;
