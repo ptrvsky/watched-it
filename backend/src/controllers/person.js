@@ -48,12 +48,14 @@ exports.createPerson = (req, res, next) => {
 // Update person with the given id
 exports.updatePerson = (req, res, next) => {
     let { name, dob, dod, birthplace } = req.body;
-
+    
     personSchema.requiredKeys('name').validate({
         name: name,
-        dob: dob,
-        dod: dod,
-        birthplace: birthplace
+        dob: dob || null,
+        dod: dod || null,
+        birthplace: birthplace || null
+        // Nulls are added in case the request body doesn't contain unrequired attributes. 
+        // Without it, those attributes would remain as they are what is inconsistent with PUT method specification.
     }, (err, value) => {
         if (err) {
             next(err)

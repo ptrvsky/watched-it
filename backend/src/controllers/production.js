@@ -54,11 +54,13 @@ exports.updateProduction = (req, res, next) => {
 
     productionSchema.requiredKeys('title').validate({
         title: title,
-        length: length,
-        releaseDate: releaseDate,
-        isSerie: isSerie,
-        genre: genre,
-        description: description
+        length: length || null,
+        releaseDate: releaseDate || null,
+        isSerie: isSerie || null,
+        genre: genre || null,
+        description: description || null
+        // Nulls are added in case the request body doesn't contain unrequired attributes. 
+        // Without it, those attributes would remain as they are what is inconsistent with PUT method specification.
     }, (err, value) => {
         if (err) {
             next(err);
