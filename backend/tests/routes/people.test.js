@@ -20,22 +20,62 @@ describe('/people', () => {
 
     describe('GET /people', () => {
 
-        it('should respond with status 200 and json', (done) => {
+        let id;
+
+        beforeEach((done) => {
+            Person.create({
+                name: "John Doe",
+            })
+            .then(person => {
+                id = person.id;
+                done();
+            })
+            .catch(err => console.log(err));
+        });
+
+        beforeEach((done) => {
+            Person.create({
+                name: "John Doe 2",
+            })
+            .then(person => {
+                id = person.id;
+                done();
+            })
+            .catch(err => console.log(err));
+        });
+
+        beforeEach((done) => {
+            Person.create({
+                name: "John Doe 3",
+            })
+            .then(person => {
+                done();
+            })
+            .catch(err => console.log(err));
+        });
+
+        it('should respond with status 200 and json containing all objects', (done) => {
             request(app)
                 .get('/people')
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.length).to.be.equal(3);
+                    done();
+                });
         });
 
-    });
-
-    describe('GET /people/1', () => {
-
-        it('should respond with status 200 and json', (done) => {
+        it('should respond with status 200 and json containing object with the same id as it is in URI', (done) => {
             request(app)
-                .get('/people/1')
+                .get('/people/' + id)
                 .expect('Content-Type', /json/)
-                .expect(200, done);
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.id).to.be.equal(id);
+                    done();
+                });
         });
 
     });
