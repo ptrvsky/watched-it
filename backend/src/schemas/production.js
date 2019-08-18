@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const schema = Joi.object().keys({
-    title: Joi.string().min(2).max(100),
+    title: Joi.string().min(1).max(100),
     length: Joi.number().integer().min(1).max(999999).allow(null),
     releaseDate: Joi.date().min('1-1-1800').allow(null),
     isSerie: Joi.boolean().default(false).allow(null),
