@@ -1,10 +1,15 @@
 const multer = require('multer');
 const crypto = require('crypto');
 const path = require('path');
+const uploadsDirectory = process.env.DEVELOPMENT_UPLOADS_DIRECTORY
+
+if (process.env.NODE_ENV === 'production') {
+    uploadsDirectory = process.env.PRODUCTION_UPLOADS_DIRECTORY;
+}
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads')
+        cb(null, uploadsDirectory)
     },
     filename: (req, file, cb) => {
         crypto.pseudoRandomBytes(16, (err, raw) =>
