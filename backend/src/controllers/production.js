@@ -1,9 +1,5 @@
 const Production = require('../models/production');
-const Person = require('../models/person');
-const ProductionPerson = require('../models/productionPerson');
-const Image = require('../models/image');
 const productionSchema = require('../schemas/production');
-const Op = require('sequelize').Op;
 
 // Get all productions
 exports.getAllProductions = (req, res, next) => {
@@ -56,7 +52,7 @@ exports.updateProduction = (req, res, next) => {
         title: title,
         length: length || null,
         releaseDate: releaseDate || null,
-        isSerie: isSerie || null,
+        isSerie: isSerie || false,
         genre: genre || null,
         description: description || null
         // Nulls are added in case the request body doesn't contain unrequired attributes. 
@@ -73,7 +69,7 @@ exports.updateProduction = (req, res, next) => {
                 })
                 .then(([propsUpdated, [production]]) => {
                     console.log(`Production with id: ${req.params.id} has been updated in the database.`);
-                    res.status(200).end();
+                    res.status(200).json(production);
                 })
                 .catch(next);
         }
@@ -102,7 +98,7 @@ exports.patchProduction = (req, res, next) => {
                 })
                 .then(() => {
                     console.log(`Production with id: ${req.params.id} has been patched in the database.`);
-                    res.status(204).jend();
+                    res.status(204).end();
                 })
                 .catch(next);
         }

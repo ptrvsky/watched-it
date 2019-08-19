@@ -27,7 +27,6 @@ describe('/people', () => {
                 name: "John Doe",
             })
             .then(person => {
-                id = person.id;
                 done();
             })
             .catch(err => console.log(err));
@@ -1090,7 +1089,7 @@ describe('/people', () => {
 
     });
 
-    // Wipe people table after all test
+    // Wipe people table after all tests
     after((done) => {
         Person.destroy({
                 truncate: true,
