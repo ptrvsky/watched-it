@@ -12,7 +12,7 @@ exports.getAllProductionPersonAssignments = (req, res, next) => {
 
 // Get production-person assignment with given id
 exports.getProductionPersonAssignment = (req, res, next) => {
-    ProductionPerson.findNyId(req.params.id)
+    ProductionPerson.findByPk(req.params.id)
         .then(productionPersonAssignment => {
             res.json(productionPersonAssignment);
         })
@@ -63,12 +63,13 @@ exports.getProductionPersonAssignmentsByIds = (req, res, next) => {
 
 // Create production-person assignment
 exports.createProductionPersonAssignment = (req, res, next) => {
-    let { personId, productionId, role } = req.body;
+    let { personId, productionId, role, description } = req.body;
 
     productionPersonSchema.requiredKeys('personId', 'productionId', 'role').validate({
         personId: personId,
         productionId: productionId,
-        role: role
+        role: role,
+        description: description
     }, (err, value) => {
         if (err) {
             next(err);
@@ -85,12 +86,13 @@ exports.createProductionPersonAssignment = (req, res, next) => {
 
 // Update production-person assignment
 exports.updateProductionPersonAssignment = (req, res, next) => {
-    let { personId, productionId, role } = req.body;
+    let { personId, productionId, role, description } = req.body;
 
     productionPersonSchema.requiredKeys('personId', 'productionId', 'role').validate({
         personId: personId,
         productionId: productionId,
-        role: role
+        role: role,
+        description: description || null
     }, (err, value) => {
         if (err) {
             next(err);
@@ -112,12 +114,13 @@ exports.updateProductionPersonAssignment = (req, res, next) => {
 
 // Patch production-person assignment
 exports.patchProductionPersonAssignment = (req, res, next) => {
-    let { personId, productionId, role } = req.body;
+    let { personId, productionId, role, description } = req.body;
 
     productionPersonSchema.validate({
         personId: personId,
         productionId: productionId,
-        role: role
+        role: role,
+        description: description
     }, (err, value) => {
         if (err) {
             next(err);

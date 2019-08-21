@@ -11,6 +11,9 @@ const ProductionPerson = db.define('production_person', {
     },
     role: {
         type: Sequelize.ENUM('Actor', 'Writer', 'Director', 'Composer', 'Producer')
+    },
+    description: {
+        type: Sequelize.STRING
     }
 },{
     tableName: 'productions_people'
