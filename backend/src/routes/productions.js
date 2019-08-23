@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const ProductionController = require('../controllers/production');
 const ProductionPersonController = require('../controllers/productionPerson');
@@ -22,7 +23,7 @@ router.patch('/:id', ProductionController.patchProduction);
 // Delete production with the given id
 router.delete('/:id', ProductionController.deleteProduction);
 
-// Get list of the selected production assignments 
+// Get list of the selected production assignments
 router.get('/:productionId/people', ProductionPersonController.getProductionPersonAssignmentsByProduction);
 
 // Get assignments between production and person with given ids

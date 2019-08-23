@@ -1,4 +1,6 @@
-const expect = require('chai').expect;
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-expressions */
+const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../src/index');
 const Production = require('../../src/models/production');
@@ -8,42 +10,53 @@ const ImagePerson = require('../../src/models/imagePerson');
 
 const wipeImagesPeople = (done) => {
     ImagePerson.destroy({
-            truncate: true,
-            cascade: true,
-            restartIdentity: true
-        })
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
         .then(() => {
             done();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => done(err));
+};
 
 const wipeImages = (done) => {
     Image.destroy({
-            truncate: true,
-            cascade: true,
-            restartIdentity: true
-        })
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
         .then(() => {
             done();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => done(err));
+};
 
 const wipePeople = (done) => {
     Person.destroy({
-            truncate: true,
-            cascade: true,
-            restartIdentity: true
-        })
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
         .then(() => {
             done();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => done(err));
+};
+
+const wipeProductions = (done) => {
+    Production.destroy({
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
+        .then(() => {
+            done();
+        })
+        .catch((err) => done(err));
+};
 
 describe('/images-people', () => {
-
     let personId;
     let secondPersonId;
     let imageId;
@@ -55,100 +68,99 @@ describe('/images-people', () => {
 
     before((done) => {
         Production.create({
-                title: "Movie Title",
-            })
-            .then(production => {
+            title: 'Movie Title',
+        })
+            .then((production) => {
                 productionId = production.id;
                 done();
             })
-            .catch(err => console.log(err));
+            .catch((err) => done(err));
     });
 
     before((done) => {
         Image.create({
-                url: "update/abcd1.png",
-                productionId: productionId
-            })
-            .then(image => {
+            url: 'update/abcd1.png',
+            productionId,
+        })
+            .then((image) => {
                 imageId = image.id;
                 done();
             })
-            .catch(err => console.log(err));
+            .catch((err) => done(err));
     });
 
     before((done) => {
         Image.create({
-                url: "update/abcd2.png",
-                productionId: productionId
-            })
-            .then(image => {
+            url: 'update/abcd2.png',
+            productionId,
+        })
+            .then((image) => {
                 secondImageId = image.id;
                 done();
             })
-            .catch(err => console.log(err));
+            .catch((err) => done(err));
     });
 
     before((done) => {
         Person.create({
-                name: "John Doe 1"
-            })
-            .then(person => {
-                personId = person.id
+            name: 'John Doe 1',
+        })
+            .then((person) => {
+                personId = person.id;
                 done();
             })
-            .catch(err => console.log(err));
-    })
+            .catch((err) => done(err));
+    });
 
     before((done) => {
         Person.create({
-                name: "John Doe 2"
-            })
-            .then(person => {
-                secondPersonId = person.id
+            name: 'John Doe 2',
+        })
+            .then((person) => {
+                secondPersonId = person.id;
                 done();
             })
-            .catch(err => console.log(err));
-    })
+            .catch((err) => done(err));
+    });
 
     describe('GET /images-people', () => {
-
         let id;
 
         beforeEach((done) => {
             ImagePerson
                 .create({
-                    imageId: imageId,
-                    personId: personId
+                    imageId,
+                    personId,
                 })
-                .then(imagePerson => {
+                .then(() => {
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         beforeEach((done) => {
             ImagePerson
                 .create({
-                    imageId: imageId,
-                    personId: secondPersonId
+                    imageId,
+                    personId: secondPersonId,
                 })
-                .then(imagePerson => {
+                .then((imagePerson) => {
                     id = imagePerson.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         beforeEach((done) => {
             ImagePerson
                 .create({
                     imageId: secondImageId,
-                    personId: personId
+                    personId,
                 })
-                .then(imagePerson => {
+                .then(() => {
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and json containing all objects', (done) => {
@@ -165,7 +177,7 @@ describe('/images-people', () => {
 
         it('should respond with status 200 and json containing object with the same id as it is in the URI', (done) => {
             request(app)
-                .get('/images-people/' + id)
+                .get(`/images-people/${id}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -174,15 +186,13 @@ describe('/images-people', () => {
                     done();
                 });
         });
-
     });
 
     describe('POST /images-people', () => {
-
         it('should respond with status 201 and json containing new object for regular data', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
             request(app)
                 .post('/images-people')
@@ -199,12 +209,12 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because object with the same key {imageId, personId} already exists', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
 
             ImagePerson.create(data)
-                .then(imagePerson => {
+                .then(() => {
                     request(app)
                         .post('/images-people')
                         .send(data)
@@ -216,13 +226,13 @@ describe('/images-people', () => {
                             done();
                         });
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 400 and json containing error message because of imageId that points for non-existent image', (done) => {
             const data = {
                 imageId: 3,
-                personId: personId
+                personId,
             };
             request(app)
                 .post('/images-people')
@@ -238,8 +248,8 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of personId that points for non-existent person', (done) => {
             const data = {
-                imageId: imageId,
-                personId: 3
+                imageId,
+                personId: 3,
             };
             request(app)
                 .post('/images-people')
@@ -255,7 +265,7 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of missing imageId', (done) => {
             const data = {
-                personId: personId,
+                personId,
             };
             request(app)
                 .post('/images-people')
@@ -271,7 +281,7 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of missing personId', (done) => {
             const data = {
-                imageId: imageId,
+                imageId,
             };
             request(app)
                 .post('/images-people')
@@ -284,32 +294,30 @@ describe('/images-people', () => {
                     done();
                 });
         });
-
     });
 
     describe('PUT /images-people', () => {
-
         let id;
 
         beforeEach((done) => {
             ImagePerson.create({
-                    imageId: secondImageId,
-                    personId: secondPersonId
-                })
-                .then(imagePerson => {
+                imageId: secondImageId,
+                personId: secondPersonId,
+            })
+                .then((imagePerson) => {
                     id = imagePerson.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and json containing new object for regular data', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
             request(app)
-                .put('/images-people/' + id)
+                .put(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -323,14 +331,14 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because object with the same key {imageId, personId} already exists', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
 
             ImagePerson.create(data)
-                .then(imagePerson => {
+                .then(() => {
                     request(app)
-                        .put('/images-people/' + id)
+                        .put(`/images-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -340,16 +348,16 @@ describe('/images-people', () => {
                             done();
                         });
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 400 and json containing error message because of imageId that points for non-existent image', (done) => {
             const data = {
                 imageId: 3,
-                personId: personId
+                personId,
             };
             request(app)
-                .put('/images-people/' + id)
+                .put(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -362,11 +370,11 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of personId that points for non-existent person', (done) => {
             const data = {
-                imageId: imageId,
-                personId: 3
+                imageId,
+                personId: 3,
             };
             request(app)
-                .put('/images-people/' + id)
+                .put(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -379,10 +387,10 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of missing imageId', (done) => {
             const data = {
-                personId: personId,
+                personId,
             };
             request(app)
-                .put('/images-people/' + id)
+                .put(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -395,10 +403,10 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of missing personId', (done) => {
             const data = {
-                imageId: imageId,
+                imageId,
             };
             request(app)
-                .put('/images-people/' + id)
+                .put(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -408,47 +416,45 @@ describe('/images-people', () => {
                     done();
                 });
         });
-
     });
 
     describe('PATCH /images-people', () => {
-
         let id;
 
         beforeEach((done) => {
             ImagePerson.create({
-                    imageId: secondImageId,
-                    personId: secondPersonId
-                })
-                .then(imagePerson => {
+                imageId: secondImageId,
+                personId: secondPersonId,
+            })
+                .then((imagePerson) => {
                     id = imagePerson.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 204 for regular data', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
             request(app)
-                .patch('/images-people/' + id)
+                .patch(`/images-people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
 
         it('should respond with status 400 and json containing error message because object with the same key {imageId, personId} already exists', (done) => {
             const data = {
-                imageId: imageId,
-                personId: personId
+                imageId,
+                personId,
             };
 
             ImagePerson
                 .create(data)
-                .then(imagePerson => {
+                .then(() => {
                     request(app)
-                        .patch('/images-people/' + id)
+                        .patch(`/images-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -458,16 +464,16 @@ describe('/images-people', () => {
                             done();
                         });
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 400 and json containing error message because of imageId that points for non-existent image', (done) => {
             const data = {
                 imageId: 3,
-                personId: personId
+                personId,
             };
             request(app)
-                .patch('/images-people/' + id)
+                .patch(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -480,11 +486,11 @@ describe('/images-people', () => {
 
         it('should respond with status 400 and json containing error message because of personId that points for non-existent person', (done) => {
             const data = {
-                imageId: imageId,
-                personId: 3
+                imageId,
+                personId: 3,
             };
             request(app)
-                .patch('/images-people/' + id)
+                .patch(`/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -494,39 +500,36 @@ describe('/images-people', () => {
                     done();
                 });
         });
-
     });
 
     describe('DELETE /images-people', () => {
-
         let id;
 
         beforeEach((done) => {
             ImagePerson.create({
-                    imageId: imageId,
-                    personId: personId
-                })
-                .then(imagePerson => {
+                imageId,
+                personId,
+            })
+                .then((imagePerson) => {
                     id = imagePerson.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and remove object from database', (done) => {
             request(app)
-                .delete('/images-people/' + id)
+                .delete(`/images-people/${id}`)
                 .expect(200)
                 .then(() => {
                     ImagePerson
                         .findByPk(id)
-                        .then(imagePerson => {
+                        .then((imagePerson) => {
                             expect(imagePerson).to.be.null;
                             done();
-                        })
+                        });
                 });
         });
-
     });
 
     // Wipe images-people table after all tests
@@ -538,4 +541,6 @@ describe('/images-people', () => {
     // Wipe people table after all tests
     after((done) => wipePeople(done));
 
+    // Wipe productions table after all tests
+    after((done) => wipeProductions(done));
 });

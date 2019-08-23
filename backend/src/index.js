@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 require('dotenv').config({ path: '.env' });
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const app = express();
 const db = require('./config/database');
 
@@ -10,7 +12,7 @@ db.authenticate()
     .catch((err) => console.log(err));
 
 app.get('/', (req, res) => {
-    res.json({ status: "ON" })
+    res.json({ status: 'ON' });
 });
 
 // Static assets
@@ -28,15 +30,16 @@ app.use('/images', require('./routes/images'));
 app.use('/images-people/', require('./routes/images-people'));
 
 // Error handling
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
         res.status(400).json({ error: err.message });
     } else {
         res.status(400).json({ error: err });
     }
 });
 
-let server = app.listen(process.env.PORT || 3000, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
     console.log('Listening on port', server.address().port);
 });
 

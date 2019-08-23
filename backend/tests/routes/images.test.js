@@ -1,50 +1,53 @@
-const expect = require('chai').expect;
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-shadow */
+const { expect } = require('chai');
 const request = require('supertest');
+const fs = require('fs');
+const path = require('path');
 const app = require('../../src/index');
 const Image = require('../../src/models/image');
 const Production = require('../../src/models/production');
-const fs = require('fs');
-const path = require('path');
-const directory = process.env.DEVELOPMENT_UPLOADS_DIRECTORY
+
+const directory = process.env.DEVELOPMENT_UPLOADS_DIRECTORY;
 
 const wipeUploads = (done) => {
     fs.readdir(directory, (err, files) => {
         if (err) throw err;
-        for (const file of files) {
-            fs.unlink(path.join(directory, file), err => {
+        files.forEach((file) => {
+            fs.unlink(path.join(directory, file), (err) => {
                 if (err) throw err;
             });
-        }
+        });
         done();
     });
-}
+};
 
 const wipeImages = (done) => {
     Image.destroy({
-            truncate: true,
-            cascade: true,
-            restartIdentity: true
-        })
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
         .then(() => {
             done();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => done(err));
+};
 
 const wipeProductions = (done) => {
     Production.destroy({
-            truncate: true,
-            cascade: true,
-            restartIdentity: true
-        })
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
         .then(() => {
             done();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => done(err));
+};
 
 describe('/images', () => {
-
     let productionId;
     let secondProductionId;
 
@@ -59,62 +62,61 @@ describe('/images', () => {
 
     before((done) => {
         Production.create({
-                title: "Movie Title 1",
-            })
-            .then(production => {
+            title: 'Movie Title 1',
+        })
+            .then((production) => {
                 productionId = production.id;
                 done();
             })
-            .catch(err => console.log(err));
+            .catch((err) => done(err));
     });
 
     before((done) => {
         Production.create({
-                title: "Movie Title 2",
-            })
-            .then(production => {
+            title: 'Movie Title 2',
+        })
+            .then((production) => {
                 secondProductionId = production.id;
                 done();
             })
-            .catch(err => console.log(err));
+            .catch((err) => done(err));
     });
 
     describe('GET /images', () => {
-
         let imageId;
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd1.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd1.png',
+                productionId,
+            })
+                .then(() => {
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd2.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd2.png',
+                productionId,
+            })
+                .then((image) => {
                     imageId = image.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd3.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd3.png',
+                productionId,
+            })
+                .then(() => {
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and json containing all objects', (done) => {
@@ -131,7 +133,7 @@ describe('/images', () => {
 
         it('should respond with status 200 and json containing object with the same id as it is in URI', (done) => {
             request(app)
-                .get('/images/' + imageId)
+                .get(`/images/${imageId}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -140,11 +142,9 @@ describe('/images', () => {
                     done();
                 });
         });
-
     });
 
     describe('POST /images', () => {
-
         it('should respond with status 201 and json containing new object for regular data with .png image', (done) => {
             request(app)
                 .post('/images')
@@ -268,24 +268,23 @@ describe('/images', () => {
     });
 
     describe('PUT /images/:id', () => {
-
         let imageId;
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd1.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd1.png',
+                productionId,
+            })
+                .then((image) => {
                     imageId = image.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and json containing new object for regular data with .png image', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testImage.png')
                 .field('productionId', secondProductionId)
                 .expect('Content-Type', /json/)
@@ -303,7 +302,7 @@ describe('/images', () => {
 
         it('should respond with status 200 and json containing new object for regular data with .jpeg image', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testImage.jpeg')
                 .field('productionId', secondProductionId)
                 .expect('Content-Type', /json/)
@@ -321,7 +320,7 @@ describe('/images', () => {
 
         it('should respond with status 200 and json containing new object for regular data with .jpg image', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testImage.jpg')
                 .field('productionId', secondProductionId)
                 .expect('Content-Type', /json/)
@@ -339,7 +338,7 @@ describe('/images', () => {
 
         it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testFile.txt')
                 .field('productionId', secondProductionId)
                 .expect('Content-Type', /json/)
@@ -353,7 +352,7 @@ describe('/images', () => {
 
         it('should respond with status 400 and json containing error message because of missing image file', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .field('productionId', secondProductionId)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -366,7 +365,7 @@ describe('/images', () => {
 
         it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .expect('Content-Type', /json/)
                 .expect(400)
                 .end((err, res) => {
@@ -379,7 +378,7 @@ describe('/images', () => {
 
         it('should respond with status 400 and json containing error message because of missing productionId', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testImage.png')
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -392,7 +391,7 @@ describe('/images', () => {
 
         it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
             request(app)
-                .put('/images/' + imageId)
+                .put(`/images/${imageId}`)
                 .attach('image', './tests/test-files/testImage.png')
                 .field('productionId', 3)
                 .expect('Content-Type', /json/)
@@ -406,34 +405,32 @@ describe('/images', () => {
     });
 
     describe('PATCH /images/:id', () => {
-
         let imageId;
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd1.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd1.png',
+                productionId,
+            })
+                .then((image) => {
                     imageId = image.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 204 for regular data', (done) => {
             request(app)
-                .patch('/images/' + imageId)
+                .patch(`/images/${imageId}`)
                 .field('productionId', secondProductionId)
-                .expect(204, done)
-
+                .expect(204, done);
         });
 
         it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
             request(app)
-                .patch('/images/' + imageId)
+                .patch(`/images/${imageId}`)
                 .send({
-                    productionId: 3
+                    productionId: 3,
                 })
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -443,38 +440,35 @@ describe('/images', () => {
                     done();
                 });
         });
-
     });
 
     describe('DELETE /images', () => {
-
         let imageId;
 
         beforeEach((done) => {
             Image.create({
-                    url: "update/abcd2.png",
-                    productionId: productionId
-                })
-                .then(image => {
+                url: 'update/abcd2.png',
+                productionId,
+            })
+                .then((image) => {
                     imageId = image.id;
                     done();
                 })
-                .catch(err => console.log(err));
+                .catch((err) => done(err));
         });
 
         it('should respond with status 200 and remove object from database', (done) => {
             request(app)
-                .delete('/images/' + imageId)
+                .delete(`/images/${imageId}`)
                 .expect(200)
                 .then(() => {
                     Image.findByPk(imageId)
-                        .then(image => {
+                        .then((image) => {
                             expect(image).to.be.null;
                             done();
-                        })
+                        });
                 });
         });
-
     });
 
     // Wipe images table after all tests
@@ -485,5 +479,4 @@ describe('/images', () => {
 
     // Wipe uploads directory after all tests
     after((done) => wipeUploads(done));
-
 });

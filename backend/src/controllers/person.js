@@ -1,13 +1,10 @@
 const Person = require('../models/person');
-const Production = require('../models/production');
-const ProductionPerson = require('../models/productionPerson');
 const personSchema = require('../schemas/person');
-const Op = require('sequelize').Op;
 
 // Get all productions
 exports.getAllPeople = (req, res, next) => {
     Person.findAll()
-        .then(people => {
+        .then((people) => {
             res.json(people);
         })
         .catch(next);
@@ -16,7 +13,7 @@ exports.getAllPeople = (req, res, next) => {
 // Get person with the given id
 exports.getPerson = (req, res, next) => {
     Person.findByPk(req.params.id)
-        .then(person => {
+        .then((person) => {
             res.json(person);
         })
         .catch(next);
@@ -24,50 +21,49 @@ exports.getPerson = (req, res, next) => {
 
 // Add person
 exports.createPerson = (req, res, next) => {
-    let { name, dob, dod, birthplace } = req.body;
+    const { name, dob, dod, birthplace } = req.body;
 
     personSchema.requiredKeys('name').validate({
-        name: name,
-        dob: dob,
-        dod: dod,
-        birthplace: birthplace
+        name,
+        dob,
+        dod,
+        birthplace,
     }, (err, value) => {
         if (err) {
             next(err);
         } else {
             Person.create(value)
-                .then(person => {
-                    console.log(`Person ${value.name} has been added to the database.`);
+                .then((person) => {
                     res.status(201).json(person);
                 })
-                .catch(next)
+                .catch(next);
         }
     });
 };
 
 // Update person with the given id
 exports.updatePerson = (req, res, next) => {
-    let { name, dob, dod, birthplace } = req.body;
-    
+    const { name, dob, dod, birthplace } = req.body;
+
     personSchema.requiredKeys('name').validate({
-        name: name,
+        name,
         dob: dob || null,
         dod: dod || null,
-        birthplace: birthplace || null
-        // Nulls are added in case the request body doesn't contain unrequired attributes. 
-        // Without it, those attributes would remain as they are what is inconsistent with PUT method specification.
+        birthplace: birthplace || null,
+        /*  Nulls are added in case the request body doesn't contain unrequired attributes.
+            Without it, those attributes would remain as they are what is inconsistent
+            with PUT method specification. */
     }, (err, value) => {
         if (err) {
-            next(err)
+            next(err);
         } else {
             Person.update(value, {
-                    returning: true,
-                    where: {
-                        id: req.params.id
-                    }
-                })
-                .then(([propsUpdated, [person]])=> {
-                    console.log(`Person with id: ${req.params.id} has been updated in the database.`);
+                returning: true,
+                where: {
+                    id: req.params.id,
+                },
+            })
+                .then(([, [person]]) => {
                     res.status(200).json(person);
                 })
                 .catch(next);
@@ -77,24 +73,23 @@ exports.updatePerson = (req, res, next) => {
 
 // Patch person with the given id
 exports.patchPerson = (req, res, next) => {
-    let { name, dob, dod, birthplace } = req.body;
+    const { name, dob, dod, birthplace } = req.body;
 
     personSchema.validate({
-        name: name,
-        dob: dob,
-        dod: dod,
-        birthplace: birthplace
+        name,
+        dob,
+        dod,
+        birthplace,
     }, (err, value) => {
         if (err) {
-            next(err)
+            next(err);
         } else {
             Person.update(value, {
-                    where: {
-                        id: req.params.id
-                    }
-                })
-                .then(()=> {
-                    console.log(`Person with id: ${req.params.id} has been patched in the database.`);
+                where: {
+                    id: req.params.id,
+                },
+            })
+                .then(() => {
                     res.status(204).end();
                 })
                 .catch(next);
@@ -105,12 +100,11 @@ exports.patchPerson = (req, res, next) => {
 // Delete person with the given id
 exports.deletePerson = (req, res, next) => {
     Person.destroy({
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(person => {
-            console.log(`Person with id: ${req.params.id} has been removed from the database.`);
+        where: {
+            id: req.params.id,
+        },
+    })
+        .then(() => {
             res.status(200).end();
         })
         .catch(next);

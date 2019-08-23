@@ -3,27 +3,28 @@ const db = require('../config/database.js');
 
 const Production = db.define('production', {
     title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
     },
     length: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
     },
     releaseDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
     },
     isSerie: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
     },
     genre: {
         type: Sequelize.ARRAY(Sequelize.ENUM(
-            'Action', 'Adventure', 'Animation', 'Biography', 
-            'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 
-            'History', 'Horror', 'Musical', 'Mystery', 'Romance', 
-            'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western'))
+            'Action', 'Adventure', 'Animation', 'Biography',
+            'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy',
+            'History', 'Horror', 'Musical', 'Mystery', 'Romance',
+            'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western',
+        )),
     },
     description: {
-        type: Sequelize.STRING
-    }
+        type: Sequelize.STRING,
+    },
 });
 
 module.exports = Production;

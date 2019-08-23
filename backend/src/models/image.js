@@ -3,11 +3,11 @@ const db = require('../config/database.js');
 
 const Image = db.define('image', {
     url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
     },
     productionId: {
-        type: Sequelize.INTEGER
-    }
+        type: Sequelize.INTEGER,
+    },
 });
 
 module.exports = Image;

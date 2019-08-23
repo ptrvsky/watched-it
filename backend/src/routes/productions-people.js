@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const ProductionPersonController = require('../controllers/productionPerson');
 
@@ -15,7 +16,7 @@ router.post('/', ProductionPersonController.createProductionPersonAssignment);
 router.put('/:id', ProductionPersonController.updateProductionPersonAssignment);
 
 // Patch production-person assignment with the given id
-router.patch('/:id', ProductionPersonController.patchProductionPersonAssignment)
+router.patch('/:id', ProductionPersonController.patchProductionPersonAssignment);
 
 // Delete production-person assignment with the given id
 router.delete('/:id', ProductionPersonController.deleteProductionPersonAssignment);

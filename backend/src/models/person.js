@@ -3,17 +3,17 @@ const db = require('../config/database.js');
 
 const Person = db.define('person', {
     name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
     },
     dob: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
     },
     dod: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
     },
     birthplace: {
-        type: Sequelize.STRING
-    }
+        type: Sequelize.STRING,
+    },
 });
 
 module.exports = Person;
