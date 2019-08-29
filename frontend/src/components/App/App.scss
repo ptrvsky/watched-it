@@ -1,0 +1,24 @@
+$light-gray: #e6e6e6;
+$light-gray2: #cfcfcf;
+$dark-gray: #1d1d1d;
+$orange: #e1554e;
+$purple: #c94564;
+$dark-purple: #550a78;
+
+body {
+  font-family: 'Roboto', sans-serif;
+
+}
+
+a {
+  color: $light-gray;
+  text-decoration: none;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.App {
+  width: 100%;
+}

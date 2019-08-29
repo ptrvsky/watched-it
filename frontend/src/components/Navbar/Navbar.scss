@@ -1,0 +1,84 @@
+$light-gray: #e6e6e6;
+$light-gray2: #cfcfcf;
+$dark-gray: #1d1d1d;
+$orange: #e1554e;
+$purple: #c94564;
+$dark-purple: #550a78;
+
+.navbar-container {
+  width: 100%;
+  background-color: $dark-gray;
+}
+
+nav.navbar-dark {
+  background-color: $dark-gray;
+  max-width: 1333px;
+  margin: 0 auto;
+  white-space: nowrap;
+
+  .navbar-toggler {
+    border: none;
+    padding-bottom: 8px;
+    padding-right: 0px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.navbar-underline {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, $orange , $dark-purple);
+}
+
+.logo-text {
+  font-size: 26px;
+  margin: 0px 0px 0px 10px;
+  text-align: center;
+}
+
+.light-gray {
+  color: $light-gray;
+}
+
+.orange {
+  color: $purple;
+}
+
+.links {
+  padding-right: 16px;
+}
+
+.search-bar {
+  width: 100%;
+  border: 1px solid $dark-purple;
+
+  &--desktop {
+    margin: 0px 35px 0px 35px;
+  }
+}
+
+.search-input {
+  background-color: $light-gray2;
+  border: none;
+  height: 32px;
+  padding-left: 5px;
+  width: calc(100% - 40px);
+}
+
+.btn {
+  border: none;
+  border-radius: 0px;
+  font-size: 20px;
+  padding: 0px 10px 10px 10px;
+  height: 32px;
+  width: 40px;
+  color: $dark-purple;
+  background-color: $light-gray2;
+}
+
+.user-button-mobile {
+  padding-bottom: 6px;
+}
