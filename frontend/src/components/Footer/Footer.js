@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import './Footer.scss';
 import { Facebook, Twitter, Instagram } from 'react-feather';
 
@@ -19,29 +20,31 @@ function Footer() {
             />
             <div className="footer-title footer-title--logo d-inline-block align-top">watchedit</div>
             <div className="about-text">
-              Watched It is a free website that let you discover information about movies, TV series and people that create them. 
+              Watched It is a free website that let you discover information about movies, TV series and people that create them.
               Rate productions, track your progress and check at which platform you can watch your favorite TV show. All in one place.
             </div>
           </div>
 
           <div className="footer-links flexbox-item">
-            <div className="footer-links-item"><div className="footer-title">Categories</div>
-              <ul>
-                <li>Movies</li>
-                <li>TV Series</li>
-                <li>People</li>
-                <li>Rankings</li>
-              </ul>
-            </div>
-            <div className="footer-links-item">
-              <div className="footer-title">Links</div>
-              <ul>
-                <li>About us</li>
-                <li>Terms of Service</li>
-                <li>Contact</li>
-                <li>FAQ</li>
-              </ul>
-            </div>
+            <Router>
+              <div className="footer-links-item"><div className="footer-title">Categories</div>
+                <ul>
+                  <li><Link to="/movies">Movies</Link></li>
+                  <li><Link to="/tvseries">TV Series</Link></li>
+                  <li><Link to="/people">People</Link></li>
+                  <li><Link to="/rankings">Rankings</Link></li>
+                </ul>
+              </div>
+              <div className="footer-links-item">
+                <div className="footer-title">Links</div>
+                <ul>
+                  <li><Link to="/about">About us</Link></li>
+                  <li><Link to="/tos">Terms of Service</Link></li>
+                  <li><Link to="/contact">Contact</Link></li>
+                  <li><Link to="/faq">FAQ</Link></li>
+                </ul>
+              </div>
+            </Router>
             <div className="footer-links-item socials">
               <div className="footer-title">Social media</div>
               <a href="#"><Facebook className="social-logo" /></a>
