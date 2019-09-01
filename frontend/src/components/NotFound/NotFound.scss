@@ -1,0 +1,30 @@
+@import '../../assets/styles/colors.scss';
+
+.not-found-wrapper {
+    display: flex;
+    flex-flow: column;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100%;
+
+    p {
+        font-size: 40px;
+        color: $dark-gray;
+        margin-bottom: 30px;
+    }
+}
+
+.not-found-button {
+    border: none;
+    border-radius: 5px;
+    background: $gradient;
+    padding: 15px;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
+
+    a {
+        color: $light-gray;
+    }
+}
+
