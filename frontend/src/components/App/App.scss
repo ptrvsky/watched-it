@@ -6,12 +6,17 @@ body {
 }
 
 a {
-  color: $light-gray;
-  text-decoration: none;
+  color: $light-gray2;
 
   &:hover {
     color: white;
+    text-decoration: none;
   }
+}
+
+.wrapper {
+  min-height: 100vh;
+  background-color: $light-gray;
 }
 
 .App {

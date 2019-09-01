@@ -25,7 +25,7 @@ nav.navbar-dark {
 .navbar-underline {
   height: 2px;
   width: 100%;
-  background: linear-gradient(to right, $orange , $dark-purple);
+  background: $gradient;
 }
 
 .logo-text {
@@ -49,6 +49,7 @@ nav.navbar-dark {
 .search-bar {
   width: 100%;
   border: 1px solid $dark-purple;
+  border-radius: 5px;
 
   &--desktop {
     margin: 0px 35px 0px 35px;
@@ -56,8 +57,10 @@ nav.navbar-dark {
 }
 
 .search-input {
-  background-color: $light-gray2;
+  background-color: $light-gray;
   border: none;
+  border-radius: 5px 0px 0px 5px;
+  outline: none;
   height: 32px;
   padding-left: 5px;
   width: calc(100% - 40px);
@@ -65,13 +68,13 @@ nav.navbar-dark {
 
 .btn {
   border: none;
-  border-radius: 0px;
+  border-radius: 0px 5px 5px 0px;
   font-size: 20px;
   padding: 0px 10px 10px 10px;
   height: 32px;
   width: 40px;
   color: $dark-purple;
-  background-color: $light-gray2;
+  background-color: $light-gray;
 }
 
 .user-button-mobile {

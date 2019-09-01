@@ -46,7 +46,7 @@ function Footer() {
               </div>
             </Router>
             <div className="footer-links-item socials">
-              <div className="footer-title">Social media</div>
+              <div className="footer-title">Follow us</div>
               <a href="#"><Facebook className="social-logo" /></a>
               <a href="#"><Twitter className="social-logo" /></a>
               <a href="#"><Instagram className="social-logo" /></a>
