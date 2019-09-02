@@ -1,0 +1,36 @@
+@import '../../assets/styles/colors.scss';
+
+.index-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 0px 15px 0px 15px;
+  text-align: center;
+  text-shadow: 0px 0px 10px #000000;
+  background: url('../../assets/images/bg1.jpg');
+
+  .p1 {
+    font-size: 40px;
+    color: $light-gray;
+  }
+
+  .p2 {
+    font-size: 28px;
+    color: $light-gray2;
+    margin-bottom: 30px;
+  }
+
+  @media(max-width: 991px) {
+    p1 {
+      font-size: 26px;
+    }
+
+    p2 {
+      font-size: 20px;
+    }
+  }
+}
