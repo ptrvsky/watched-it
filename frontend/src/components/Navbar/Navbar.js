@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Navbar, Nav, Form, NavDropdown } from 'react-bootstrap';
 import { Search, User } from 'react-feather';
 import { useMediaQuery } from 'react-responsive'
@@ -18,7 +18,6 @@ const Mobile = ({ children }) => {
 function NavigationBar() {
 
   return (
-    <Router>
       <div className="Navbar">
         <div className="navbar-container">
           <Navbar variant="dark" expand="lg">
@@ -82,7 +81,6 @@ function NavigationBar() {
         </div>
         <div className="navbar-underline" />
       </div>
-    </Router>
   );
 }
 

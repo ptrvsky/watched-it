@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Footer.scss';
 import { Facebook, Twitter, Instagram } from 'react-feather';
 
@@ -26,7 +26,6 @@ function Footer() {
           </div>
 
           <div className="footer-links flexbox-item">
-            <Router>
               <div className="footer-links-item"><div className="footer-title">Categories</div>
                 <ul>
                   <li><Link to="/movies">Movies</Link></li>
@@ -44,7 +43,6 @@ function Footer() {
                   <li><Link to="/faq">FAQ</Link></li>
                 </ul>
               </div>
-            </Router>
             <div className="footer-links-item socials">
               <div className="footer-title">Follow us</div>
               <a href="#"><Facebook className="social-logo" /></a>

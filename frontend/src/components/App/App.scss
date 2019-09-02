@@ -2,7 +2,6 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-
 }
 
 a {
@@ -15,6 +14,8 @@ a {
 }
 
 .wrapper {
+  display: flex;
+  flex-flow: column;
   min-height: 100vh;
   background-color: $light-gray;
 }
