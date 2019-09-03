@@ -11,23 +11,23 @@ db.authenticate()
     .then(() => console.log('Database connected'))
     .catch((err) => console.log(err));
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.json({ status: 'ON' });
 });
 
 // Static assets
-app.use('/uploads', express.static('uploads'));
+app.use('/api/uploads', express.static('uploads'));
 
 // Body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.use('/productions', require('./routes/productions'));
-app.use('/people', require('./routes/people'));
-app.use('/productions-people', require('./routes/productions-people'));
-app.use('/images', require('./routes/images'));
-app.use('/images-people/', require('./routes/images-people'));
+app.use('/api/productions', require('./routes/productions'));
+app.use('/api/people', require('./routes/people'));
+app.use('/api/productions-people', require('./routes/productions-people'));
+app.use('/api/images', require('./routes/images'));
+app.use('/api/images-people/', require('./routes/images-people'));
 
 // Error handling
 // eslint-disable-next-line no-unused-vars
