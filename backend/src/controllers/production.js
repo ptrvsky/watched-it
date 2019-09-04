@@ -21,7 +21,7 @@ exports.getProduction = (req, res, next) => {
 
 // Create production
 exports.createProduction = (req, res, next) => {
-    const { title, length, releaseDate, isSerie, genre, description } = req.body;
+    const { title, length, releaseDate, isSerie, genre, description, posterId } = req.body;
 
     productionSchema.requiredKeys('title').validate({
         title,
@@ -30,6 +30,7 @@ exports.createProduction = (req, res, next) => {
         isSerie,
         genre,
         description,
+        posterId,
     }, (err, value) => {
         if (err) {
             next(err);
@@ -45,7 +46,7 @@ exports.createProduction = (req, res, next) => {
 
 // Update production with the given id
 exports.updateProduction = (req, res, next) => {
-    const { title, length, releaseDate, isSerie, genre, description } = req.body;
+    const { title, length, releaseDate, isSerie, genre, description, posterId } = req.body;
 
     productionSchema.requiredKeys('title').validate({
         title,
@@ -54,6 +55,7 @@ exports.updateProduction = (req, res, next) => {
         isSerie: isSerie || false,
         genre: genre || null,
         description: description || null,
+        posterId: posterId || null,
         /*  Nulls are added in case the request body doesn't contain unrequired attributes.
             Without it, those attributes would remain as they are what is inconsistent
             with PUT method specification. */
@@ -77,7 +79,7 @@ exports.updateProduction = (req, res, next) => {
 
 // Patch production with the given id
 exports.patchProduction = (req, res, next) => {
-    const { title, length, releaseDate, isSerie, genre, description } = req.body;
+    const { title, length, releaseDate, isSerie, genre, description, posterId } = req.body;
 
     productionSchema.validate({
         title,
@@ -86,6 +88,7 @@ exports.patchProduction = (req, res, next) => {
         isSerie,
         genre,
         description,
+        posterId,
     }, (err, value) => {
         if (err) {
             next(err);

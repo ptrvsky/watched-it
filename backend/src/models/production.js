@@ -25,6 +25,9 @@ const Production = db.define('production', {
     description: {
         type: Sequelize.STRING,
     },
+    posterId: {
+        type: Sequelize.INTEGER,
+    },
 });
 
 module.exports = Production;

@@ -13,6 +13,7 @@ const schema = Joi.object().keys({
         'Sci-Fi', 'Sport', 'Thriller', 'War', 'Western',
     )).allow(null),
     description: Joi.string().max(500).allow(null),
+    posterId: Joi.number().integer().min(1).allow(null),
 });
 
 module.exports = schema;
