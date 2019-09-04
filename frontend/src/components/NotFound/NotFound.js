@@ -5,12 +5,12 @@ import './NotFound.scss';
 
 function NotFound() {
   return (
-      <div className="not-found-wrapper">
-        <p>Oops! Something went wrong!</p><br />
-        <button className="btn-primary">
-          <Link to="/">Go to homepage</Link>
-        </button>
-      </div>
+    <div className="not-found-wrapper">
+      <p>Oops! Something went wrong!</p><br />
+      <Link to="/">
+        <button className="btn-primary">Go to homepage</button>
+      </Link>
+    </div>
   );
 }
 

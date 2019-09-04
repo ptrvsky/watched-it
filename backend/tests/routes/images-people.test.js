@@ -56,7 +56,7 @@ const wipeProductions = (done) => {
         .catch((err) => done(err));
 };
 
-describe('/images-people', () => {
+describe('/api/images-people', () => {
     let personId;
     let secondPersonId;
     let imageId;
@@ -79,7 +79,7 @@ describe('/images-people', () => {
 
     before((done) => {
         Image.create({
-            url: 'update/abcd1.png',
+            url: 'api/uploads/abcd1.png',
             productionId,
         })
             .then((image) => {
@@ -91,7 +91,7 @@ describe('/images-people', () => {
 
     before((done) => {
         Image.create({
-            url: 'update/abcd2.png',
+            url: 'api/uploads/abcd2.png',
             productionId,
         })
             .then((image) => {
@@ -123,7 +123,7 @@ describe('/images-people', () => {
             .catch((err) => done(err));
     });
 
-    describe('GET /images-people', () => {
+    describe('GET /api/images-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -165,7 +165,7 @@ describe('/images-people', () => {
 
         it('should respond with status 200 and json containing all objects', (done) => {
             request(app)
-                .get('/images-people')
+                .get('/api/images-people')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -177,7 +177,7 @@ describe('/images-people', () => {
 
         it('should respond with status 200 and json containing object with the same id as it is in the URI', (done) => {
             request(app)
-                .get(`/images-people/${id}`)
+                .get(`/api/images-people/${id}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -188,14 +188,14 @@ describe('/images-people', () => {
         });
     });
 
-    describe('POST /images-people', () => {
+    describe('POST /api/images-people', () => {
         it('should respond with status 201 and json containing new object for regular data', (done) => {
             const data = {
                 imageId,
                 personId,
             };
             request(app)
-                .post('/images-people')
+                .post('/api/images-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -216,7 +216,7 @@ describe('/images-people', () => {
             ImagePerson.create(data)
                 .then(() => {
                     request(app)
-                        .post('/images-people')
+                        .post('/api/images-people')
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -235,7 +235,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .post('/images-people')
+                .post('/api/images-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -252,7 +252,7 @@ describe('/images-people', () => {
                 personId: 3,
             };
             request(app)
-                .post('/images-people')
+                .post('/api/images-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -268,7 +268,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .post('/images-people')
+                .post('/api/images-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -284,7 +284,7 @@ describe('/images-people', () => {
                 imageId,
             };
             request(app)
-                .post('/images-people')
+                .post('/api/images-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -296,7 +296,7 @@ describe('/images-people', () => {
         });
     });
 
-    describe('PUT /images-people', () => {
+    describe('PUT /api/images-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -317,7 +317,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .put(`/images-people/${id}`)
+                .put(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -338,7 +338,7 @@ describe('/images-people', () => {
             ImagePerson.create(data)
                 .then(() => {
                     request(app)
-                        .put(`/images-people/${id}`)
+                        .put(`/api/images-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -357,7 +357,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .put(`/images-people/${id}`)
+                .put(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -374,7 +374,7 @@ describe('/images-people', () => {
                 personId: 3,
             };
             request(app)
-                .put(`/images-people/${id}`)
+                .put(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -390,7 +390,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .put(`/images-people/${id}`)
+                .put(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -406,7 +406,7 @@ describe('/images-people', () => {
                 imageId,
             };
             request(app)
-                .put(`/images-people/${id}`)
+                .put(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -418,7 +418,7 @@ describe('/images-people', () => {
         });
     });
 
-    describe('PATCH /images-people', () => {
+    describe('PATCH /api/images-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -439,7 +439,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .patch(`/images-people/${id}`)
+                .patch(`/api/images-people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -454,7 +454,7 @@ describe('/images-people', () => {
                 .create(data)
                 .then(() => {
                     request(app)
-                        .patch(`/images-people/${id}`)
+                        .patch(`/api/images-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -473,7 +473,7 @@ describe('/images-people', () => {
                 personId,
             };
             request(app)
-                .patch(`/images-people/${id}`)
+                .patch(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -490,7 +490,7 @@ describe('/images-people', () => {
                 personId: 3,
             };
             request(app)
-                .patch(`/images-people/${id}`)
+                .patch(`/api/images-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -502,7 +502,7 @@ describe('/images-people', () => {
         });
     });
 
-    describe('DELETE /images-people', () => {
+    describe('DELETE /api/images-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -519,7 +519,7 @@ describe('/images-people', () => {
 
         it('should respond with status 200 and remove object from database', (done) => {
             request(app)
-                .delete(`/images-people/${id}`)
+                .delete(`/api/images-people/${id}`)
                 .expect(200)
                 .then(() => {
                     ImagePerson

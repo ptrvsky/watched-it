@@ -17,11 +17,11 @@ const wipePeople = (done) => {
         .catch((err) => done(err));
 };
 
-describe('/people', () => {
+describe('/api/people', () => {
     // Wipe people table before each test
     beforeEach((done) => wipePeople(done));
 
-    describe('GET /people', () => {
+    describe('GET /api/people', () => {
         let id;
 
         beforeEach((done) => {
@@ -57,7 +57,7 @@ describe('/people', () => {
 
         it('should respond with status 200 and json containing all objects', (done) => {
             request(app)
-                .get('/people')
+                .get('/api/people')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -69,7 +69,7 @@ describe('/people', () => {
 
         it('should respond with status 200 and json containing object with the same id as it is in URI', (done) => {
             request(app)
-                .get(`/people/${id}`)
+                .get(`/api/people/${id}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -80,7 +80,7 @@ describe('/people', () => {
         });
     });
 
-    describe('POST /people', () => {
+    describe('POST /api/people', () => {
         it('should respond with status 201 and json containing new object for regular data', (done) => {
             const data = {
                 name: 'John Doe',
@@ -89,7 +89,7 @@ describe('/people', () => {
                 birthplace: 'London, United Kingdom',
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -108,7 +108,7 @@ describe('/people', () => {
                 name: 'John Doe',
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -131,7 +131,7 @@ describe('/people', () => {
                 birthplace: 'London, United Kingdom',
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -147,7 +147,7 @@ describe('/people', () => {
                 name: 'Jo', // 2 letter name
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -163,7 +163,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn D', // 70 letter name
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -179,7 +179,7 @@ describe('/people', () => {
                 name: 'J', // 1 letter name
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -195,7 +195,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn Do', // 71 letter name
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -214,7 +214,7 @@ describe('/people', () => {
                 dob: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -232,7 +232,7 @@ describe('/people', () => {
                 dob: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -249,7 +249,7 @@ describe('/people', () => {
                 dob: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -267,7 +267,7 @@ describe('/people', () => {
                 dob: tomorrow, // max date is today's date
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -286,7 +286,7 @@ describe('/people', () => {
                 dod: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -304,7 +304,7 @@ describe('/people', () => {
                 dod: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -321,7 +321,7 @@ describe('/people', () => {
                 dod: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -339,7 +339,7 @@ describe('/people', () => {
                 dod: tomorrow, // max date is today's date
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -358,7 +358,7 @@ describe('/people', () => {
                 birthplace: 'Lo', // 2 letter birthplace
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -375,7 +375,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLond', // 70 character birthplace
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -392,7 +392,7 @@ describe('/people', () => {
                 birthplace: 'L', // 1 letter birthplace
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -409,7 +409,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLondo', // 71 letter birthplace
             };
             request(app)
-                .post('/people')
+                .post('/api/people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -421,7 +421,7 @@ describe('/people', () => {
         });
     });
 
-    describe('PUT /people/:id', () => {
+    describe('PUT /api/people/:id', () => {
         let id;
 
         beforeEach((done) => {
@@ -446,7 +446,7 @@ describe('/people', () => {
                 birthplace: 'Paris, France',
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -466,7 +466,7 @@ describe('/people', () => {
                 name: 'Ben Smith',
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -490,7 +490,7 @@ describe('/people', () => {
                 birthplace: 'Paris, France',
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -506,7 +506,7 @@ describe('/people', () => {
                 name: 'Jo', // 2 letter name
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -523,7 +523,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn D', // 70 letter name
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -540,7 +540,7 @@ describe('/people', () => {
                 name: 'J', // 1 letter name
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -556,7 +556,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn Do', // 71 letter name
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -575,7 +575,7 @@ describe('/people', () => {
                 dob: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -594,7 +594,7 @@ describe('/people', () => {
                 dob: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -612,7 +612,7 @@ describe('/people', () => {
                 dob: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -630,7 +630,7 @@ describe('/people', () => {
                 dob: tomorrow, // max date is today's date
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -649,7 +649,7 @@ describe('/people', () => {
                 dod: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -668,7 +668,7 @@ describe('/people', () => {
                 dod: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -686,7 +686,7 @@ describe('/people', () => {
                 dod: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -704,7 +704,7 @@ describe('/people', () => {
                 dod: tomorrow, // max date is today's date
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -723,7 +723,7 @@ describe('/people', () => {
                 birthplace: 'Lo', // 2 letter birthplace
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -741,7 +741,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLond', // 70 character birthplace
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -759,7 +759,7 @@ describe('/people', () => {
                 birthplace: 'L', // 1 letter birthplace
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -776,7 +776,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLondo', // 71 letter birthplace
             };
             request(app)
-                .put(`/people/${id}`)
+                .put(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -788,7 +788,7 @@ describe('/people', () => {
         });
     });
 
-    describe('PATCH /people/:id', () => {
+    describe('PATCH /api/people/:id', () => {
         let id;
 
         beforeEach((done) => {
@@ -813,7 +813,7 @@ describe('/people', () => {
                 birthplace: 'Paris, France',
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -823,7 +823,7 @@ describe('/people', () => {
                 name: 'Ben Smith',
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -835,7 +835,7 @@ describe('/people', () => {
                 name: 'Jo', // 2 letter name
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -845,7 +845,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn D', // 70 letter name
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -855,7 +855,7 @@ describe('/people', () => {
                 name: 'J', // 1 letter name
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -871,7 +871,7 @@ describe('/people', () => {
                 name: 'John DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn DoeJohn Do', // 71 letter name
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -889,7 +889,7 @@ describe('/people', () => {
                 dob: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -900,7 +900,7 @@ describe('/people', () => {
                 dob: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -910,7 +910,7 @@ describe('/people', () => {
                 dob: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -927,7 +927,7 @@ describe('/people', () => {
                 dob: tomorrow, // max date is today's date
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -945,7 +945,7 @@ describe('/people', () => {
                 dod: '1800-01-01', // min date is 1800-01-01
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -956,7 +956,7 @@ describe('/people', () => {
                 dod: `${now.getFullYear()}-${(`0${now.getMonth()}`).slice(-2)}-${(`0${now.getDate()}`).slice(-2)}`, // today's date in format YYYY-MM-DD
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -966,7 +966,7 @@ describe('/people', () => {
                 dod: '1799-12-31', // min date is 1800-01-01
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -983,7 +983,7 @@ describe('/people', () => {
                 dod: tomorrow, // max date is today's date
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -1001,7 +1001,7 @@ describe('/people', () => {
                 birthplace: 'Lo', // 2 letter birthplace
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -1011,7 +1011,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLond', // 70 character birthplace
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -1021,7 +1021,7 @@ describe('/people', () => {
                 birthplace: 'L', // 1 letter birthplace
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -1037,7 +1037,7 @@ describe('/people', () => {
                 birthplace: 'London, United KingdomLondon, United KingdomLondon, United KingdomLondo', // 71 letter birthplace
             };
             request(app)
-                .patch(`/people/${id}`)
+                .patch(`/api/people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -1049,7 +1049,7 @@ describe('/people', () => {
         });
     });
 
-    describe('DELETE /people', () => {
+    describe('DELETE /api/people', () => {
         let id;
 
         beforeEach((done) => {
@@ -1068,7 +1068,7 @@ describe('/people', () => {
 
         it('should respond with status 200 and remove object from database', (done) => {
             request(app)
-                .delete(`/people/${id}`)
+                .delete(`/api/people/${id}`)
                 .expect(200)
                 .then(() => {
                     Person.findByPk(id)

@@ -43,7 +43,7 @@ const wipePeople = (done) => {
         .catch((err) => done(err));
 };
 
-describe('/production-person', () => {
+describe('/api/api/productions-people', () => {
     let productionId;
     let secondProductionId;
     let personId;
@@ -96,7 +96,7 @@ describe('/production-person', () => {
             .catch((err) => done(err));
     });
 
-    describe('GET /productions-people', () => {
+    describe('GET /api/productions-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -140,7 +140,7 @@ describe('/production-person', () => {
 
         it('should respond with status 200 and json containing all objects', (done) => {
             request(app)
-                .get('/productions-people')
+                .get('/api/productions-people')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -152,7 +152,7 @@ describe('/production-person', () => {
 
         it('should respond with status 200 and json containing object with the same id as it is in the URI', (done) => {
             request(app)
-                .get(`/productions-people/${id}`)
+                .get(`/api/productions-people/${id}`)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -163,7 +163,7 @@ describe('/production-person', () => {
         });
     });
 
-    describe('POST /productions-people', () => {
+    describe('POST /api/productions-people', () => {
         it('should respond with status 201 and json containing new object for regular data', (done) => {
             const data = {
                 productionId,
@@ -172,7 +172,7 @@ describe('/production-person', () => {
                 description: 'Adam',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -193,7 +193,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -217,7 +217,7 @@ describe('/production-person', () => {
             ProductionPerson.create(data)
                 .then(() => {
                     request(app)
-                        .post('/productions-people')
+                        .post('/api/productions-people')
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -237,7 +237,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -255,7 +255,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -272,7 +272,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -289,7 +289,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -306,7 +306,7 @@ describe('/production-person', () => {
                 personId,
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -324,7 +324,7 @@ describe('/production-person', () => {
                 role: 'NotARole',
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -343,7 +343,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text ', // 50 letter description
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(201)
@@ -362,7 +362,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text T', // 51 letter description
             };
             request(app)
-                .post('/productions-people')
+                .post('/api/productions-people')
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -374,7 +374,7 @@ describe('/production-person', () => {
         });
     });
 
-    describe('PUT /productions-people', () => {
+    describe('PUT /api/productions-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -399,7 +399,7 @@ describe('/production-person', () => {
                 description: 'Adam',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -420,7 +420,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -444,7 +444,7 @@ describe('/production-person', () => {
             ProductionPerson.create(data)
                 .then(() => {
                     request(app)
-                        .put(`/productions-people/${id}`)
+                        .put(`/api/productions-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -464,7 +464,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -482,7 +482,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -499,7 +499,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -516,7 +516,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -533,7 +533,7 @@ describe('/production-person', () => {
                 personId,
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -551,7 +551,7 @@ describe('/production-person', () => {
                 role: 'NotARole',
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -570,7 +570,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text ', // 50 letter description
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -589,7 +589,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text T', // 51 letter description
             };
             request(app)
-                .put(`/productions-people/${id}`)
+                .put(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -601,7 +601,7 @@ describe('/production-person', () => {
         });
     });
 
-    describe('PATCH /productions-people', () => {
+    describe('PATCH /api/productions-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -626,7 +626,7 @@ describe('/production-person', () => {
                 description: 'Adam',
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -638,7 +638,7 @@ describe('/production-person', () => {
                 role: 'Actor',
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -653,7 +653,7 @@ describe('/production-person', () => {
             ProductionPerson.create(data)
                 .then(() => {
                     request(app)
-                        .patch(`/productions-people/${id}`)
+                        .patch(`/api/productions-people/${id}`)
                         .send(data)
                         .expect('Content-Type', /json/)
                         .expect(400)
@@ -671,7 +671,7 @@ describe('/production-person', () => {
                 productionId: 3,
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -687,7 +687,7 @@ describe('/production-person', () => {
                 personId: 3,
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -703,7 +703,7 @@ describe('/production-person', () => {
                 role: 'NotARole',
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -719,7 +719,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text ', // 50 letter description
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect(204, done);
         });
@@ -729,7 +729,7 @@ describe('/production-person', () => {
                 description: 'Text Text Text Text Text Text Text Text Text Text T', // 51 letter description
             };
             request(app)
-                .patch(`/productions-people/${id}`)
+                .patch(`/api/productions-people/${id}`)
                 .send(data)
                 .expect('Content-Type', /json/)
                 .expect(400)
@@ -741,7 +741,7 @@ describe('/production-person', () => {
         });
     });
 
-    describe('DELETE /productions-people', () => {
+    describe('DELETE /api/productions-people', () => {
         let id;
 
         beforeEach((done) => {
@@ -760,7 +760,7 @@ describe('/production-person', () => {
 
         it('should respond with status 200 and remove object from database', (done) => {
             request(app)
-                .delete(`/productions-people/${id}`)
+                .delete(`/api/productions-people/${id}`)
                 .expect(200)
                 .then(() => {
                     ProductionPerson.findByPk(id)
