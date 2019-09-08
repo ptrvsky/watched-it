@@ -17,6 +17,7 @@ app.get('/api', (req, res) => {
 
 // Static assets
 app.use('/api/uploads', express.static('uploads'));
+app.use('/api/uploads-test', express.static('uploads-test'));
 
 // Body parser
 app.use(bodyParser.json());
