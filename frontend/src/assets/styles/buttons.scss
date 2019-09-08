@@ -11,3 +11,20 @@
     color: $light-gray;
   }
 }
+
+.btn-filter {
+  border: 1px solid $gray;
+  border-radius: 5px;
+  color: $dark-gray;
+  font-size: 14px;
+  background: $light-gray2;
+  padding: 2px 7px 2px 7px;
+  margin-right: 5px;
+  min-width: 50px;
+  text-align: center;
+
+  &--checked {
+    border: 1px solid $purple;
+    color: $purple;
+  }
+}

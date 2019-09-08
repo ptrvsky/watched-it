@@ -6,9 +6,9 @@
   flex-flow: column;
   width: 100%;
   min-height: 100%;
-  max-width: 1300px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 100px 50px 50px 50px;
+  padding: 90px 20px 50px 20px;
 
   h1 {
     font-size: 40px;
@@ -20,8 +20,9 @@
 
   h3 {
     font-size: 18px;
+    width: 100%;
   }
-  
+
   .title-underline {
     height: 1px;
     width: 100%;
@@ -30,41 +31,44 @@
 
   .content-wrapper {
     display: flex;
-    justify-content: space-between;
     width: 100%;
     padding-top: 25px;
+
+    .list-wrapper {
+      display: flex;
+      flex-flow: column;
+      flex-grow: 7;
+      min-width: 70%;
+    }
+
+    .filter-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 3;
+      font-size: 30px;
+      margin-left: 40px;
+
+      .filter-category-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px 5px 5px 0px;
+      }
+    }
   }
-
-  .list-wrapper {
-    display: flex;
-    flex-flow: column;
-    flex-grow: 6;
-  }
-
-  .filter-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 4;
-    font-size: 30px;
-    margin-left: 50px;
-
-    .rating-wrapper {
-      
-    }
-
-    .platform-wrapper {
-
-    }
-
-    .genres-wrapper {
-
-    }
-
-    .length-wrapper {
-
-    }
-  
-  }
-  
 }
 
+@media (max-width: "991px") {
+
+  .movies-subpage-wrapper {
+    padding-top: 120px;
+
+    .content-wrapper {
+      flex-flow: column;
+
+      .filter-wrapper {
+        margin-left: 0px;
+      }
+    }
+  }
+}
