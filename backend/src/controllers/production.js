@@ -1,9 +1,27 @@
+const { Op } = require('sequelize');
+
 const Production = require('../models/production');
 const productionSchema = require('../schemas/production');
 
 // Get all productions
 exports.getAllProductions = (req, res, next) => {
-    Production.findAll()
+    Production.findAll({
+        where: {
+            length: {
+                [Op.gte]: req.query.lengthMin || 0,
+                [Op.lte]: req.query.lengthMax || 999999,
+            },
+            releaseDate: {
+                [Op.gte]: new Date(`${req.query.yearMin || 1800}-01-01`),
+                [Op.lte]: new Date(`${req.query.yearMax || 99999}-12-31`),
+            },
+            isSerie: {
+                [Op.not]: req.query.isSerie === undefined ? null : (req.query.isSerie === 'false'),
+            },
+        },
+        limit: req.query.limit,
+        offset: req.query.offset,
+    })
         .then((productions) => {
             res.json(productions);
         })
