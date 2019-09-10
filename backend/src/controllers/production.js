@@ -5,6 +5,9 @@ const productionSchema = require('../schemas/production');
 
 // Get all productions
 exports.getAllProductions = (req, res, next) => {
+    const order = {
+        recentlyFeatured: [['createdAt', 'DESC']],
+    };
     Production.findAll({
         where: {
             length: {
@@ -21,6 +24,7 @@ exports.getAllProductions = (req, res, next) => {
         },
         limit: req.query.limit,
         offset: req.query.offset,
+        order: order[req.query.order],
     })
         .then((productions) => {
             res.json(productions);
