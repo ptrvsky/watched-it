@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import Index from '../Index/Index';
-import MoviesSubpage from '../MoviesSubpage/MoviesSubpage';
+import ProductionsSubpage from '../ProductionsSubpage/ProductionsSubpage';
 import NotFound from '../NotFound/NotFound';
 import './App.scss';
 
@@ -16,8 +16,8 @@ function App() {
           <div className="wrapper">
             <Navbar />
             <Route path="/" exact component={Index} />
-            <Route path="/movies/" component={MoviesSubpage} />
-            <Route path="/tvseries/" component={NotFound} />
+            <Route path="/movies/" render={() => <ProductionsSubpage isSerie={false} />} />
+            <Route path="/tvseries/" render={() => <ProductionsSubpage isSerie={true} />} />
             <Route path="/people/" component={NotFound} />
             <Route path="/rankings/" component={NotFound} />
             <Route path="/watchlist" component={NotFound} />

@@ -1,6 +1,6 @@
 @import '../../assets/styles/colors.scss';
 
-.movies-subpage-wrapper {
+.productions-subpage-wrapper {
   display: flex;
   flex: 1 1 auto;
   flex-flow: column;
@@ -37,14 +37,14 @@
     .list-wrapper {
       display: flex;
       flex-flow: column;
-      flex-grow: 7;
-      min-width: 70%;
+      flex-grow: 65;
+      min-width: 65%;
     }
 
     .filter-wrapper {
       display: flex;
       flex-direction: column;
-      flex-grow: 3;
+      flex-grow: 5;
       font-size: 30px;
       margin-left: 40px;
 
@@ -60,7 +60,7 @@
 
 @media (max-width: "991px") {
 
-  .movies-subpage-wrapper {
+  .productions-subpage-wrapper {
     padding-top: 120px;
 
     .content-wrapper {

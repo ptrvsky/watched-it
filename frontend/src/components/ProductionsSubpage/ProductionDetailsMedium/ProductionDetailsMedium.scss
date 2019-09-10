@@ -1,6 +1,6 @@
 @import '../../../assets/styles/colors.scss';
 
-.movie-details-medium-wrapper {
+.production-details-medium-wrapper {
   position: relative;
   display: flex;
   width: 100%;
@@ -13,6 +13,7 @@
 
   .poster {
     height: 100%;
+    width: 115px;
     overflow: hidden;
     flex-shrink: 0;
 
@@ -84,7 +85,7 @@
 
 @media (max-width: "991px") {
 
-  .movie-details-medium-wrapper {
+  .production-details-medium-wrapper {
     .info {
       padding: 10px 15px 10px 15px;
 
