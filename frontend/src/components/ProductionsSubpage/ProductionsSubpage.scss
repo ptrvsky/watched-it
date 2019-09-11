@@ -48,6 +48,13 @@
       font-size: 30px;
       margin-left: 40px;
 
+      .filter-title {
+        display: flex;
+        flex-flow: wrap;
+        font-size: 25px;
+        align-items: center;
+      }
+
       .filter-category-wrapper {
         display: flex;
         flex-direction: row;

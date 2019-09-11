@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../assets/styles/buttons.scss';
+import '../../assets/styles/labels.scss';
 import './ProductionsSubpage.scss';
 import ProductionDetailsMedium from './ProductionDetailsMedium/ProductionDetailsMedium';
 
@@ -75,7 +76,7 @@ export default class ProductionsSubpage extends React.Component {
             {this.state.productions.map((production) => <ProductionDetailsMedium production={production} key={production.id} />)}
           </div>
           <div className="filter-wrapper">
-            <h2>Filters</h2>
+            <div className="filter-title">Filters<div className="wip-label">Work in progress</div></div>
             <div className="filter-category-wrapper">
               <h3>Sort by</h3>
               <div className={this.state.order === "mostPopular" ? "btn-filter btn-filter--checked" : "btn-filter"} id="mostPopular" onClick={this.handleOrderChange}>Most popular</div>
