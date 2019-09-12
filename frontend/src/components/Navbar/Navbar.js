@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Form, NavDropdown } from 'react-bootstrap';
+import { Navbar, Form, NavDropdown } from 'react-bootstrap';
 import { Search, User } from 'react-feather';
 import { useMediaQuery } from 'react-responsive'
 import './Navbar.scss';
@@ -44,10 +44,10 @@ function NavigationBar() {
             </NavDropdown>
             <Navbar.Toggle />
             <Navbar.Collapse className="links">
-              <Nav.Link><Link to="/movies">Movies</Link></Nav.Link>
-              <Nav.Link><Link to="/tvseries">TV Series</Link></Nav.Link>
-              <Nav.Link><Link to="/people">People</Link></Nav.Link>
-              <Nav.Link><Link to="/rankings">Rankings</Link></Nav.Link>
+            <Link to="/movies" className="nav-link">Movies</Link>
+            <Link to="/tvseries" className="nav-link">TV Series</Link>
+            <Link to="/people" className="nav-link">People</Link>
+            <Link to="/rankings" className="nav-link">Rankings</Link>
             </Navbar.Collapse>
             <div className="search-bar" >
               <Form inline >
@@ -58,10 +58,10 @@ function NavigationBar() {
           </Mobile>
 
           <Desktop>
-            <Nav.Link><Link to="/movies">Movies</Link></Nav.Link>
-            <Nav.Link><Link to="/tvseries">TV Series</Link></Nav.Link>
-            <Nav.Link><Link to="/people">People</Link></Nav.Link>
-            <Nav.Link><Link to="/rankings">Rankings</Link></Nav.Link>
+            <Link to="/movies" className="nav-link">Movies</Link>
+            <Link to="/tvseries" className="nav-link">TV Series</Link>
+            <Link to="/people" className="nav-link">People</Link>
+            <Link to="/rankings" className="nav-link">Rankings</Link>
             <div className="search-bar search-bar--desktop" >
               <Form inline >
                 <input className="search-input" type="text" placeholder="Search" />

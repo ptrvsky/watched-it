@@ -22,11 +22,11 @@ export default class ProductionDetailsMedium extends React.Component {
     fetch('/api/productions/' + this.props.production.id + '/people')
       .then(people => people.json())
       .then(people => people.filter((person) => person.role === "Director"))
-      .then(directors => directors.map(director => {
+      .then(directors => directors.map(director => 
         fetch('/api/people/' + director.personId)
           .then(director => director.json())
           .then(director => this.setState({ director: this.state.director.concat(director.name) }))
-      }));
+      ));
   }
 
   render() {

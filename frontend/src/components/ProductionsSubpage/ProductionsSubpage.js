@@ -62,8 +62,10 @@ export default class ProductionsSubpage extends React.Component {
     this.fetchProductions();
   }
 
-  componentDidUpdate() {
-    this.fetchProductions();
+  componentDidUpdate(prevProps, prevState) {
+    if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
+      this.fetchProductions();
+    }
   }
 
   render() {
