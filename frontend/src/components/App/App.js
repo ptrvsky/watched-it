@@ -4,9 +4,9 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import Index from '../Index/Index';
 import ProductionsSubpage from '../ProductionsSubpage/ProductionsSubpage';
+import ProductionDetailsSubpage from '../ProductionDetailsSubpage/ProductionDetailsSubpage';
 import NotFound from '../NotFound/NotFound';
 import './App.scss';
-
 
 function App() {
   return (
@@ -16,9 +16,12 @@ function App() {
           <div className="wrapper">
             <Navbar />
             <Route path="/" exact component={Index} />
-            <Route path="/movies/" render={() => <ProductionsSubpage isSerie={false} />} />
-            <Route path="/tvseries/" render={() => <ProductionsSubpage isSerie={true} />} />
-            <Route path="/people/" component={NotFound} />
+            <Route path="/movies/" exact render={() => <ProductionsSubpage isSerie={false} />} />
+            <Route path="/movies/:id" component={ProductionDetailsSubpage} />
+            <Route path="/tvseries/" exact render={() => <ProductionsSubpage isSerie={true} />} />
+            <Route path="/tvseries/:id" component={ProductionDetailsSubpage} />
+            <Route path="/people/" exact component={NotFound} />
+            <Route path="/people/:id" component={NotFound} />
             <Route path="/rankings/" component={NotFound} />
             <Route path="/watchlist" component={NotFound} />
             <Route path="/ratings" component={NotFound} />
@@ -35,7 +38,6 @@ function App() {
         <Footer />
       </div>
     </Router>
-
   );
 }
 

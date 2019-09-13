@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import '../../assets/styles/labels.scss';
 import './ProductionsSubpage.scss';
@@ -75,7 +76,7 @@ export default class ProductionsSubpage extends React.Component {
         <div className="title-underline" />
         <div className="content-wrapper">
           <div className="list-wrapper">
-            {this.state.productions.map((production) => <ProductionDetailsMedium production={production} key={production.id} />)}
+            {this.state.productions.map((production) => <Link to={"/movies/" + production.id} key={production.id} ><ProductionDetailsMedium production={production}/></Link>)}
           </div>
           <div className="filter-wrapper">
             <div className="filter-title">Filters<div className="wip-label">Work in progress</div></div>
