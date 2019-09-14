@@ -1,0 +1,98 @@
+import React from 'react';
+import '../../assets/styles/buttons.scss';
+import './ProductionDetailsSubpage.scss';
+
+export default class ProductionsSubpage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      production: null,
+      poster: null,
+      people: [],
+    }
+  }
+
+  fetchProduction() {
+    fetch('/api/productions/' + this.props.match.params.id)
+      .then(response => response.json())
+      .then(production => {
+        this.setState({ production });
+        fetch('/api/images/' + production.posterId)
+          .then(poster => poster.json())
+          .then(poster => this.setState({ poster: poster.url }));
+
+        fetch('/api/productions/' + production.id + '/people')
+          .then(productionsPeople => productionsPeople.json())
+          .then(productionsPeople => productionsPeople.map(productionPerson =>
+            fetch('/api/people/' + productionPerson.personId)
+              .then(person => person.json())
+              .then(person => this.setState({
+                people: this.state.people.concat({
+                  id: person.id,
+                  name: person.name,
+                  role: productionPerson.role,
+                  descritpion: productionPerson.descritpion
+                })
+              }))
+          ));
+      })
+      .catch(err => console.log(err));
+  }
+
+  componentDidMount() {
+    this.fetchProduction();
+  }
+
+  render() {
+    return (
+      <div className="production-details-subpage-wrapper">
+        <div className="bg-image"></div>
+        <div className="content-wrapper">
+          <div className="title-wrapper">{this.state.production !== null ? this.state.production.title : null}</div>
+          <div className="sub-content-wrapper">
+
+            <div className="left-wrapper">
+              <div className="details">
+                <div className="poster">
+                  {this.state.poster !== null ? <img src={"/api/" + this.state.poster} alt="poster" /> : null}
+                </div>
+                <div className="info">
+                  <div>
+                    <span className="category">Release date: </span>
+                    {this.state.production !== null ? this.state.production.releaseDate : null}
+                  </div>
+                  <div>
+                    <span className="category">Genre: </span>
+                    {this.state.production !== null ? this.state.production.genre.join(", ") : null}
+                  </div>
+                  <div>
+                    <span className="category">Length: </span>
+                    {(this.state.production !== null && this.state.production.length >= 60) ? parseInt(this.state.production.length / 60) + "h " : null}
+                    {(this.state.production !== null && this.state.production.length % 60 !== 0) ? this.state.production.length % 60 + "min" : null}
+                  </div>
+                  <div>
+                    <span className="category">Director: </span>
+                    {this.state.people
+                      .filter((person) => person.role === 'Director')
+                      .map((person) => person.name).join(", ")}
+                  </div>
+                </div>
+              </div>
+              <div className="production-description">{this.state.production !== null ? this.state.production.description : null}</div>
+
+              <div className="cast">
+                <h2>Cast</h2>
+              </div>
+            </div>
+
+            <div className="right-wrapper">
+              <h2>Rating</h2>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+}
