@@ -4,6 +4,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../src/index');
 const Person = require('../../src/models/person');
+const Image = require('../../src/models/image');
 
 const wipePeople = (done) => {
     Person.destroy({
@@ -17,9 +18,49 @@ const wipePeople = (done) => {
         .catch((err) => done(err));
 };
 
+const wipeImages = (done) => {
+    Image.destroy({
+        truncate: true,
+        cascade: true,
+        restartIdentity: true,
+    })
+        .then(() => {
+            done();
+        })
+        .catch((err) => done(err));
+};
+
 describe('/api/people', () => {
+    let imageId;
+    let secondImageId;
+
+    // Wipe images table before tests
+    beforeEach((done) => wipeImages(done));
+
     // Wipe people table before each test
     beforeEach((done) => wipePeople(done));
+
+    beforeEach((done) => {
+        Image.create({
+            url: 'api/uploads/abcd1.png',
+        })
+            .then((image) => {
+                imageId = image.id;
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    beforeEach((done) => {
+        Image.create({
+            url: 'api/uploads/abcd2.png',
+        })
+            .then((image) => {
+                secondImageId = image.id;
+                done();
+            })
+            .catch((err) => done(err));
+    });
 
     describe('GET /api/people', () => {
         let id;
@@ -87,6 +128,7 @@ describe('/api/people', () => {
                 dob: '1934-06-05',
                 dod: '1985-08-13',
                 birthplace: 'London, United Kingdom',
+                faceImageId: imageId,
             };
             request(app)
                 .post('/api/people')
@@ -99,6 +141,7 @@ describe('/api/people', () => {
                     expect(res.body.dob).to.be.equal(data.dob);
                     expect(res.body.dod).to.be.equal(data.dod);
                     expect(res.body.birthplace).to.be.equal(data.birthplace);
+                    expect(res.body.faceImageId).to.be.equal(data.faceImageId);
                     done();
                 });
         });
@@ -118,6 +161,7 @@ describe('/api/people', () => {
                     expect(res.body.dob).to.be.equal(null);
                     expect(res.body.dod).to.be.equal(null);
                     expect(res.body.birthplace).to.be.equal(null);
+                    expect(res.body.faceImageId).to.be.equal(null);
                     done();
                 });
         });
@@ -129,6 +173,7 @@ describe('/api/people', () => {
                 dob: '1934-06-05',
                 dod: '1985-08-13',
                 birthplace: 'London, United Kingdom',
+                faceImageId: imageId,
             };
             request(app)
                 .post('/api/people')
@@ -419,6 +464,42 @@ describe('/api/people', () => {
                     done();
                 });
         });
+
+        // Face Image Id
+
+        it('should respond with status 201 and json containing new object for faceImageId pointing to existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: imageId,
+            };
+            request(app)
+                .post('/api/people')
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.faceImageId).to.be.equal(data.faceImageId);
+                    done();
+                });
+        });
+
+        it('should respond with status 400 and json containing error message because of faceImageId pointing to non-existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: 3, // non-existing imageId
+            };
+            request(app)
+                .post('/api/people')
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
     });
 
     describe('PUT /api/people/:id', () => {
@@ -430,6 +511,7 @@ describe('/api/people', () => {
                 dob: '2000-01-01',
                 dod: '2000-01-01',
                 birthplace: 'London, United Kingdom',
+                faceImageId: secondImageId,
             })
                 .then((person) => {
                     id = person.id;
@@ -444,6 +526,7 @@ describe('/api/people', () => {
                 dob: '1934-06-05',
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
+                faceImageId: imageId,
             };
             request(app)
                 .put(`/api/people/${id}`)
@@ -457,6 +540,7 @@ describe('/api/people', () => {
                     expect(res.body.dob).to.be.equal(data.dob);
                     expect(res.body.dod).to.be.equal(data.dod);
                     expect(res.body.birthplace).to.be.equal(data.birthplace);
+                    expect(res.body.faceImageId).to.be.equal(data.faceImageId);
                     done();
                 });
         });
@@ -477,6 +561,7 @@ describe('/api/people', () => {
                     expect(res.body.dob).to.be.equal(null);
                     expect(res.body.dod).to.be.equal(null);
                     expect(res.body.birthplace).to.be.equal(null);
+                    expect(res.body.faceImageId).to.be.equal(null);
                     done();
                 });
         });
@@ -488,6 +573,7 @@ describe('/api/people', () => {
                 dob: '1934-06-05',
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
+                faceImageId: imageId,
             };
             request(app)
                 .put(`/api/people/${id}`)
@@ -786,6 +872,42 @@ describe('/api/people', () => {
                     done();
                 });
         });
+
+        // Face Image Id
+
+        it('should respond with status 200 and json containing new object for faceImageId pointing to existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: imageId,
+            };
+            request(app)
+                .put(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.faceImageId).to.be.equal(data.faceImageId);
+                    done();
+                });
+        });
+
+        it('should respond with status 400 and json containing error message because of faceImageId pointing to non-existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: 3, // non-existing imageId
+            };
+            request(app)
+                .put(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
     });
 
     describe('PATCH /api/people/:id', () => {
@@ -797,6 +919,7 @@ describe('/api/people', () => {
                 dob: '2000-01-01',
                 dod: '2000-01-01',
                 birthplace: 'London, United Kingdom',
+                faceImageId: secondImageId,
             })
                 .then((person) => {
                     id = person.id;
@@ -811,6 +934,7 @@ describe('/api/people', () => {
                 dob: '1934-06-05',
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
+                faceImageId: imageId,
             };
             request(app)
                 .patch(`/api/people/${id}`)
@@ -1047,6 +1171,36 @@ describe('/api/people', () => {
                     done();
                 });
         });
+
+        // Face Image ID
+
+        it('should respond with status 204 for faceImageId pointing to existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: imageId,
+            };
+            request(app)
+                .patch(`/api/people/${id}`)
+                .send(data)
+                .expect(204, done);
+        });
+
+        it('should respond with status 400 and json containing error message because of faceImageId pointing to non-existing image', (done) => {
+            const data = {
+                name: 'John Doe',
+                faceImageId: 3, // non-existing imageId
+            };
+            request(app)
+                .patch(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
     });
 
     describe('DELETE /api/people', () => {
@@ -1082,4 +1236,7 @@ describe('/api/people', () => {
 
     // Wipe people table after all tests
     after((done) => wipePeople(done));
+
+    // Wipe images table after all tests
+    after((done) => wipeImages(done));
 });
