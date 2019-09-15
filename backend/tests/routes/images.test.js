@@ -199,6 +199,24 @@ describe('/api/images', () => {
                 });
         });
 
+        it('should respond with status 201 and json containing new object for data with missing productionId', (done) => {
+            request(app)
+                .post('/api/images')
+                .attach('image', './tests/test-files/testImage.png')
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.productionId).to.be.equal(null);
+                    fs.readdir(directory, (err, files) => {
+                        if (err) return done(err);
+                        expect(files.length).to.be.greaterThan(0);
+                    });
+                    done();
+                });
+        });
+
+
         it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
             request(app)
                 .post('/api/images')
@@ -229,20 +247,6 @@ describe('/api/images', () => {
         it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
             request(app)
                 .post('/api/images')
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-
-        it('should respond with status 400 and json containing error message because of missing productionId', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.png')
                 .expect('Content-Type', /json/)
                 .expect(400)
                 .end((err, res) => {
@@ -336,6 +340,23 @@ describe('/api/images', () => {
                 });
         });
 
+        it('should respond with status 200 and json containing new object for data with missing productionId', (done) => {
+            request(app)
+                .put(`/api/images/${imageId}`)
+                .attach('image', './tests/test-files/testImage.png')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.productionId).to.be.equal(null);
+                    fs.readdir(directory, (err, files) => {
+                        if (err) return done(err);
+                        expect(files.length).to.be.greaterThan(0);
+                    });
+                    done();
+                });
+        });
+
         it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
             request(app)
                 .put(`/api/images/${imageId}`)
@@ -366,20 +387,6 @@ describe('/api/images', () => {
         it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
             request(app)
                 .put(`/api/images/${imageId}`)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-
-        it('should respond with status 400 and json containing error message because of missing productionId', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.png')
                 .expect('Content-Type', /json/)
                 .expect(400)
                 .end((err, res) => {

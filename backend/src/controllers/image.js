@@ -58,7 +58,7 @@ exports.getImagesByPerson = (req, res, next) => {
 
 // Create image
 exports.createImage = (req, res, next) => {
-    imageSchema.requiredKeys('url', 'productionId').validate({
+    imageSchema.requiredKeys('url').validate({
         url: req.file.path.replace('\\', '/'),
         productionId: req.body.productionId,
     }, (err, value) => {
@@ -76,9 +76,9 @@ exports.createImage = (req, res, next) => {
 
 // Update image with the given id
 exports.updateImage = (req, res, next) => {
-    imageSchema.requiredKeys('url', 'productionId').validate({
+    imageSchema.requiredKeys('url').validate({
         url: req.file.path.replace('\\', '/'),
-        productionId: req.body.productionId,
+        productionId: req.body.productionId || null,
     }, (err, value) => {
         if (err) {
             next(err);
