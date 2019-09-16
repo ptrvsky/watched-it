@@ -6,6 +6,7 @@
 
   h2 {
     font-size: 25px;
+    padding-bottom: 10px;
   }
 
   h3 {
@@ -66,16 +67,17 @@
             overflow: hidden;
             flex-shrink: 0;
             border-radius: 5px;
+            box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.5);
 
             img {
               height: 340px;
               min-width: 230px;
               max-width: 230px;
               object-fit: cover;
-              transition: transform .2s;
+              transition: transform .4s;
 
               &:hover {
-                transform: scale(1.02);
+                transform: scale(1.03);
                 overflow: hidden;
                 cursor: pointer;
               }
@@ -93,10 +95,31 @@
         }
 
         .production-description {
-          padding-bottom: 15px;
+          padding: 0px 7px 15px 0px;
+        }
+        
+        a {
+          color: $dark-gray;
+          transition: .4s;
+
+          &:hover {
+            color: $purple;
+          }
         }
 
-        .cast {}
+        .cast {
+          display: flex;
+          flex-flow: wrap;
+          padding-bottom: 5px;
+
+          a {
+            width: 33.3%;
+            padding-right: 7px;
+            text-decoration: none;
+            color: $dark-gray;
+          }
+
+        }
       }
 
       .right-wrapper {

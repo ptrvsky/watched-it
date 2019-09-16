@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import './ProductionDetailsSubpage.scss';
+import PersonMedium from './PersonMedium/PersonMedium';
 
 export default class ProductionsSubpage extends React.Component {
 
@@ -31,8 +33,9 @@ export default class ProductionsSubpage extends React.Component {
                 people: this.state.people.concat({
                   id: person.id,
                   name: person.name,
+                  faceImageId: person.faceImageId,
                   role: productionPerson.role,
-                  descritpion: productionPerson.descritpion
+                  description: productionPerson.description
                 })
               }))
           ));
@@ -80,9 +83,18 @@ export default class ProductionsSubpage extends React.Component {
                 </div>
               </div>
               <div className="production-description">{this.state.production !== null ? this.state.production.description : null}</div>
-
+              <Link to={"/movies/" + this.props.match.params.id + "/cast"}><h2>Cast</h2></Link>
               <div className="cast">
-                <h2>Cast</h2>
+                {this.state.people !== null ? this.state.people
+                  .filter((person) => person.role === 'Actor')
+                  .map((person) => <Link to={'/people/' + person.id} key={person.id} ><PersonMedium person={person} /></Link>) : null}
+              </div>
+
+              <Link to={"/movies/" + this.props.match.params.id + "/crew"}><h2>Crew</h2></Link>
+              <div className="cast">
+                {this.state.people !== null ? this.state.people
+                  .filter((person) => person.role !== 'Actor')
+                  .map((person) => <Link to={'/people/' + person.id} key={person.id} ><PersonMedium person={person} /></Link>) : null}
               </div>
             </div>
 
