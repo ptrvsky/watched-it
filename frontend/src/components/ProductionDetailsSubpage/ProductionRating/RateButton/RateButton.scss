@@ -1,0 +1,15 @@
+@import '../../../../assets/styles/colors.scss';
+
+.rate-button-wrapper {
+  display: flex;
+  width: min-content;
+
+  .star {
+    color: $gray2;
+    transition: .2s;
+
+    &--checked {
+      color: $purple;
+    }
+  }
+}
