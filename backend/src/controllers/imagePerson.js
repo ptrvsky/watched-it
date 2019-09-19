@@ -3,7 +3,10 @@ const imagePersonSchema = require('../schemas/imagePerson');
 
 // Get list of all image-person assignments
 exports.getAllImagePersonAssignments = (req, res, next) => {
-    ImagePerson.findAll()
+    ImagePerson.findAll({
+        limit: req.query.limit,
+        offset: req.query.offset,
+    })
         .then((imagePersonAssignments) => {
             res.json(imagePersonAssignments);
         })

@@ -3,7 +3,10 @@ const personSchema = require('../schemas/person');
 
 // Get all productions
 exports.getAllPeople = (req, res, next) => {
-    Person.findAll()
+    Person.findAll({
+        limit: req.query.limit,
+        offset: req.query.offset,
+    })
         .then((people) => {
             res.json(people);
         })

@@ -6,7 +6,10 @@ const upload = require('../config/upload');
 
 // Get all images
 exports.getAllImages = (req, res, next) => {
-    Image.findAll()
+    Image.findAll({
+        limit: req.query.limit,
+        offset: req.query.offset,
+    })
         .then((images) => {
             res.json(images);
         })
@@ -28,6 +31,8 @@ exports.getImagesByProduction = (req, res, next) => {
         where: {
             productionId: req.params.productionId,
         },
+        limit: req.query.limit,
+        offset: req.query.offset,
     }).then((images) => {
         res.json(images);
     })
@@ -40,6 +45,8 @@ exports.getImagesByPerson = (req, res, next) => {
         where: {
             personId: req.params.personId,
         },
+        limit: req.query.limit,
+        offset: req.query.offset,
     })
         .then((imagePersonAssignments) => {
             imagePersonAssignments.map((value) => value.dataValues.imageId);

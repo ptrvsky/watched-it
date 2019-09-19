@@ -3,7 +3,10 @@ const productionPersonSchema = require('../schemas/productionPerson');
 
 // Get list of all production-person assignments
 exports.getAllProductionPersonAssignments = (req, res, next) => {
-    ProductionPerson.findAll()
+    ProductionPerson.findAll({
+        limit: req.query.limit,
+        offset: req.query.offset,
+    })
         .then((productionsPeopleAssignments) => {
             res.json(productionsPeopleAssignments);
         })
@@ -25,6 +28,8 @@ exports.getProductionPersonAssignmentsByPerson = (req, res, next) => {
         where: {
             personId: req.params.personId,
         },
+        limit: req.query.limit,
+        offset: req.query.offset,
     })
         .then((productionsPeople) => {
             res.json(productionsPeople);
@@ -38,6 +43,8 @@ exports.getProductionPersonAssignmentsByProduction = (req, res, next) => {
         where: {
             productionId: req.params.productionId,
         },
+        limit: req.query.limit,
+        offset: req.query.offset,
     })
         .then((productionsPeople) => {
             res.json(productionsPeople);
@@ -54,6 +61,8 @@ exports.getProductionPersonAssignmentsByIds = (req, res, next) => {
             personId: req.params.personId,
             productionId: req.params.productionId,
         },
+        limit: req.query.limit,
+        offset: req.query.offset,
     })
         .then((productionPersonAssignments) => {
             res.json(productionPersonAssignments);
