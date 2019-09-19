@@ -4,6 +4,16 @@
   display: flex;
   min-height: 100vh;
 
+  a {
+    text-decoration: none;
+    color: $dark-gray;
+    transition: .4s;
+
+    &:hover {
+      color: $purple;
+    }
+  }
+
   h2 {
     font-size: 25px;
     padding-bottom: 10px;
@@ -51,8 +61,8 @@
       .left-wrapper {
         display: flex;
         flex-flow: column;
-        min-width: 70%;
-        max-width: 70%;
+        min-width: calc(75% - 40px);
+        max-width: calc(75% - 40px);
 
         .details {
           display: flex;
@@ -98,15 +108,6 @@
           text-align: justify;
         }
 
-        a {
-          color: $dark-gray;
-          transition: .4s;
-
-          &:hover {
-            color: $purple;
-          }
-        }
-
         .cast {
           display: flex;
           flex-flow: wrap;
@@ -115,8 +116,6 @@
           a {
             width: 33.3%;
             padding-right: 7px;
-            text-decoration: none;
-            color: $dark-gray;
           }
 
         }
@@ -124,13 +123,36 @@
 
       .right-wrapper {
         padding-top: 15px;
-        padding-left: 40px;
-        min-width: 30%;
+        margin-left: 40px;
+        min-width: 25%;
 
-        .title {
+        .images-wrapper {
           display: flex;
-          flex-flow: wrap;
-          font-size: 25px;
+          margin-right: -5px;
+
+          .image-thumbnail {
+            width: 33%;
+            height: 83px;
+            overflow: hidden;
+            border-radius: 3px;
+            margin-right: 5px;
+            box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25);
+            border: 1px solid $gray;
+
+            img {
+              width: 100%;
+              height: 83px;
+              object-fit: cover;
+              transition: transform .2s;
+
+              &:hover {
+                transform: scale(1.05);
+                overflow: hidden;
+                cursor: pointer;
+              }
+            }
+          }
+
         }
       }
 

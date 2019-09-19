@@ -13,6 +13,7 @@ export default class ProductionsSubpage extends React.Component {
       production: null,
       poster: null,
       people: [],
+      images: [],
     }
   }
 
@@ -40,6 +41,14 @@ export default class ProductionsSubpage extends React.Component {
                 })
               }))
           ));
+
+        fetch('/api/productions/' + production.id + '/images?limit=3')
+          .then(images => images.json())
+          .then(images => images.map(image => {
+            this.setState({
+              images: this.state.images.concat(image.url)
+            })
+          }));
       })
       .catch(err => console.log(err));
   }
@@ -50,7 +59,7 @@ export default class ProductionsSubpage extends React.Component {
 
   render() {
     return (
-      <div className="production-details-subpage-wrapper">
+      <div className="production-details-subpage-wrapper" >
         <div className="bg-image"></div>
         <div className="content-wrapper">
           <div className="title-wrapper">{this.state.production !== null ? this.state.production.title : null}</div>
@@ -101,6 +110,10 @@ export default class ProductionsSubpage extends React.Component {
 
             <div className="right-wrapper">
               <ProductionRating />
+              <Link to={"/movies/" + this.props.match.params.id + "/images"}><h2>Images</h2></Link>
+              <div className="images-wrapper">
+                { this.state.images !== null ? this.state.images.map(image => <div className="image-thumbnail"><img src={"/api/" + image} alt={image} /></div>) : null }
+              </div>
             </div>
           </div>
 
