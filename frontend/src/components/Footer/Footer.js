@@ -45,9 +45,9 @@ function Footer() {
               </div>
             <div className="footer-links-item socials">
               <div className="footer-title">Follow us</div>
-              <a href="#"><Facebook className="social-logo" /></a>
-              <a href="#"><Twitter className="social-logo" /></a>
-              <a href="#"><Instagram className="social-logo" /></a>
+              <a href="https://facebook.com"><Facebook className="social-logo" /></a>
+              <a href="https://twitter.com"><Twitter className="social-logo" /></a>
+              <a href="https://instagram.com"><Instagram className="social-logo" /></a>
             </div>
           </div>
 

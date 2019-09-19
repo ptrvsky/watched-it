@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import Index from '../Index/Index';
@@ -16,10 +16,21 @@ function App() {
           <div className="wrapper">
             <Navbar />
             <Route path="/" exact component={Index} />
+
             <Route path="/movies/" exact render={() => <ProductionsSubpage isSerie={false} />} />
-            <Route path="/movies/:id" component={ProductionDetailsSubpage} />
-            <Route path="/tvseries/" exact render={() => <ProductionsSubpage isSerie={true} />} />
-            <Route path="/tvseries/:id" component={ProductionDetailsSubpage} />
+            <Route path="/movies/:id" exact component={ProductionDetailsSubpage} />
+            <Route path="/movies/:id/cast" component={NotFound} />
+            <Route path="/movies/:id/crew" component={NotFound} />
+            <Route path="/movies/:id/images" component={NotFound} />
+            <Route path="/movies/:id/trailers" component={NotFound} />
+
+            <Route path="/tvseries/" exact render={() => <ProductionsSubpage isSerie />} />
+            <Route path="/tvseries/:id" exact component={ProductionDetailsSubpage} />
+            <Route path="/tvseries/:id/cast" component={NotFound} />
+            <Route path="/tvseries/:id/crew" component={NotFound} />
+            <Route path="/tvseries/:id/images" component={NotFound} />
+            <Route path="/tvseries/:id/trailers" component={NotFound} />
+            
             <Route path="/people/" exact component={NotFound} />
             <Route path="/people/:id" component={NotFound} />
             <Route path="/rankings/" component={NotFound} />

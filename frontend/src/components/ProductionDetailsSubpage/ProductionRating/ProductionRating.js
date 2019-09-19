@@ -14,7 +14,7 @@ export default class ProductionRating extends React.Component {
   }
 
   handleRatingChange(newRating) {
-    {/* Logic that send new user rating to backend */}
+    { /* Logic that send new user rating to backend */ }
     this.setState({
       userRating: newRating
     })
@@ -23,6 +23,8 @@ export default class ProductionRating extends React.Component {
   render() {
     return (
       <div className="production-rating-wrapper">
+        <h3>Average rating</h3>
+
         <div className="avg-rating">
           <Star className="star-big" size={36} />
           <div className="rating-text">9,11</div>

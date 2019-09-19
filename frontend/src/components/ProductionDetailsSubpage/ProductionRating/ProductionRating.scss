@@ -8,13 +8,13 @@
   border: 1px solid $gray;
   background-color: $light-gray2;
   border-radius: 3px;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 20px 0px;
   padding: 20px;
 
   .avg-rating {
     display: flex;
     align-items: center;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 
     .star-big {
       color: $purple;

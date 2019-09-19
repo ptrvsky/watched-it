@@ -93,14 +93,14 @@ export default class ProductionsSubpage extends React.Component {
                 </div>
               </div>
               <div className="production-description">{this.state.production !== null ? this.state.production.description : null}</div>
-              <Link to={"/movies/" + this.props.match.params.id + "/cast"}><h2>Cast</h2></Link>
+              <Link to={this.props.match.params.id + "/cast"}><h2>Cast</h2></Link>
               <div className="cast">
                 {this.state.people !== null ? this.state.people
                   .filter((person) => person.role === 'Actor')
                   .map((person) => <Link to={'/people/' + person.id} key={person.id} ><PersonMedium person={person} /></Link>) : null}
               </div>
 
-              <Link to={"/movies/" + this.props.match.params.id + "/crew"}><h2>Crew</h2></Link>
+              <Link to={this.props.match.params.id + "/crew"}><h2>Crew</h2></Link>
               <div className="cast">
                 {this.state.people !== null ? this.state.people
                   .filter((person) => person.role !== 'Actor')
@@ -110,7 +110,7 @@ export default class ProductionsSubpage extends React.Component {
 
             <div className="right-wrapper">
               <ProductionRating />
-              <Link to={"/movies/" + this.props.match.params.id + "/images"}><h2>Images</h2></Link>
+              <Link to={this.props.match.params.id + "/images"}><h2>Images</h2></Link>
               <div className="images-wrapper">
                 { this.state.images !== null ? this.state.images.map(image => <div className="image-thumbnail"><img src={"/api/" + image} alt={image} /></div>) : null }
               </div>
