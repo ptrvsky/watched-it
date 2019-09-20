@@ -6,17 +6,31 @@ const productionSchema = require('../schemas/production');
 // Get all productions
 exports.getAllProductions = (req, res, next) => {
     const order = {
+        id: [['id']],
         recentlyFeatured: [['createdAt', 'DESC']],
     };
+
     Production.findAll({
         where: {
             length: {
-                [Op.gte]: req.query.lengthMin || 0,
-                [Op.lte]: req.query.lengthMax || 999999,
+                [Op.or]: {
+                    // Line below allow null length value in case length queries are not provided
+                    [Op.eq]: req.query.lengthMin || req.query.lengthMax || null,
+                    [Op.and]: {
+                        [Op.gte]: req.query.lengthMin || 0,
+                        [Op.lte]: req.query.lengthMax || 999999,
+                    },
+                },
             },
             releaseDate: {
-                [Op.gte]: new Date(`${req.query.yearMin || 1800}-01-01`),
-                [Op.lte]: new Date(`${req.query.yearMax || 99999}-12-31`),
+                [Op.or]: {
+                    // Line below allow null date value in case date queries are not provided
+                    [Op.eq]: (req.query.yearMin === undefined && req.query.yearMax === undefined) ? null : new Date('9999-12-31'),
+                    [Op.and]: {
+                        [Op.gte]: new Date(`${req.query.yearMin || 1800}-01-01`),
+                        [Op.lte]: new Date(`${req.query.yearMax || 9999}-12-31`),
+                    },
+                },
             },
             isSerie: {
                 [Op.not]: req.query.isSerie === undefined ? null : (req.query.isSerie === 'false'),
