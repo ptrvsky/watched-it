@@ -1,0 +1,56 @@
+@import '../../assets/styles/colors.scss';
+
+.register-subpage-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 90px 20px 130px 20px;
+  
+
+  .title-underline {
+    height: 1px;
+    width: 100%;
+    background: $gradient;
+    margin-bottom: 10px;
+  }
+
+  .form-element {
+    display: flex;
+    flex-flow: column;
+    padding-bottom: 11px;
+    font-size: 15px;
+
+    label {
+      margin-bottom: 3px;
+    }
+    
+    input {
+      background-color: $light-gray;
+      border: 1px solid $dark-purple;
+      border-radius: 5px;
+      outline: none;
+      height: 32px;
+      padding-left: 7px;
+      width: 100%;
+    }
+  }
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: "991px") {
+
+  .register-subpage-wrapper {
+    padding-top: 120px;
+    justify-content: flex-start;
+  }
+}

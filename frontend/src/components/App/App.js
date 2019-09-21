@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import Index from '../Index/Index';
 import ProductionsSubpage from '../ProductionsSubpage/ProductionsSubpage';
 import ProductionDetailsSubpage from '../ProductionDetailsSubpage/ProductionDetailsSubpage';
+import RegisterSubpage from '../RegisterSubpage/RegisterSubpage';
 import NotFound from '../NotFound/NotFound';
 import './App.scss';
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/watchlist" component={NotFound} />
             <Route path="/ratings" component={NotFound} />
             <Route path="/settings" component={NotFound} />
+            <Route path="/register" component={RegisterSubpage} />
             <Route path="/login" component={NotFound} />
             <Route path="/logout" component={NotFound} />
             <Route path="/about" component={NotFound} />
