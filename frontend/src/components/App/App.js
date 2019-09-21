@@ -6,6 +6,7 @@ import Index from '../Index/Index';
 import ProductionsSubpage from '../ProductionsSubpage/ProductionsSubpage';
 import ProductionDetailsSubpage from '../ProductionDetailsSubpage/ProductionDetailsSubpage';
 import RegisterSubpage from '../RegisterSubpage/RegisterSubpage';
+import LoginSubpage from '../LoginSubpage/LoginSubpage';
 import NotFound from '../NotFound/NotFound';
 import './App.scss';
 
@@ -39,7 +40,7 @@ function App() {
             <Route path="/ratings" component={NotFound} />
             <Route path="/settings" component={NotFound} />
             <Route path="/register" component={RegisterSubpage} />
-            <Route path="/login" component={NotFound} />
+            <Route path="/login" component={LoginSubpage} />
             <Route path="/logout" component={NotFound} />
             <Route path="/about" component={NotFound} />
             <Route path="/tos" component={NotFound} />
