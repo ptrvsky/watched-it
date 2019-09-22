@@ -3,6 +3,7 @@
 .rate-button-wrapper {
   display: flex;
   width: min-content;
+  cursor: pointer;
 
   .star {
     color: $gray2;

@@ -35,7 +35,7 @@ export default class ProductionDetailsMedium extends React.Component {
         <div className="poster">{this.state.poster !== null ? <img src={"/api/" + this.state.poster } alt="poster" /> : null }</div>
         <div className="eye-button"><Eye size={28} /></div>
         <div className="info">
-          <div className="title">{this.props.production.title} ({this.props.production.releaseDate.slice(0, 4)})</div>
+          <div className="title">{this.props.production.title} {this.props.production.releaseDate ? "(" + this.props.production.releaseDate.slice(0, 4) + ")" : null }</div>
           <div className="rating">
             <Star className="star" size={20} /> <div className="text"> </div><div className="votes-amount"> </div>
           </div>

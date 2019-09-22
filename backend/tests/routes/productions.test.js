@@ -35,9 +35,7 @@ describe('/api/productions', () => {
     beforeEach((done) => wipeImages(done));
 
     // Wipe productions table before each test
-    beforeEach((done) => {
-        wipeProductions(done);
-    });
+    beforeEach((done) => wipeProductions(done));
 
     let productionId;
     let secondProductionId;
@@ -1324,6 +1322,6 @@ describe('/api/productions', () => {
     // Wipe productions table after all tests
     after((done) => wipeProductions(done));
 
-    // Wipe images table afterk all tests
+    // Wipe images table after all tests
     after((done) => wipeImages(done));
 });

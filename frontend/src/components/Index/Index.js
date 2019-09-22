@@ -8,7 +8,7 @@ function Index() {
     <div className="index-wrapper">
       <div className="p1">Complete TV watching assistant.</div>
       <div className="p2">Track, rate, discover.</div>
-      <Link to="/login">
+      <Link to="/register">
         <button className="btn-primary">Sign up</button>
       </Link>
     </div>
