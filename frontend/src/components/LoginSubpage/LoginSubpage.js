@@ -10,15 +10,17 @@ export default class LoginSubpage extends React.Component {
       <div className="login-subpage-wrapper">
         <h1>Log in</h1>
         <div className="title-underline" />
-        {this.props.location.search === "?registrationRedirect=true" ? <div className="registration-success">Your account has been created. Now you can log in.</div> : null}
+        {this.props.location.search === "?registrationRedirect=true" ? <div className="success">Your account has been created. Now you can log in.</div> : null}
+        {this.props.location.search === "?logout=true" ? <div className="success">You are logged out.</div> : null}
+        {this.props.location.search === "?failure=true" ? <div className="error">Incorrect e-mail or password. Try again.</div> : null}
         <form action="/api/users/login" method="POST">
           <div className="form-element">
-            <label>Name</label>
-            <input type="name" placeholder="Enter your name" />
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="Enter your e-mail" />
           </div>
           <div className="form-element">
             <label>Password</label>
-            <input type="password" placeholder="Enter your password" />
+            <input type="password" name="password" placeholder="Enter your password" />
           </div>
           <button type="submit" className="btn-primary">Log in</button>
         </form>

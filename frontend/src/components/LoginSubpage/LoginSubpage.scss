@@ -22,11 +22,22 @@
     margin-bottom: 10px;
   }
 
-  .registration-success {
+  .success {
     width: 100%;
     color: $green;
     background: $light-green;
     border: 1px solid $green;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 5px 5px 5px 8px;
+    margin-bottom: 10px;
+  }
+
+  .error {
+    width: 100%;
+    color: $red;
+    background: $light-red;
+    border: 1px solid $red;
     border-radius: 5px;
     font-size: 13px;
     padding: 5px 5px 5px 8px;
