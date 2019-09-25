@@ -2,8 +2,11 @@
 require('dotenv').config({ path: '.env' });
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 const app = express();
+const passport = require('passport');
+require('./config/passport')(passport);
 const db = require('./config/database');
 
 // Test database connection
@@ -22,6 +25,17 @@ app.use('/api/uploads-test', express.static('uploads-test'));
 // Body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Express session
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use('/api/productions', require('./routes/productions'));

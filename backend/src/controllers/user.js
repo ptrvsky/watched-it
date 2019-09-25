@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 const User = require('../models/user');
 const userSchema = require('../schemas/user');
@@ -59,4 +60,18 @@ exports.createUser = (req, res, next) => {
                 });
             }
         });
+};
+
+// Log in user
+exports.loginUser = (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/movies',
+        failureRedirect: '/login?failure=true',
+    })(req, res, next);
+};
+
+// Log out user
+exports.logoutUser = (req, res) => {
+    req.logout();
+    res.redirect('/login?logout=true');
 };
