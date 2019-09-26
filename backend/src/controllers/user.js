@@ -75,3 +75,17 @@ exports.logoutUser = (req, res) => {
     req.logout();
     res.redirect('/login?logout=true');
 };
+
+// Authenticate user
+exports.authenticateUser = (req, res) => {
+    if (req.isAuthenticated()) {
+        const { id, name, email } = req.user;
+        res.status(200).json({
+            status: 'LOGGED',
+            id,
+            name,
+            email,
+        });
+    }
+    res.status(200).json({ status: 'NOT_LOGGED' });
+};
