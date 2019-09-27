@@ -81,6 +81,21 @@ nav.navbar-dark {
   background-color: $light-gray;
 }
 
+.btn-login {
+  border: none;
+  border-radius: 5px;
+  background: $gradient-light;
+  padding: 5px 15px 5px 15px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  height: 32px;
+  color: #ffffff;
+  font-size: 15px;
+
+  a {
+    color: $light-gray;
+  }
+}
+
 .user-button-mobile {
   padding-bottom: 6px;
 }
