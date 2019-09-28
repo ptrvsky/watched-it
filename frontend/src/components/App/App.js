@@ -26,7 +26,7 @@ function App() {
             <Route path="/movies/:id/images" component={NotFound} />
             <Route path="/movies/:id/trailers" component={NotFound} />
 
-            <Route path="/tvseries/" exact render={() => <ProductionsSubpage isSerie />} />
+            <Route path="/tvseries/" exact render={() => <ProductionsSubpage isSerie={true} />} />
             <Route path="/tvseries/:id" exact component={ProductionDetailsSubpage} />
             <Route path="/tvseries/:id/cast" component={NotFound} />
             <Route path="/tvseries/:id/crew" component={NotFound} />

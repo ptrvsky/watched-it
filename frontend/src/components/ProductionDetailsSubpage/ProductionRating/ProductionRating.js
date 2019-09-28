@@ -14,7 +14,7 @@ export default class ProductionRating extends React.Component {
   }
 
   handleRatingChange(newRating) {
-    { /* Logic that send new user rating to backend */ }
+    // Logic that send new user rating to backend
     this.setState({
       userRating: newRating
     })

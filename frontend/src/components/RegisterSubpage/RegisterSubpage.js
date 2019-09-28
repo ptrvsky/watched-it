@@ -31,7 +31,6 @@ export default class RegisterSubpage extends React.Component {
       })
     })
       .then(res => {
-        console.log(res.status);
         if (res.status === 201) {
           this.props.history.push('/login?registrationRedirect=true');  // Redirect to login page after succesful user registration
         } else {

@@ -73,7 +73,7 @@ exports.loginUser = (req, res, next) => {
 // Log out user
 exports.logoutUser = (req, res) => {
     req.logout();
-    res.redirect('/login?logout=true');
+    res.status(200).end();
 };
 
 // Authenticate user
