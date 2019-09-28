@@ -14,6 +14,14 @@ export default class RegisterSubpage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    fetch('/api/users/auth')
+      .then((user) => user.json())
+      .then((user) => {
+        if (user.status === 'LOGGED') this.props.history.push('/')
+      });
+  }
+
   handleSubmit(event) {
     event.preventDefault(); // Prevent browser reload/refresh
     this.setState({ errors: [] });

@@ -5,6 +5,14 @@ import './LoginSubpage.scss';
 
 export default class LoginSubpage extends React.Component {
 
+  componentDidMount() {
+    fetch('/api/users/auth')
+      .then((user) => user.json())
+      .then((user) => {
+        if (user.status === 'LOGGED') this.props.history.push('/')
+      });
+  }
+
   render() {
     return (
       <div className="login-subpage-wrapper">
