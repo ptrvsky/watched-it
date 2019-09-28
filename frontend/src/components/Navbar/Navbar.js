@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Navbar, Form, NavDropdown } from 'react-bootstrap';
-import { Search, User } from 'react-feather';
+import { Search, User, LogIn } from 'react-feather';
 import { useMediaQuery } from 'react-responsive'
 import './Navbar.scss';
 
@@ -14,7 +14,7 @@ const Mobile = ({ children }) => {
   const isMobile = useMediaQuery({ maxWidth: 991 })
   return isMobile ? children : null
 }
-export default class NaviagtionBar extends React.Component {
+class NavigationBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -23,14 +23,27 @@ export default class NaviagtionBar extends React.Component {
         status: 'NOT_LOGGED',
       },
     }
+    this.authenticateUser = this.authenticateUser.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  componentDidMount() {
+  authenticateUser() {
     fetch('/api/users/auth')
       .then((user) => user.json())
       .then((user) => this.setState({ user }));
   }
- 
+
+  handleLogout() {
+    fetch('/api/users/logout')
+      .then(() => {
+        this.authenticateUser();
+        this.props.history.push('/login?logout=true');
+      });
+  }
+
+  componentDidMount() {
+    this.authenticateUser();
+  }
 
   render() {
     return (
@@ -59,7 +72,7 @@ export default class NaviagtionBar extends React.Component {
                   <NavDropdown.Divider />
                   <div className="dropdown-item" onClick={this.handleLogout}>Logout</div>
                 </NavDropdown>
-                : <Link to="/login"><button className="btn-login">Log in</button></Link>}
+                : <Link to="/login" className="login-button-mobile ml-auto" >{<LogIn />}</Link>}
               <Navbar.Toggle />
               <Navbar.Collapse className="links">
                 <Link to="/movies" className="nav-link">Movies</Link>
@@ -92,9 +105,9 @@ export default class NaviagtionBar extends React.Component {
                   <Link to="/ratings" className="dropdown-item">Ratings</Link>
                   <Link to="/settings" className="dropdown-item">Settings</Link>
                   <NavDropdown.Divider />
-                  <Link to="/logout" className="dropdown-item">Logout</Link>
+                  <div className="dropdown-item" onClick={this.handleLogout}>Logout</div>
                 </NavDropdown>
-                : <Link to="/login"><button className="btn-login">Log in</button></Link>}
+                : <Link to="/login">{<LogIn />}</Link>}
             </Desktop>
 
           </Navbar>
@@ -104,3 +117,5 @@ export default class NaviagtionBar extends React.Component {
     );
   }
 }
+
+export default withRouter(NavigationBar);
