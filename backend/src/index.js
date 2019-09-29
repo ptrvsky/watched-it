@@ -44,6 +44,7 @@ app.use('/api/productions-people', require('./routes/productions-people'));
 app.use('/api/images', require('./routes/images'));
 app.use('/api/images-people/', require('./routes/images-people'));
 app.use('/api/users/', require('./routes/users'));
+app.use('/api/rates/', require('./routes/rates'));
 
 // Error handling
 // eslint-disable-next-line no-unused-vars

@@ -4,6 +4,7 @@ const router = express.Router();
 const ProductionController = require('../controllers/production');
 const ProductionPersonController = require('../controllers/productionPerson');
 const ImageController = require('../controllers/image');
+const RateController = require('../controllers/rate');
 
 // Get all productions
 router.get('/', ProductionController.getAllProductions);
@@ -31,5 +32,8 @@ router.get('/:productionId/people/:personId', ProductionPersonController.getProd
 
 // Get images assigned to the production
 router.get('/:productionId/images', ImageController.getImagesByProduction);
+
+// Get rates assigned to the production
+router.get('/:productionId/rates', RateController.getRatesByProduction);
 
 module.exports = router;
