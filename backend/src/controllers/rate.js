@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+
 const Rate = require('../models/rate');
 const rateSchema = require('../schemas/rate');
 
@@ -53,6 +55,23 @@ exports.getRateByUser = (req, res, next) => {
     })
         .then((rates) => {
             res.json(rates);
+        })
+        .catch(next);
+};
+
+// Get rating stats (average rating, rates quantity) for selected production
+exports.getProductionRatingStats = (req, res, next) => {
+    Rate.findAll({
+        where: {
+            productionId: req.params.productionId,
+        },
+        attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('value')), 'average'],
+            [Sequelize.fn('COUNT', Sequelize.col('value')), 'quantity'],
+        ],
+    })
+        .then((ratingStats) => {
+            res.json(ratingStats[0]);
         })
         .catch(next);
 };

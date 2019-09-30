@@ -36,4 +36,7 @@ router.get('/:productionId/images', ImageController.getImagesByProduction);
 // Get rates assigned to the production
 router.get('/:productionId/rates', RateController.getRatesByProduction);
 
+// Get rating stats (average rating, rates quantity) for selected production
+router.get('/:productionId/rates/stats', RateController.getProductionRatingStats);
+
 module.exports = router;
