@@ -7,7 +7,7 @@ const RateController = require('../controllers/rate');
 router.get('/', RateController.getAllRates);
 
 // Get rate with given productionId and userId
-router.get('/production/:productionId/user/:userId', RateController.getRate);
+router.get('/productions/:productionId/users/:userId', RateController.getRate);
 
 // Create rate
 router.post('/', RateController.createRate);
@@ -16,6 +16,6 @@ router.post('/', RateController.createRate);
 router.put('/', RateController.updateRate);
 
 // Delete rate with given productionId and userId
-router.delete('/production/:productionId/user/:userId', RateController.deleteRate);
+router.delete('/productions/:productionId/users/:userId', RateController.deleteRate);
 
 module.exports = router;

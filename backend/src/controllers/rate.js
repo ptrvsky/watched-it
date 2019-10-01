@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const Sequelize = require('sequelize');
 
 const Rate = require('../models/rate');
@@ -109,15 +110,32 @@ exports.updateRate = (req, res, next) => {
         if (err) {
             next(err);
         } else {
-            Rate.update(validationValue, {
-                returning: true,
+            Rate.findOne({
                 where: {
                     productionId: validationValue.productionId,
                     userId: validationValue.userId,
                 },
             })
-                .then(([, [rate]]) => {
-                    res.status(200).json(rate);
+                .then((rate) => {
+                    if (rate) {
+                        Rate.update(validationValue, {
+                            returning: true,
+                            where: {
+                                productionId: validationValue.productionId,
+                                userId: validationValue.userId,
+                            },
+                        })
+                            .then(([, [rate]]) => {
+                                res.status(200).json(rate);
+                            })
+                            .catch(next);
+                    } else {
+                        Rate.create(validationValue)
+                            .then((rate) => {
+                                res.status(201).json(rate);
+                            })
+                            .catch(next);
+                    }
                 })
                 .catch(next);
         }

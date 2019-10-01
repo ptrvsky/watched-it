@@ -86,6 +86,7 @@ exports.authenticateUser = (req, res) => {
             name,
             email,
         });
+    } else {
+        res.status(200).json({ status: 'NOT_LOGGED' });
     }
-    res.status(200).json({ status: 'NOT_LOGGED' });
 };
