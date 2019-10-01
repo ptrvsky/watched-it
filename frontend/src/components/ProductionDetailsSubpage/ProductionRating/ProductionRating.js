@@ -7,17 +7,28 @@ export default class ProductionRating extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      avgRating: null,
-      userRating: null,
+      averageRating: null,
+      ratesQuantity: null,
     };
-    this.handleRatingChange = this.handleRatingChange.bind(this);
+    this.fetchRatingStats = this.fetchRatingStats.bind(this);
   }
 
-  handleRatingChange(newRating) {
-    // Logic that send new user rating to backend
-    this.setState({
-      userRating: newRating
-    })
+  fetchRatingStats() {
+    fetch('/api/productions/' + this.props.productionId + '/rates/stats')
+      .then((ratingStats) => ratingStats.json())
+      .then((ratingStats) => {
+        console.log(ratingStats);
+        if (ratingStats.quantity > 0) {
+          this.setState({
+            averageRating: Number(ratingStats.average).toFixed(2),
+            ratesQuantity: ratingStats.quantity,
+          });
+        }
+      });
+  }
+
+  componentDidMount() {
+    this.fetchRatingStats();
   }
 
   render() {
@@ -27,12 +38,12 @@ export default class ProductionRating extends React.Component {
 
         <div className="avg-rating">
           <Star className="star-big" size={36} />
-          <div className="rating-text">9,11</div>
-          <div className="votes-amount">(132548 votes)</div>
+          <div className="rating-text">{this.state.averageRating !== null ? this.state.averageRating : null}</div>
+          <div className="votes-amount">{this.state.ratesQuantity !== null ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
         </div>
         <div className="user-rating">
           <h3>Your rating</h3>
-          <RateButton rate={this.state.userRating} handleRatingChange={this.handleRatingChange} />
+          <RateButton productionId={this.props.productionId} fetchRatingStats={this.fetchRatingStats} />
         </div>
       </div>
     );

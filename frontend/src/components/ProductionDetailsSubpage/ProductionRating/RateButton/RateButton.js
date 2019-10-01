@@ -1,16 +1,51 @@
 import React from 'react';
 import './RateButton.scss';
 import { Star } from 'react-feather';
+import { withRouter } from 'react-router';
 
-export default class RateButton extends React.Component {
+class RateButton extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      rateHovered: this.props.rate || null,
+      rateHovered: null,
+      userRating: null,
+      user: {
+        status: 'NOT_LOGGED',
+      },
     };
     this.onHover = this.onHover.bind(this);
     this.onLeave = this.onLeave.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.handleRatingChange = this.handleRatingChange.bind(this);
+  }
+
+  handleRatingChange(newRating) {
+    // Reset user rating if user press on the same star again
+    if (this.state.userRating === newRating) {
+      newRating = null;
+    }
+
+    // Add or update user rate in the database
+    fetch('/api/rates', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        productionId: this.props.productionId,
+        userId: this.state.user.id,
+        value: newRating,
+      })
+    })
+      .then((rate) => rate.json())
+      .then((rate) => {
+        this.setState({
+          rateHovered: rate.value,
+          userRating: rate.value,
+        })
+        this.props.fetchRatingStats();  // Refresh average rating
+      });
   }
 
   onHover(event) {
@@ -20,13 +55,38 @@ export default class RateButton extends React.Component {
   }
 
   onLeave() {
-    this.setState({
-      rateHovered: this.props.rate || null
+    this.setState((state) => {
+      return { rateHovered: state.userRating || null }
     })
   }
 
   onClick(event) {
-    this.props.handleRatingChange(event.target.id);
+    if (this.state.user.status === 'LOGGED') {
+      this.handleRatingChange(event.currentTarget.id);
+    } else {
+      this.props.history.push('/login?unauthenticatedRateTry=true');
+    }
+  }
+
+  componentDidMount() {
+    // Fetch information about currently logged user and its rate
+    fetch('/api/users/auth')
+      .then((user) => user.json())
+      .then((user) => this.setState({ user }))
+      .then(() => {
+        if (this.state.user.status === 'LOGGED') {
+          fetch('/api/rates/productions/' + this.props.productionId + '/users/' + this.state.user.id)
+            .then((rate) => rate.json())
+            .then((rate) => {
+              if (rate) {
+                this.setState({
+                  rateHovered: rate.value,
+                  userRating: rate.value,
+                });
+              };
+            });
+        };
+      });
   }
 
   render() {
@@ -46,3 +106,5 @@ export default class RateButton extends React.Component {
     );
   }
 }
+
+export default withRouter(RateButton);
