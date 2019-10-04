@@ -49,6 +49,7 @@ exports.createUser = (req, res, next) => {
                                     name: value.name,
                                     email: value.email,
                                     password: hash,
+                                    type: 'User',
                                 })
                                     .then(() => {
                                         res.status(201).end();
@@ -79,12 +80,13 @@ exports.logoutUser = (req, res) => {
 // Authenticate user
 exports.authenticateUser = (req, res) => {
     if (req.isAuthenticated()) {
-        const { id, name, email } = req.user;
+        const { id, name, email, type } = req.user;
         res.status(200).json({
             status: 'LOGGED',
             id,
             name,
             email,
+            type,
         });
     } else {
         res.status(200).json({ status: 'NOT_LOGGED' });
