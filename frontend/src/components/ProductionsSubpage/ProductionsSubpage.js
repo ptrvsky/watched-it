@@ -28,7 +28,11 @@ export default class ProductionsSubpage extends React.Component {
   fetchProductions() {
     fetch('/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order + "&lengthMin=" + this.state.lengthMin + "&lengthMax=" + this.state.lengthMax)
       .then(response => response.json())
-      .then(productions => this.setState({ productions }))
+      .then(productions => {
+        if (Array.isArray(productions)) {
+          this.setState({ productions })
+        }
+      })
       .catch(err => console.log(err));
   }
 

@@ -17,7 +17,6 @@ export default class ProductionRating extends React.Component {
     fetch('/api/productions/' + this.props.productionId + '/rates/stats')
       .then((ratingStats) => ratingStats.json())
       .then((ratingStats) => {
-        console.log(ratingStats);
         if (ratingStats.quantity > 0) {
           this.setState({
             averageRating: Number(ratingStats.average).toFixed(2),
