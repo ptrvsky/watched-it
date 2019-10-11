@@ -11,7 +11,10 @@ export default class ProductionDetailsMedium extends React.Component {
       director: [],
       averageRating: null,
       ratesQuantity: 0,
+      isOnWatchlist: false,
     }
+    this.addToWatchlist = this.addToWatchlist.bind(this);
+    this.removeFromWatchlist = this.removeFromWatchlist.bind(this);
   }
 
   componentDidMount() {
@@ -40,18 +43,57 @@ export default class ProductionDetailsMedium extends React.Component {
           });
         }
       });
+
+    if (this.props.user.status === 'LOGGED') {
+      fetch('/api/users-productions/users/' + this.props.user.id + '/productions/' + this.props.production.id)
+        .then((userProductionAssignment) => userProductionAssignment.json())
+        .then((userProductionAssignment) => {
+          if (userProductionAssignment) {
+            this.setState({ isOnWatchlist: true })
+          }
+        })
+    }
+  };
+
+  addToWatchlist(event) {
+    event.preventDefault();
+    if (this.props.user.status === 'LOGGED') {
+      this.setState({ isOnWatchlist: !this.state.isOnWatchlist });
+      fetch('/api/users-productions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: this.props.user.id,
+          productionId: this.props.production.id
+        })
+      })
+    }
+  }
+
+  removeFromWatchlist(event) {
+    event.preventDefault();
+    if (this.props.user.status === 'LOGGED') {
+      this.setState({ isOnWatchlist: !this.state.isOnWatchlist });
+      fetch('/api/users-productions/users/' + this.props.user.id + '/productions/' + this.props.production.id, {
+        method: 'DELETE'
+      })
+    }
   }
 
   render() {
     return (
       <div className="production-details-medium-wrapper">
         <div className="poster">{this.state.poster ? <img src={"/api/" + this.state.poster} alt="poster" /> : null}</div>
-        <div className="eye-button"><Eye size={28} /></div>
+        {this.state.isOnWatchlist ?
+          <div className="eye-button" onClick={this.removeFromWatchlist} ><Eye size={28} /></div> :
+          <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
         <div className="info">
           <div className="title">{this.props.production.title} {this.props.production.releaseDate ? "(" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</div>
           <div className="rating">
-            <Star className="star" size={20} /> 
-            <div className="text"> {this.state.averageRating ? this.state.averageRating : null } </div>
+            <Star className="star" size={20} />
+            <div className="text"> {this.state.averageRating ? this.state.averageRating : null} </div>
             <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
           </div>
           <div className="details">
@@ -62,7 +104,7 @@ export default class ProductionDetailsMedium extends React.Component {
             <div className="director"><span className="category">Director:</span> {this.state.director.join(", ")}</div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }

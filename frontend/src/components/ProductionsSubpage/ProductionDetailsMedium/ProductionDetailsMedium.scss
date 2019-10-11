@@ -39,6 +39,10 @@
     padding: 11px 13px 0px 0px;
     color: $purple;
     cursor: pointer;
+
+    &--gray {
+      color: $gray;
+    }
   }
 
   .info {
