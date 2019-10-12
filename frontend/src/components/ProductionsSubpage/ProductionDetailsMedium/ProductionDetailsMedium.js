@@ -1,8 +1,9 @@
 import React from 'react';
 import './ProductionDetailsMedium.scss';
 import { Star, Eye } from 'react-feather';
+import { withRouter } from 'react-router';
 
-export default class ProductionDetailsMedium extends React.Component {
+class ProductionDetailsMedium extends React.Component {
 
   constructor(props) {
     super(props);
@@ -69,6 +70,8 @@ export default class ProductionDetailsMedium extends React.Component {
           productionId: this.props.production.id
         })
       })
+    } else {
+      this.props.history.push('/login?unauthenticatedAddToWatchlistTry=true');
     }
   }
 
@@ -104,8 +107,9 @@ export default class ProductionDetailsMedium extends React.Component {
             <div className="director"><span className="category">Director:</span> {this.state.director.join(", ")}</div>
           </div>
         </div>
-      </div >
+      </div>
     );
   }
 }
 
+export default withRouter(ProductionDetailsMedium);
