@@ -60,11 +60,11 @@ export default class RegisterSubpage extends React.Component {
           </div>
           <div className="form-element">
             <label>E-mail</label>
-            <input type="email" name="email" placeholder="Enter your e-mail adress" />
+            <input type="email" name="email" placeholder="Enter your e-mail adress" autoComplete="new-password" />
           </div>
           <div className="form-element">
             <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" />
+            <input type="password" name="password" placeholder="Enter your password" autoComplete="new-password" />
           </div>
           <div className="form-element">
             <label>Confirm password</label>

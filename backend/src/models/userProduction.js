@@ -5,9 +5,11 @@ const db = require('../config/database.js');
 const UserProduction = db.define('user_production', {
     userId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
     },
     productionId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
     },
 }, {
     tableName: 'users_productions',
