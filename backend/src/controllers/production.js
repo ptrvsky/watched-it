@@ -10,7 +10,7 @@ exports.getAllProductions = (req, res, next) => {
         recentlyFeatured: [['createdAt', 'DESC']],
     };
 
-    Production.findAll({
+    Production.findAndCountAll({
         where: {
             length: {
                 [Op.or]: {
