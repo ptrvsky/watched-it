@@ -53,12 +53,18 @@ export default class ProductionsSubpage extends React.Component {
 
   handlePageChange(event) {
     if (event.target.id === "next" && this.state.page * 10 + 10 < this.state.productionsCount) {
-      this.setState({ page: this.state.page + 1})
-    } 
+      this.setState({ 
+        productionsCount: null, // Delays loading of productionsCount so pagination buttons don't hide/show before productions load
+        page: this.state.page + 1 
+      })
+    }
 
     if (event.target.id === "previous" && this.state.page > 0) {
-      this.setState({ page: this.state.page - 1})
-    } 
+      this.setState({ 
+        productionsCount: null, // Delays loading of productionsCount so pagination buttons don't hide/show before productions load
+        page: this.state.page - 1 
+      })
+    }
   }
 
   handleLengthFilterChange(event) {
@@ -109,8 +115,8 @@ export default class ProductionsSubpage extends React.Component {
           <div className="list-wrapper">
             {this.state.productions.map((production) => <Link to={(this.props.isSerie ? "/tvseries/" : "/movies/") + production.id} key={production.id} ><ProductionDetailsMedium production={production} user={this.state.user} /></Link>)}
             <div className="page-buttons-wrapper">
-              { this.state.page > 0 ? <button className="btn-primary page-button" id="previous" onClick={this.handlePageChange} >Previous page</button> : null }
-              { this.state.page * 10 + 10 < this.state.productionsCount ? <button className="btn-primary page-button page-button--next" id="next" onClick={this.handlePageChange} >Next page</button> : null }
+              {this.state.page > 0 && this.state.productionsCount ? <button className="btn-primary page-button" id="previous" onClick={this.handlePageChange} >Previous page</button> : null}
+              {this.state.page * 10 + 10 < this.state.productionsCount && this.state.productionsCount ? <button className="btn-primary page-button page-button--next" id="next" onClick={this.handlePageChange} >Next page</button> : null}
             </div>
           </div>
           <div className="filter-wrapper">
