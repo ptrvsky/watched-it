@@ -42,10 +42,25 @@
 
       a {
         color: inherit;
-      
+
         &:hover {
           color: inherit;
           text-decoration: none;
+        }
+      }
+
+      .page-buttons-wrapper {
+        display: flex;
+        width: 100%;
+
+        .page-button {
+          width: 150px;
+          display: flex;
+          justify-content: center;
+
+          &--next {
+            margin-left: auto;
+          }
         }
       }
     }

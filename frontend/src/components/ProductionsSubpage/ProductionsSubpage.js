@@ -11,6 +11,7 @@ export default class ProductionsSubpage extends React.Component {
     super(props);
     this.state = {
       productions: [],
+      productionsCount: null,
       order: null,
       lengthMin: 0,
       lengthMax: 999999,
@@ -22,18 +23,25 @@ export default class ProductionsSubpage extends React.Component {
       },
       user: {
         status: 'NOT_LOGGED'
-      }
+      },
+      page: 0
     }
     this.handleOrderChange = this.handleOrderChange.bind(this);
     this.handleLengthFilterChange = this.handleLengthFilterChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   fetchProductions() {
-    fetch('/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order + "&lengthMin=" + this.state.lengthMin + "&lengthMax=" + this.state.lengthMax)
+    fetch('/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order +
+      "&lengthMin=" + this.state.lengthMin + "&lengthMax=" + this.state.lengthMax +
+      "&limit=10&offset=" + this.state.page * 10)
       .then(response => response.json())
       .then(productions => {
-        if (Array.isArray(productions)) {
-          this.setState({ productions })
+        if (Array.isArray(productions.rows)) {
+          this.setState({
+            productions: productions.rows,
+            productionsCount: productions.count
+          })
         }
       })
       .catch(err => console.log(err));
@@ -41,6 +49,16 @@ export default class ProductionsSubpage extends React.Component {
 
   handleOrderChange(event) {
     this.setState({ order: event.target.id });
+  }
+
+  handlePageChange(event) {
+    if (event.target.id === "next" && this.state.page * 10 + 10 < this.state.productionsCount) {
+      this.setState({ page: this.state.page + 1})
+    } 
+
+    if (event.target.id === "previous" && this.state.page > 0) {
+      this.setState({ page: this.state.page - 1})
+    } 
   }
 
   handleLengthFilterChange(event) {
@@ -68,17 +86,17 @@ export default class ProductionsSubpage extends React.Component {
 
   componentDidMount() {
     fetch('/api/users/auth')
-    .then((user) => user.json())
-    .then((user) => this.setState({ user }))
-    .then(() => this.fetchProductions());
+      .then((user) => user.json())
+      .then((user) => this.setState({ user }))
+      .then(() => this.fetchProductions());
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
       fetch('/api/users/auth')
-      .then((user) => user.json())
-      .then((user) => this.setState({ user }))
-      .then(() => this.fetchProductions());
+        .then((user) => user.json())
+        .then((user) => this.setState({ user }))
+        .then(() => this.fetchProductions());
     }
   }
 
@@ -90,6 +108,10 @@ export default class ProductionsSubpage extends React.Component {
         <div className="content-wrapper">
           <div className="list-wrapper">
             {this.state.productions.map((production) => <Link to={(this.props.isSerie ? "/tvseries/" : "/movies/") + production.id} key={production.id} ><ProductionDetailsMedium production={production} user={this.state.user} /></Link>)}
+            <div className="page-buttons-wrapper">
+              { this.state.page > 0 ? <button className="btn-primary page-button" id="previous" onClick={this.handlePageChange} >Previous page</button> : null }
+              { this.state.page * 10 + 10 < this.state.productionsCount ? <button className="btn-primary page-button page-button--next" id="next" onClick={this.handlePageChange} >Next page</button> : null }
+            </div>
           </div>
           <div className="filter-wrapper">
             <div className="filter-title">Filters<div className="wip-label">Work in progress</div></div>
