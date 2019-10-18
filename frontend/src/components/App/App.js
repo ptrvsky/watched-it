@@ -5,6 +5,7 @@ import Footer from '../Footer/Footer';
 import Index from '../Index/Index';
 import ProductionsSubpage from '../ProductionsSubpage/ProductionsSubpage';
 import ProductionDetailsSubpage from '../ProductionDetailsSubpage/ProductionDetailsSubpage';
+import PeopleSubpage from '../PeopleSubpage/PeopleSubpage';
 import RegisterSubpage from '../RegisterSubpage/RegisterSubpage';
 import LoginSubpage from '../LoginSubpage/LoginSubpage';
 import NotFound from '../NotFound/NotFound';
@@ -33,7 +34,7 @@ function App() {
             <Route path="/tvseries/:id/images" component={NotFound} />
             <Route path="/tvseries/:id/trailers" component={NotFound} />
             
-            <Route path="/people/" exact component={NotFound} />
+            <Route path="/people/" exact component={PeopleSubpage} />
             <Route path="/people/:id" component={NotFound} />
             <Route path="/rankings/" component={NotFound} />
             <Route path="/watchlist" component={NotFound} />
