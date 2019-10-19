@@ -3,7 +3,7 @@ const personSchema = require('../schemas/person');
 
 // Get all productions
 exports.getAllPeople = (req, res, next) => {
-    Person.findAll({
+    Person.findAndCountAll({
         limit: req.query.limit,
         offset: req.query.offset,
     })

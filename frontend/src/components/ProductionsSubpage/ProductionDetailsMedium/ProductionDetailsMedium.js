@@ -94,9 +94,9 @@ class ProductionDetailsMedium extends React.Component {
           <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
         <div className="info">
           <div className="title">{this.props.production.title} {this.props.production.releaseDate ? "(" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</div>
-          <div className="rating">
+          <div className="rating-wrapper">
             <Star className="star" size={20} />
-            <div className="text"> {this.state.averageRating ? this.state.averageRating : null} </div>
+            <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>
             <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
           </div>
           <div className="details">

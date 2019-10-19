@@ -40,13 +40,12 @@ class PersonDetailsMedium extends React.Component {
 
     return (
       <div className="person-details-medium-wrapper">
-
         <div className="faceImage">{this.state.faceImage ? <img src={"/api/" + this.state.faceImage} alt="faceImage" /> : null}</div>
         <div className="info">
           <div className="name">{this.props.person.name} </div>
-          <div className="rating">
+          <div className="rating-wrapper">
             <Star className="star" size={20} />
-            <div className="text"> {this.state.averageRating ? this.state.averageRating : null} </div>
+            <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>
             <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
           </div>
           <div className="details">
