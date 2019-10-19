@@ -29,6 +29,9 @@ router.get('/:personId/productions', ProductionPersonController.getProductionPer
 // Get assignments between production and person with given ids
 router.get('/:personId/productions/:productionId', ProductionPersonController.getProductionPersonAssignmentsByIds);
 
+// Get professions of person with given id
+router.get('/:personId/professions', ProductionPersonController.getPersonProfessions);
+
 // Get images assisnged to the person
 router.get('/:personId/images', ImageController.getImagesByPerson);
 

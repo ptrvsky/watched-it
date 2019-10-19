@@ -70,6 +70,30 @@ exports.getProductionPersonAssignmentsByIds = (req, res, next) => {
         .catch(next);
 };
 
+// Get list of selected person professions (e.g. [Actor, Director, Writer])
+exports.getPersonProfessions = (req, res, next) => {
+    function checkProfession(profession) {
+        return ProductionPerson.findOne({
+            where: {
+                personId: req.params.personId,
+                role: profession,
+            },
+        })
+            .then((productionPerson) => {
+                if (productionPerson) return profession;
+                return null;
+            });
+    }
+
+    Promise.all([checkProfession('Actor'),
+        checkProfession('Writer'),
+        checkProfession('Director'),
+        checkProfession('Composer'),
+        checkProfession('Producer')])
+        .then((values) => res.json(values.filter((value) => value !== null)))
+        .catch(next);
+};
+
 // Create production-person assignment
 exports.createProductionPersonAssignment = (req, res, next) => {
     const { personId, productionId, role, description } = req.body;
