@@ -11,6 +11,7 @@ class PersonDetailsMedium extends React.Component {
       faceImage: null,
       averageRating: null,
       ratesQuantity: 0,
+      professions: [],
     }
   }
 
@@ -19,6 +20,12 @@ class PersonDetailsMedium extends React.Component {
       .then(faceImage => faceImage.json())
       .then(faceImage => {
         this.setState({ faceImage: faceImage.url })
+      });
+
+    fetch('/api/people/' + this.props.person.id + '/professions')
+      .then(professions => professions.json())
+      .then(professions => {
+        this.setState({ professions: professions })
       });
   };
 
@@ -43,14 +50,15 @@ class PersonDetailsMedium extends React.Component {
         <div className="faceImage">{this.state.faceImage ? <img src={"/api/" + this.state.faceImage} alt="faceImage" /> : null}</div>
         <div className="info">
           <div className="name">{this.props.person.name} </div>
+          <div className="profession"> {this.state.professions.join(", ")}</div>
           <div className="rating-wrapper">
             <Star className="star" size={20} />
             <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>
             <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
           </div>
           <div className="details">
-            <div><span className="category">Birthplace:</span> {this.props.person.birthplace}</div>
             {age ? <div><span className="category">Age:</span>{this.props.person.dod ? <span> &#10013;</span> : null} {age + " (" + (this.props.person.dob)}{this.props.person.dod ? " - " + this.props.person.dod : null}) </div> : null}
+            <div><span className="category">Birthplace:</span> {this.props.person.birthplace}</div>
           </div>
         </div>
       </div>
