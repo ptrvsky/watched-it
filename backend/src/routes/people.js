@@ -4,6 +4,7 @@ const router = express.Router();
 const PersonController = require('../controllers/person');
 const ProductionPersonController = require('../controllers/productionPerson');
 const ImageController = require('../controllers/image');
+const PersonRateController = require('../controllers/personRate');
 
 // Get all people
 router.get('/', PersonController.getAllPeople);
@@ -34,5 +35,11 @@ router.get('/:personId/professions', ProductionPersonController.getPersonProfess
 
 // Get images assisnged to the person
 router.get('/:personId/images', ImageController.getImagesByPerson);
+
+// Get rates assigned to the person
+router.get('/:personId/rates', PersonRateController.getRatesByPerson);
+
+// Get rating stats (average rating, rates quantity) for selected person
+router.get('/:personId/rates/stats', PersonRateController.getPersonRatingStats);
 
 module.exports = router;
