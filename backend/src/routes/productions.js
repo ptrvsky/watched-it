@@ -4,7 +4,7 @@ const router = express.Router();
 const ProductionController = require('../controllers/production');
 const ProductionPersonController = require('../controllers/productionPerson');
 const ImageController = require('../controllers/image');
-const RateController = require('../controllers/rate');
+const ProductionRateController = require('../controllers/productionRate');
 
 // Get all productions
 router.get('/', ProductionController.getAllProductions);
@@ -34,9 +34,9 @@ router.get('/:productionId/people/:personId', ProductionPersonController.getProd
 router.get('/:productionId/images', ImageController.getImagesByProduction);
 
 // Get rates assigned to the production
-router.get('/:productionId/rates', RateController.getRatesByProduction);
+router.get('/:productionId/rates', ProductionRateController.getRatesByProduction);
 
 // Get rating stats (average rating, rates quantity) for selected production
-router.get('/:productionId/rates/stats', RateController.getProductionRatingStats);
+router.get('/:productionId/rates/stats', ProductionRateController.getProductionRatingStats);
 
 module.exports = router;

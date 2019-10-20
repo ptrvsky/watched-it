@@ -1,12 +1,12 @@
 /* eslint-disable no-shadow */
 const Sequelize = require('sequelize');
 
-const Rate = require('../models/rate');
-const rateSchema = require('../schemas/rate');
+const ProductionRate = require('../models/productionRate');
+const productionRateSchema = require('../schemas/productionRate');
 
 // Get list of all rates
 exports.getAllRates = (req, res, next) => {
-    Rate.findAll({
+    ProductionRate.findAll({
         limit: req.query.limit,
         offset: req.query.offset,
     })
@@ -18,7 +18,7 @@ exports.getAllRates = (req, res, next) => {
 
 // Get rate with given productionId and userId
 exports.getRate = (req, res, next) => {
-    Rate.findOne({
+    ProductionRate.findOne({
         where: {
             productionId: req.params.productionId,
             userId: req.params.userId,
@@ -32,7 +32,7 @@ exports.getRate = (req, res, next) => {
 
 // Get rates of selected production
 exports.getRatesByProduction = (req, res, next) => {
-    Rate.findAll({
+    ProductionRate.findAll({
         where: {
             productionId: req.params.productionId,
         },
@@ -47,7 +47,7 @@ exports.getRatesByProduction = (req, res, next) => {
 
 // Get rates of selected user
 exports.getRateByUser = (req, res, next) => {
-    Rate.findAll({
+    ProductionRate.findAll({
         where: {
             userId: req.params.userId,
         },
@@ -62,7 +62,7 @@ exports.getRateByUser = (req, res, next) => {
 
 // Get rating stats (average rating, rates quantity) for selected production
 exports.getProductionRatingStats = (req, res, next) => {
-    Rate.findAll({
+    ProductionRate.findAll({
         where: {
             productionId: req.params.productionId,
         },
@@ -81,7 +81,7 @@ exports.getProductionRatingStats = (req, res, next) => {
 exports.createRate = (req, res, next) => {
     const { productionId, userId, value } = req.body;
 
-    rateSchema.requiredKeys('productionId', 'userId', 'value').validate({
+    productionRateSchema.requiredKeys('productionId', 'userId', 'value').validate({
         productionId,
         userId,
         value,
@@ -89,7 +89,7 @@ exports.createRate = (req, res, next) => {
         if (err) {
             next(err);
         } else {
-            Rate.create(validationValue)
+            ProductionRate.create(validationValue)
                 .then((rate) => {
                     res.status(201).json(rate);
                 })
@@ -102,7 +102,7 @@ exports.createRate = (req, res, next) => {
 exports.updateRate = (req, res, next) => {
     const { productionId, userId, value } = req.body;
 
-    rateSchema.requiredKeys('productionId', 'userId', 'value').validate({
+    productionRateSchema.requiredKeys('productionId', 'userId', 'value').validate({
         productionId,
         userId,
         value,
@@ -110,7 +110,7 @@ exports.updateRate = (req, res, next) => {
         if (err) {
             next(err);
         } else {
-            Rate.findOne({
+            ProductionRate.findOne({
                 where: {
                     productionId: validationValue.productionId,
                     userId: validationValue.userId,
@@ -118,7 +118,7 @@ exports.updateRate = (req, res, next) => {
             })
                 .then((rate) => {
                     if (rate) {
-                        Rate.update(validationValue, {
+                        ProductionRate.update(validationValue, {
                             returning: true,
                             where: {
                                 productionId: validationValue.productionId,
@@ -130,7 +130,7 @@ exports.updateRate = (req, res, next) => {
                             })
                             .catch(next);
                     } else {
-                        Rate.create(validationValue)
+                        ProductionRate.create(validationValue)
                             .then((rate) => {
                                 res.status(201).json(rate);
                             })
@@ -144,7 +144,7 @@ exports.updateRate = (req, res, next) => {
 
 // Delete rate
 exports.deleteRate = (req, res, next) => {
-    Rate.destroy({
+    ProductionRate.destroy({
         where: {
             productionId: req.params.productionId,
             userId: req.params.userId,

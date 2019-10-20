@@ -27,7 +27,7 @@ class RateButton extends React.Component {
     }
 
     // Add or update user rate in the database
-    fetch('/api/rates', {
+    fetch('/api/productions-rates', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ class RateButton extends React.Component {
       .then((user) => this.setState({ user }))
       .then(() => {
         if (this.state.user.status === 'LOGGED') {
-          fetch('/api/rates/productions/' + this.props.productionId + '/users/' + this.state.user.id)
+          fetch('/api/productions-rates/productions/' + this.props.productionId + '/users/' + this.state.user.id)
             .then((rate) => rate.json())
             .then((rate) => {
               if (rate) {

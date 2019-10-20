@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database.js');
 
 // Stores information about productions rates submited by users
-const Rate = db.define('rate', {
+const ProductionRate = db.define('production_rate', {
     productionId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,6 +14,8 @@ const Rate = db.define('rate', {
     value: {
         type: Sequelize.INTEGER,
     },
+}, {
+    tableName: 'productions_rates',
 });
 
-module.exports = Rate;
+module.exports = ProductionRate;
