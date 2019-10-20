@@ -93,7 +93,7 @@ class ProductionDetailsMedium extends React.Component {
           <div className="eye-button" onClick={this.removeFromWatchlist} ><Eye size={28} /></div> :
           <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
         <div className="info">
-          <div className="title">{this.props.production.title} {this.props.production.releaseDate ? "(" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</div>
+          <div className="title">{this.props.production.title} <span className="release-date"> {this.props.production.releaseDate ? " (" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</span></div>
           <div className="rating-wrapper">
             <Star className="star" size={20} />
             <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>

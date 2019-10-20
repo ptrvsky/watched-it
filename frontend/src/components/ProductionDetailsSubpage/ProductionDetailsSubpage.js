@@ -5,7 +5,7 @@ import './ProductionDetailsSubpage.scss';
 import PersonMedium from './PersonMedium/PersonMedium';
 import ProductionRating from './ProductionRating/ProductionRating';
 
-export default class ProductionsSubpage extends React.Component {
+export default class ProductionDetailsSubpage extends React.Component {
 
   constructor(props) {
     super(props);

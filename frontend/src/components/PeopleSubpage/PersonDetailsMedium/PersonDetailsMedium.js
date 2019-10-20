@@ -54,10 +54,19 @@ class PersonDetailsMedium extends React.Component {
           <div className="rating-wrapper">
             <Star className="star" size={20} />
             <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>
-            <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
+            <div className="votes-amount">
+              {this.state.ratesQuantity ?
+                this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" :
+                "Not rated yet"}
+            </div>
           </div>
           <div className="details">
-            {age ? <div><span className="category">Age:</span>{this.props.person.dod ? <span> &#10013;</span> : null} {age + " (" + (this.props.person.dob)}{this.props.person.dod ? " - " + this.props.person.dod : null}) </div> : null}
+            {age ?
+              <div><span className="category">Age: </span>{this.props.person.dod ? <span> &#10013;</span> : null}
+                {age}  <span className="dates">{" (" + (this.props.person.dob.slice(0, 4))}
+                {this.props.person.dod ? " - " + this.props.person.dod.slice(0, 4) : null})</span>
+                </div> :
+              null}
             <div><span className="category">Birthplace:</span> {this.props.person.birthplace}</div>
           </div>
         </div>

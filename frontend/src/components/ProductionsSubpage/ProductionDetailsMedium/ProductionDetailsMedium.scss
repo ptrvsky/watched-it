@@ -16,6 +16,7 @@
     width: 115px;
     overflow: hidden;
     flex-shrink: 0;
+    border-radius: 3px 0px 0px 3px;
 
     img {
       height: 100%;
@@ -49,11 +50,15 @@
     padding: 10px 20px 10px 20px;
 
     .title {
-      display: flex;
+      display: inline-block;
       font-size: 20px;
       padding-right: 30px;
       min-height: 28px;
       align-items: center;
+
+      .release-date {
+        color: $gray2;
+      }
     }
 
     .rating-wrapper {

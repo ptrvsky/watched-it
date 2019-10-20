@@ -16,6 +16,7 @@
     width: 115px;
     overflow: hidden;
     flex-shrink: 0;
+    border-radius: 3px 0px 0px 3px;
 
     img {
       height: 100%;
@@ -46,6 +47,7 @@
     .profession {
       font-size: 14px;
       color: $gray2;
+      padding-bottom: 2px;
     }
 
     .rating-wrapper {
@@ -75,6 +77,10 @@
 
       .category {
         color: $purple;
+      }
+
+      .dates {
+        color: $gray2;
       }
     }
   }
