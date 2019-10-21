@@ -48,16 +48,20 @@ exports.getImagesByPerson = (req, res, next) => {
         limit: req.query.limit,
         offset: req.query.offset,
     })
-        .then((imagePersonAssignments) => {
-            imagePersonAssignments.map((value) => value.dataValues.imageId);
-        })
-        .then((imagesIds) => Image.findAll({
-            where: {
-                id: {
-                    [Op.or]: imagesIds,
+        .then((imagePersonAssignments) => imagePersonAssignments
+            .map((value) => value.dataValues.imageId))
+        .then((imagesIds) => {
+            if (imagesIds.length === 0) return [];
+            return Image.findAll({
+                where: {
+                    id: {
+                        [Op.or]: imagesIds,
+                    },
                 },
-            },
-        })).then((images) => {
+                limit: req.query.limit,
+                offset: req.query.offset,
+            });
+        }).then((images) => {
             res.json(images);
         })
         .catch(next);
