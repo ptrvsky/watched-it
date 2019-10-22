@@ -27,6 +27,17 @@ class PersonDetailsMedium extends React.Component {
       .then(professions => {
         this.setState({ professions: professions })
       });
+
+    fetch('/api/people/' + this.props.person.id + '/rates/stats')
+      .then((ratingStats) => ratingStats.json())
+      .then((ratingStats) => {
+        if (ratingStats.quantity > 0) {
+          this.setState({
+            averageRating: Number(ratingStats.average).toFixed(2),
+            ratesQuantity: ratingStats.quantity,
+          });
+        }
+      });
   };
 
   // Function that gets age from date of birth and date of death (or today's date if DOD isn't set)
@@ -64,8 +75,8 @@ class PersonDetailsMedium extends React.Component {
             {age ?
               <div><span className="category">Age: </span>{this.props.person.dod ? <span> &#10013;</span> : null}
                 {age}  <span className="dates">{" (" + (this.props.person.dob.slice(0, 4))}
-                {this.props.person.dod ? " - " + this.props.person.dod.slice(0, 4) : null})</span>
-                </div> :
+                  {this.props.person.dod ? " - " + this.props.person.dod.slice(0, 4) : null})</span>
+              </div> :
               null}
             <div><span className="category">Birthplace:</span> {this.props.person.birthplace}</div>
           </div>
