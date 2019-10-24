@@ -4,7 +4,7 @@ import { Star } from 'react-feather';
 import { withRouter } from 'react-router';
 
 class RateButton extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,25 +27,42 @@ class RateButton extends React.Component {
     }
 
     // Add or update user rate in the database
-    fetch('/api/productions-rates', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        productionId: this.props.productionId,
+    let fetchURL;
+    let body;
+
+    if (this.props.rateType === 'person') {
+      fetchURL = '/api/people-rates';
+      body = JSON.stringify({
+        personId: this.props.id,
         userId: this.state.user.id,
         value: newRating,
       })
-    })
-      .then((rate) => rate.json())
-      .then((rate) => {
-        this.setState({
-          rateHovered: rate.value,
-          userRating: rate.value,
-        })
-        this.props.fetchRatingStats();  // Refresh average rating
-      });
+    } else if (this.props.rateType === 'production') {
+      fetchURL = '/api/productions-rates';
+      body = JSON.stringify({
+        productionId: this.props.id,
+        userId: this.state.user.id,
+        value: newRating,
+      })
+    }
+
+    if (fetchURL) {
+      fetch(fetchURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body
+      })
+        .then((rate) => rate.json())
+        .then((rate) => {
+          this.setState({
+            rateHovered: rate.value,
+            userRating: rate.value,
+          })
+          this.props.fetchRatingStats();  // Refresh average rating
+        });
+    }
   }
 
   onHover(event) {
@@ -75,7 +92,13 @@ class RateButton extends React.Component {
       .then((user) => this.setState({ user }))
       .then(() => {
         if (this.state.user.status === 'LOGGED') {
-          fetch('/api/productions-rates/productions/' + this.props.productionId + '/users/' + this.state.user.id)
+          let fetchURL;
+          if (this.props.rateType === 'person') {
+            fetchURL = '/api/people-rates/people/' + this.props.id + '/users/' + this.state.user.id;
+          } else if (this.props.rateType === 'production') {
+            fetchURL = '/api/productions-rates/productions/' + this.props.id + '/users/' + this.state.user.id;
+          }
+          fetch(fetchURL)
             .then((rate) => rate.json())
             .then((rate) => {
               if (rate) {

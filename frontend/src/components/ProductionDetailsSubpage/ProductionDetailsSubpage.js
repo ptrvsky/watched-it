@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import './ProductionDetailsSubpage.scss';
 import PersonMedium from './PersonMedium/PersonMedium';
-import ProductionRating from './ProductionRating/ProductionRating';
+import RatingBox from '../RatingBox/RatingBox';
 
 export default class ProductionDetailsSubpage extends React.Component {
 
@@ -109,7 +109,7 @@ export default class ProductionDetailsSubpage extends React.Component {
             </div>
 
             <div className="right-wrapper">
-              <ProductionRating productionId={this.props.match.params.id} />
+              <RatingBox rateType='production' id={this.props.match.params.id} />
               <Link to={this.props.match.params.id + "/images"}><h2>Images</h2></Link>
               <div className="images-wrapper">
                 {this.state.images !== null ? this.state.images.map(image => <div className="image-thumbnail" key={image}><img src={"/api/" + image} alt={image} /></div>) : null}

@@ -1,9 +1,9 @@
 import React from 'react';
-import './ProductionRating.scss';
+import './RatingBox.scss';
 import { Star } from 'react-feather';
 import RateButton from './RateButton/RateButton';
 
-export default class ProductionRating extends React.Component {
+export default class RatingBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,16 +14,21 @@ export default class ProductionRating extends React.Component {
   }
 
   fetchRatingStats() {
-    fetch('/api/productions/' + this.props.productionId + '/rates/stats')
-      .then((ratingStats) => ratingStats.json())
-      .then((ratingStats) => {
-        if (ratingStats.quantity > 0) {
-          this.setState({
-            averageRating: Number(ratingStats.average).toFixed(2),
-            ratesQuantity: ratingStats.quantity,
-          });
-        }
-      });
+    let fetchURL;
+    if (this.props.rateType === 'person') fetchURL = '/api/people/' + this.props.id + '/rates/stats';
+    if (this.props.rateType === 'production') fetchURL = '/api/productions/' + this.props.id + '/rates/stats';
+    if (fetchURL) {
+      fetch(fetchURL)
+        .then((ratingStats) => ratingStats.json())
+        .then((ratingStats) => {
+          if (ratingStats.quantity > 0) {
+            this.setState({
+              averageRating: Number(ratingStats.average).toFixed(2),
+              ratesQuantity: ratingStats.quantity,
+            });
+          }
+        });
+    }
   }
 
   componentDidMount() {
@@ -32,7 +37,7 @@ export default class ProductionRating extends React.Component {
 
   render() {
     return (
-      <div className="production-rating-wrapper">
+      <div className="rating-box-wrapper">
         <h3>Average rating</h3>
 
         <div className="avg-rating">
@@ -42,7 +47,7 @@ export default class ProductionRating extends React.Component {
         </div>
         <div className="user-rating">
           <h3>Your rating</h3>
-          <RateButton productionId={this.props.productionId} fetchRatingStats={this.fetchRatingStats} />
+          <RateButton rateType={this.props.rateType} id={this.props.id} fetchRatingStats={this.fetchRatingStats} />
         </div>
       </div>
     );
