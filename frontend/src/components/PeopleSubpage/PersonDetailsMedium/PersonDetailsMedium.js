@@ -2,6 +2,7 @@ import React from 'react';
 import './PersonDetailsMedium.scss';
 import { Star } from 'react-feather';
 import { withRouter } from 'react-router';
+import countPersonAge from '../../../utils/countPersonAge';
 
 class PersonDetailsMedium extends React.Component {
 
@@ -40,21 +41,8 @@ class PersonDetailsMedium extends React.Component {
       });
   };
 
-  // Function that gets age from date of birth and date of death (or today's date if DOD isn't set)
-  getAge(dob, dod) {
-    const birthday = new Date(dob);
-    const lastDay = dod ? new Date(dod) : new Date();
-    let thisYear = 0;
-    if (lastDay.getMonth() < birthday.getMonth()) {
-      thisYear = 1;
-    } else if ((lastDay.getMonth() === birthday.getMonth()) && lastDay.getDate() < birthday.getDate()) {
-      thisYear = 1;
-    }
-    return lastDay.getFullYear() - birthday.getFullYear() - thisYear;
-  }
-
   render() {
-    const age = this.props.person.dob ? this.getAge(this.props.person.dob, this.props.person.dod) : null;
+    const age = this.props.person.dob ? countPersonAge(this.props.person.dob, this.props.person.dod) : null;
 
     return (
       <div className="person-details-medium-wrapper">
