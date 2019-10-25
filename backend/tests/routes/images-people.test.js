@@ -63,6 +63,9 @@ describe('/api/images-people', () => {
     let secondImageId;
     let productionId;
 
+    // Wipe images table before tests
+    before((done) => wipeImages(done));
+
     // Wipe images-people table before each test
     beforeEach((done) => wipeImagesPeople(done));
 

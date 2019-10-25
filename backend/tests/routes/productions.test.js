@@ -106,7 +106,7 @@ describe('/api/productions', () => {
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);
-                    expect(res.body.length).to.be.equal(3);
+                    expect(res.body.count).to.be.equal(3);
                     done();
                 });
         });
@@ -167,7 +167,7 @@ describe('/api/productions', () => {
                     expect(res.body.title).to.be.equal(data.title);
                     expect(res.body.length).to.be.equal(null);
                     expect(res.body.releaseDate).to.be.equal(null);
-                    expect(res.body.isSerie).to.be.equal(false);
+                    expect(res.body.isSerie).to.be.equal(null);
                     expect(res.body.genre).to.be.eql(null);
                     expect(res.body.description).to.be.equal(null);
                     expect(res.body.posterId).to.be.equal(null);
@@ -386,22 +386,6 @@ describe('/api/productions', () => {
         });
 
         // isSerie
-
-        it('should respond with status 201 and json containing new object for isSerie that is set to false by default value', (done) => {
-            const data = {
-                title: 'Movie Title 1',
-            };
-            request(app)
-                .post('/api/productions')
-                .send(data)
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.isSerie).to.be.equal(false);
-                    done();
-                });
-        });
 
         it('should respond with status 400 and json containing error message because of wrong type of isSerie attribute', (done) => {
             const data = {
