@@ -103,7 +103,7 @@ describe('/api/people', () => {
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);
-                    expect(res.body.length).to.be.equal(3);
+                    expect(res.body.count).to.be.equal(3);
                     done();
                 });
         });
@@ -129,6 +129,7 @@ describe('/api/people', () => {
                 dod: '1985-08-13',
                 birthplace: 'London, United Kingdom',
                 faceImageId: imageId,
+                biography: 'Text Text Text Text',
             };
             request(app)
                 .post('/api/people')
@@ -142,6 +143,7 @@ describe('/api/people', () => {
                     expect(res.body.dod).to.be.equal(data.dod);
                     expect(res.body.birthplace).to.be.equal(data.birthplace);
                     expect(res.body.faceImageId).to.be.equal(data.faceImageId);
+                    expect(res.body.biography).to.be.equal(data.biography);
                     done();
                 });
         });
@@ -162,6 +164,7 @@ describe('/api/people', () => {
                     expect(res.body.dod).to.be.equal(null);
                     expect(res.body.birthplace).to.be.equal(null);
                     expect(res.body.faceImageId).to.be.equal(null);
+                    expect(res.body.biography).to.be.equal(null);
                     done();
                 });
         });
@@ -174,6 +177,7 @@ describe('/api/people', () => {
                 dod: '1985-08-13',
                 birthplace: 'London, United Kingdom',
                 faceImageId: imageId,
+                biography: 'Text Text Text Text',
             };
             request(app)
                 .post('/api/people')
@@ -500,6 +504,60 @@ describe('/api/people', () => {
                     done();
                 });
         });
+
+        // Biography
+
+        it('should respond with status 201 and json containing new object for biography that is on the upper edge of the character limit', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text', // 500 letter biography
+            };
+            request(app)
+                .post('/api/people')
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.biography).to.be.equal(data.biography);
+                    done();
+                });
+        });
+
+        it('should respond with status 400 and json containing error message because of too long biography', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text T', // 501 letter biography
+            };
+            request(app)
+                .post('/api/people')
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
     });
 
     describe('PUT /api/people/:id', () => {
@@ -512,6 +570,7 @@ describe('/api/people', () => {
                 dod: '2000-01-01',
                 birthplace: 'London, United Kingdom',
                 faceImageId: secondImageId,
+                biography: 'Text 2 Text 2 Text 2 Text 2',
             })
                 .then((person) => {
                     id = person.id;
@@ -527,6 +586,7 @@ describe('/api/people', () => {
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
                 faceImageId: imageId,
+                biography: 'Text Text Text Text',
             };
             request(app)
                 .put(`/api/people/${id}`)
@@ -541,6 +601,7 @@ describe('/api/people', () => {
                     expect(res.body.dod).to.be.equal(data.dod);
                     expect(res.body.birthplace).to.be.equal(data.birthplace);
                     expect(res.body.faceImageId).to.be.equal(data.faceImageId);
+                    expect(res.body.biography).to.be.equal(data.biography);
                     done();
                 });
         });
@@ -562,6 +623,7 @@ describe('/api/people', () => {
                     expect(res.body.dod).to.be.equal(null);
                     expect(res.body.birthplace).to.be.equal(null);
                     expect(res.body.faceImageId).to.be.equal(null);
+                    expect(res.body.biography).to.be.equal(null);
                     done();
                 });
         });
@@ -574,6 +636,7 @@ describe('/api/people', () => {
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
                 faceImageId: imageId,
+                biography: 'Text Text Text Text',
             };
             request(app)
                 .put(`/api/people/${id}`)
@@ -908,6 +971,60 @@ describe('/api/people', () => {
                     done();
                 });
         });
+
+        // Biography
+
+        it('should respond with status 200 and json containing new object for biography that is on the upper edge of the character limit', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text', // 500 letter biography
+            };
+            request(app)
+                .put(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body.biography).to.be.equal(data.biography);
+                    done();
+                });
+        });
+
+        it('should respond with status 400 and json containing error message because of too long biography', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text T', // 501 letter biography
+            };
+            request(app)
+                .put(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
     });
 
     describe('PATCH /api/people/:id', () => {
@@ -920,6 +1037,7 @@ describe('/api/people', () => {
                 dod: '2000-01-01',
                 birthplace: 'London, United Kingdom',
                 faceImageId: secondImageId,
+                biography: 'Text 2 Text 2 Text 2 Text 2',
             })
                 .then((person) => {
                     id = person.id;
@@ -935,6 +1053,7 @@ describe('/api/people', () => {
                 dod: '1985-08-13',
                 birthplace: 'Paris, France',
                 faceImageId: imageId,
+                biography: 'Text Text Text Text',
             };
             request(app)
                 .patch(`/api/people/${id}`)
@@ -1189,6 +1308,54 @@ describe('/api/people', () => {
             const data = {
                 name: 'John Doe',
                 faceImageId: 3, // non-existing imageId
+            };
+            request(app)
+                .patch(`/api/people/${id}`)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(400)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    expect(res.body).to.haveOwnProperty('error');
+                    done();
+                });
+        });
+
+        // Biography
+
+        it('should respond with status 204 for biography that is on the upper edge of the character limit', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text', // 500 letter biography
+            };
+            request(app)
+                .patch(`/api/people/${id}`)
+                .send(data)
+                .expect(204, done);
+        });
+
+        it('should respond with status 400 and json containing error message because of too long biography', (done) => {
+            const data = {
+                name: 'John Doe',
+                biography: 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text '
+                    + 'Text Text Text Text Text Text Text Text Text Text T', // 501 letter biography
             };
             request(app)
                 .patch(`/api/people/${id}`)

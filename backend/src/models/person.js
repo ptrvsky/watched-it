@@ -17,6 +17,9 @@ const Person = db.define('person', {
     faceImageId: {
         type: Sequelize.INTEGER,
     },
+    biography: {
+        type: Sequelize.STRING,
+    },
 });
 
 module.exports = Person;

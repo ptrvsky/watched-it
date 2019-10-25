@@ -24,7 +24,7 @@ exports.getPerson = (req, res, next) => {
 
 // Add person
 exports.createPerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId } = req.body;
+    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
     personSchema.requiredKeys('name').validate({
         name,
@@ -32,6 +32,7 @@ exports.createPerson = (req, res, next) => {
         dod,
         birthplace,
         faceImageId,
+        biography,
     }, (err, value) => {
         if (err) {
             next(err);
@@ -47,7 +48,7 @@ exports.createPerson = (req, res, next) => {
 
 // Update person with the given id
 exports.updatePerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId } = req.body;
+    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
     personSchema.requiredKeys('name').validate({
         name,
@@ -55,6 +56,7 @@ exports.updatePerson = (req, res, next) => {
         dod: dod || null,
         birthplace: birthplace || null,
         faceImageId: faceImageId || null,
+        biography: biography || null,
         /*  Nulls are added in case the request body doesn't contain unrequired attributes.
             Without it, those attributes would remain as they are what is inconsistent
             with PUT method specification. */
@@ -78,7 +80,7 @@ exports.updatePerson = (req, res, next) => {
 
 // Patch person with the given id
 exports.patchPerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId } = req.body;
+    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
     personSchema.validate({
         name,
@@ -86,6 +88,7 @@ exports.patchPerson = (req, res, next) => {
         dod,
         birthplace,
         faceImageId,
+        biography,
     }, (err, value) => {
         if (err) {
             next(err);
