@@ -1,0 +1,198 @@
+@import '../../assets/styles/colors.scss';
+
+.person-details-subpage-wrapper {
+  display: flex;
+  min-height: 100vh;
+
+  a {
+    text-decoration: none;
+    color: $dark-gray;
+    transition: .4s;
+
+    &:hover {
+      color: $purple;
+    }
+  }
+
+  h2 {
+    font-size: 25px;
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .bg-image {
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    background: $dark-gray;
+    z-index: 0;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column;
+    width: 100%;
+    min-height: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px 20px 50px 20px;
+    z-index: 1;
+
+    .name-wrapper {
+      display: flex;
+      align-items: flex-end;
+      min-height: 210px;
+      width: 100%;
+      font-size: 40px;
+      color: $light-gray;
+      padding-left: 250px;
+      line-height: 48px;
+      padding-bottom: 10px;
+    }
+
+    .sub-content-wrapper {
+      display: flex;
+      width: 100%;
+
+      .left-wrapper {
+        display: flex;
+        flex-flow: column;
+        min-width: calc(75% - 40px);
+        max-width: calc(75% - 40px);
+
+        .details {
+          display: flex;
+          height: 195px;
+
+          .faceImage {
+            position: relative;
+            top: -170px;
+            height: 340px;
+            width: 230px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-radius: 5px;
+            box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.5);
+
+            img {
+              height: 340px;
+              min-width: 230px;
+              max-width: 230px;
+              object-fit: cover;
+              transition: transform .4s;
+
+              &:hover {
+                transform: scale(1.03);
+                overflow: hidden;
+                cursor: pointer;
+              }
+            }
+          }
+
+          .info {
+            padding: 20px;
+
+            .category {
+              color: $purple;
+            }
+          }
+        }
+        
+        .person-biography {
+          padding: 0px 7px 15px 0px;
+          text-align: justify;
+        }
+      }
+
+      .right-wrapper {
+        padding-top: 15px;
+        margin-left: 40px;
+        min-width: 25%;
+
+        .images-wrapper {
+          display: flex;
+          margin-right: -5px;
+
+          .image-thumbnail {
+            width: 33%;
+            height: 83px;
+            overflow: hidden;
+            border-radius: 3px;
+            margin-right: 5px;
+            box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25);
+            border: 1px solid $gray;
+
+            img {
+              width: 100%;
+              height: 83px;
+              object-fit: cover;
+              transition: transform .2s;
+
+              &:hover {
+                transform: scale(1.05);
+                overflow: hidden;
+                cursor: pointer;
+              }
+            }
+          }
+
+        }
+      }
+
+    }
+  }
+}
+
+@media (max-width: "991px") {
+  .person-details-subpage-wrapper {
+    .content-wrapper {
+      .name-wrapper {
+        font-size: 26px;
+        padding-left: 150px;
+        line-height: 38px;
+      }
+
+      .sub-content-wrapper {
+
+        flex-flow: column;
+
+        .left-wrapper {
+          min-width: 100%;
+          max-width: 100%;
+          flex-flow: column;
+
+          .details {
+            flex-flow: column;
+            height: 150px;
+
+            .faceImage {
+              width: 130px;
+              height: 195px;
+
+              img {
+                min-width: 130px;
+                max-width: 130px;
+                height: 195px;
+              }
+            }
+
+            .info {
+              position: relative;
+              top: -170px;
+              padding: 10px 0px 10px 0px;
+            }
+          }
+        }
+
+        .right-wrapper {
+          margin-left: 0px;
+        }
+
+      }
+    }
+  }
+}
