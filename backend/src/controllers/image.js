@@ -6,9 +6,15 @@ const upload = require('../config/upload');
 
 // Get all images
 exports.getAllImages = (req, res, next) => {
+    const order = {
+        id: [['id']],
+        recentlyFeatured: [['createdAt', 'DESC']],
+    };
+
     Image.findAll({
         limit: req.query.limit,
         offset: req.query.offset,
+        order: order[req.query.order],
     })
         .then((images) => {
             res.json(images);
@@ -27,12 +33,18 @@ exports.getImage = (req, res, next) => {
 
 // Get images assigned to selected production
 exports.getImagesByProduction = (req, res, next) => {
+    const order = {
+        id: [['id']],
+        recentlyFeatured: [['createdAt', 'DESC']],
+    };
+
     Image.findAll({
         where: {
             productionId: req.params.productionId,
         },
         limit: req.query.limit,
         offset: req.query.offset,
+        order: order[req.query.order],
     }).then((images) => {
         res.json(images);
     })
@@ -41,12 +53,18 @@ exports.getImagesByProduction = (req, res, next) => {
 
 // Get images assigned to selected person
 exports.getImagesByPerson = (req, res, next) => {
+    const order = {
+        id: [['id']],
+        recentlyFeatured: [['createdAt', 'DESC']],
+    };
+
     ImagePerson.findAll({
         where: {
             personId: req.params.personId,
         },
         limit: req.query.limit,
         offset: req.query.offset,
+        order: order[req.query.order],
     })
         .then((imagePersonAssignments) => imagePersonAssignments
             .map((value) => value.dataValues.imageId))
