@@ -55,7 +55,7 @@ export default class PersonDetailsSubpage extends React.Component {
       ));
 
     // Fetch person's images
-    fetch('/api/people/' + this.props.match.params.id + '/images?limit=3')
+    fetch('/api/people/' + this.props.match.params.id + '/images?limit=3&order=recentlyFeatured')
       .then(images => images.json())
       .then(images => images.map(image =>
         this.setState({

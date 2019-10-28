@@ -42,7 +42,7 @@ export default class ProductionDetailsSubpage extends React.Component {
               }))
           ));
 
-        fetch('/api/productions/' + production.id + '/images?limit=3')
+        fetch('/api/productions/' + production.id + '/images?limit=3&order=recentlyFeatured')
           .then(images => images.json())
           .then(images => images.map(image =>
             this.setState({
