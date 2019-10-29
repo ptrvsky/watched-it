@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import './PersonDetailsSubpage.scss';
+import ProductionSmallWide from './ProductionSmallWide/ProductionSmallWide';
 import RatingBox from '../RatingBox/RatingBox';
 import countPersonAge from '../../utils/countPersonAge';
 
@@ -37,7 +38,7 @@ export default class PersonDetailsSubpage extends React.Component {
       });
 
     // Fetch person's production-person assignments
-    fetch('/api/people/' + this.props.match.params.id + '/productions')
+    fetch('/api/people/' + this.props.match.params.id + '/productions?order=releaseDateDesc')
       .then(productionsPeople => productionsPeople.json())
       .then(productionsPeople => productionsPeople.map(productionPerson =>
         fetch('/api/productions/' + productionPerson.productionId)
@@ -48,6 +49,7 @@ export default class PersonDetailsSubpage extends React.Component {
               title: production.title,
               posterId: production.posterId,
               releaseDate: production.releaseDate,
+              isSerie: production.isSerie,
               role: productionPerson.role,
               description: productionPerson.description
             })
@@ -104,6 +106,11 @@ export default class PersonDetailsSubpage extends React.Component {
               </div>
               <div className="person-biography">
                 {this.state.person !== null ? this.state.person.biography : null}
+              </div>
+              <Link to={this.props.match.params.id + "/productions"}><h2>Productions</h2></Link>
+              <div className="productions-list">
+                {this.state.productions !== null ? this.state.productions
+                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id } key={production.id} ><ProductionSmallWide production={production} /></Link>) : null}
               </div>
             </div>
 

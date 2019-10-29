@@ -106,6 +106,17 @@
           padding: 0px 7px 15px 0px;
           text-align: justify;
         }
+
+        .productions-list {
+          display: flex;
+          flex-flow: wrap;
+          padding-bottom: 5px;
+
+          a {
+            width: 100%;
+          }
+
+        }
       }
 
       .right-wrapper {

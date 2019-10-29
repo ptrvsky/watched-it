@@ -1,0 +1,53 @@
+@import '../../../assets/styles/colors.scss';
+
+.production-small-wide-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  min-height: 40px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid $gray;
+  background-color: $light-gray2;
+  border-radius: 3px;
+  transition: .5s;
+  margin-bottom: 10px;
+
+  &:hover {
+    color: $purple;
+  }
+
+  .year {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14%;
+    padding: 0px 5px 0px 5px;
+  }
+
+  .info-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 7px 7px 7px 0px;
+    min-width: 80%;
+
+    .title {
+      display: flex;
+      align-items: center;
+      min-width: 43%;
+    }
+
+    .description {
+      display: flex;
+      align-items: center;
+      padding-left: 25px;
+      min-width: 43%;
+      color: $dark-gray;
+
+      &--actor {
+        color: $gray2;
+        font-style: italic;
+      }
+    }
+  }
+
+}
