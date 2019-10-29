@@ -8,6 +8,8 @@ exports.getAllProductions = (req, res, next) => {
     const order = {
         id: [['id']],
         recentlyFeatured: [['createdAt', 'DESC']],
+        releaseDate: [['releaseDate']],
+        releaseDateDesc: [['releaseDate', 'DESC']],
     };
 
     const where = {
