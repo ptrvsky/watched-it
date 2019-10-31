@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import './PersonDetailsSubpage.scss';
 import ProductionSmallWide from './ProductionSmallWide/ProductionSmallWide';
+import ProductionSmallBox from './ProductionSmallBox/ProductionSmallBox';
 import RatingBox from '../RatingBox/RatingBox';
 import countPersonAge from '../../utils/countPersonAge';
 
@@ -107,10 +108,16 @@ export default class PersonDetailsSubpage extends React.Component {
               <div className="person-biography">
                 {this.state.person !== null ? this.state.person.biography : null}
               </div>
+              <Link to={this.props.match.params.id + "/productions"}><h2>Known for</h2></Link>
+              <div className="known-for-list">
+                {this.state.productions !== null ? this.state.productions
+                  .slice(0, 5)
+                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} ><ProductionSmallBox production={production} /></Link>) : null}
+              </div>
               <Link to={this.props.match.params.id + "/productions"}><h2>Productions</h2></Link>
               <div className="productions-list">
                 {this.state.productions !== null ? this.state.productions
-                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id } key={production.id} ><ProductionSmallWide production={production} /></Link>) : null}
+                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} ><ProductionSmallWide production={production} /></Link>) : null}
               </div>
             </div>
 
