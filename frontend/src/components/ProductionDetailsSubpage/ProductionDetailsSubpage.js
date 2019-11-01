@@ -58,6 +58,11 @@ export default class ProductionDetailsSubpage extends React.Component {
   }
 
   render() {
+
+    const directors = this.state.people
+      .filter((person) => person.role === 'Director')
+      .map((person) => person.name).join(", ");
+
     return (
       <div className="production-details-subpage-wrapper" >
         <div className="bg-image"></div>
@@ -85,10 +90,7 @@ export default class ProductionDetailsSubpage extends React.Component {
                     {(this.state.production !== null && this.state.production.length % 60 !== 0) ? this.state.production.length % 60 + "min" : null}
                   </div>
                   <div>
-                    <span className="category">Director: </span>
-                    {this.state.people
-                      .filter((person) => person.role === 'Director')
-                      .map((person) => person.name).join(", ")}
+                    {directors ? <div><span className="category">Director: </span> {directors}</div> : null}
                   </div>
                 </div>
               </div>

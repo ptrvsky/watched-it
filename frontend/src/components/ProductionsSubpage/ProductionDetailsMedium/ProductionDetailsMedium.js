@@ -104,7 +104,7 @@ class ProductionDetailsMedium extends React.Component {
             <div><span className="category">Length: </span>
               {(this.props.production.length >= 60) ? parseInt(this.props.production.length / 60) + "h " : null}
               {(this.props.production.length % 60 !== 0) ? this.props.production.length % 60 + "min" : null}</div>
-            <div className="director"><span className="category">Director:</span> {this.state.director.join(", ")}</div>
+            {this.state.director.length > 0 ? <div className="director"><span className="category">Director:</span> {this.state.director.join(", ")}</div> : null}
           </div>
         </div>
       </div>
