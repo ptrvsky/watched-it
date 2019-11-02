@@ -26,6 +26,7 @@
 
   .info-wrapper {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     padding: 7px 7px 7px 0px;
     min-width: 80%;
@@ -33,14 +34,14 @@
     .title {
       display: flex;
       align-items: center;
-      min-width: 43%;
+      min-width: 60%;
     }
 
     .description {
       display: flex;
       align-items: center;
       padding-left: 25px;
-      min-width: 43%;
+      min-width: 40%;
       color: $dark-gray;
 
       &--actor {
