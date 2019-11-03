@@ -6,178 +6,178 @@ const upload = require('../config/upload');
 
 // Get all images
 exports.getAllImages = (req, res, next) => {
-    const order = {
-        id: [['id']],
-        recentlyFeatured: [['createdAt', 'DESC']],
-    };
+  const order = {
+    id: [['id']],
+    recentlyFeatured: [['createdAt', 'DESC']],
+  };
 
-    Image.findAll({
-        limit: req.query.limit,
-        offset: req.query.offset,
-        order: order[req.query.order],
+  Image.findAll({
+    limit: req.query.limit,
+    offset: req.query.offset,
+    order: order[req.query.order],
+  })
+    .then((images) => {
+      res.json(images);
     })
-        .then((images) => {
-            res.json(images);
-        })
-        .catch(next);
+    .catch(next);
 };
 
 // Get image with the given id
 exports.getImage = (req, res, next) => {
-    Image.findByPk(req.params.id)
-        .then((image) => {
-            res.json(image);
-        })
-        .catch(next);
+  Image.findByPk(req.params.id)
+    .then((image) => {
+      res.json(image);
+    })
+    .catch(next);
 };
 
 // Get images assigned to selected production
 exports.getImagesByProduction = (req, res, next) => {
-    const order = {
-        id: [['id']],
-        recentlyFeatured: [['createdAt', 'DESC']],
-    };
+  const order = {
+    id: [['id']],
+    recentlyFeatured: [['createdAt', 'DESC']],
+  };
 
-    Image.findAll({
-        where: {
-            productionId: req.params.productionId,
-        },
-        limit: req.query.limit,
-        offset: req.query.offset,
-        order: order[req.query.order],
-    }).then((images) => {
-        res.json(images);
-    })
-        .catch(next);
+  Image.findAll({
+    where: {
+      productionId: req.params.productionId,
+    },
+    limit: req.query.limit,
+    offset: req.query.offset,
+    order: order[req.query.order],
+  }).then((images) => {
+    res.json(images);
+  })
+    .catch(next);
 };
 
 // Get images assigned to selected person
 exports.getImagesByPerson = (req, res, next) => {
-    const order = {
-        id: [['id']],
-        recentlyFeatured: [['createdAt', 'DESC']],
-    };
+  const order = {
+    id: [['id']],
+    recentlyFeatured: [['createdAt', 'DESC']],
+  };
 
-    ImagePerson.findAll({
+  ImagePerson.findAll({
+    where: {
+      personId: req.params.personId,
+    },
+    limit: req.query.limit,
+    offset: req.query.offset,
+    order: order[req.query.order],
+  })
+    .then((imagePersonAssignments) => imagePersonAssignments
+      .map((value) => value.dataValues.imageId))
+    .then((imagesIds) => {
+      if (imagesIds.length === 0) return [];
+      return Image.findAll({
         where: {
-            personId: req.params.personId,
+          id: {
+            [Op.or]: imagesIds,
+          },
         },
         limit: req.query.limit,
         offset: req.query.offset,
-        order: order[req.query.order],
+      });
+    }).then((images) => {
+      res.json(images);
     })
-        .then((imagePersonAssignments) => imagePersonAssignments
-            .map((value) => value.dataValues.imageId))
-        .then((imagesIds) => {
-            if (imagesIds.length === 0) return [];
-            return Image.findAll({
-                where: {
-                    id: {
-                        [Op.or]: imagesIds,
-                    },
-                },
-                limit: req.query.limit,
-                offset: req.query.offset,
-            });
-        }).then((images) => {
-            res.json(images);
-        })
-        .catch(next);
+    .catch(next);
 };
 
 // Create image
 exports.createImage = (req, res, next) => {
-    imageSchema.requiredKeys('url').validate({
-        url: req.file.path.replace('\\', '/'),
-        productionId: req.body.productionId,
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Image.create(value)
-                .then((image) => {
-                    res.status(201).json(image);
-                })
-                .catch(next);
-        }
-    });
+  imageSchema.requiredKeys('url').validate({
+    url: req.file.path.replace('\\', '/'),
+    productionId: req.body.productionId,
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Image.create(value)
+        .then((image) => {
+          res.status(201).json(image);
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Update image with the given id
 exports.updateImage = (req, res, next) => {
-    imageSchema.requiredKeys('url').validate({
-        url: req.file.path.replace('\\', '/'),
-        productionId: req.body.productionId || null,
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Image.update(value, {
-                returning: true,
-                where: {
-                    id: req.params.id,
-                },
-            })
-                .then(([, [image]]) => {
-                    res.status(200).json(image);
-                })
-                .catch(next);
-        }
-    });
+  imageSchema.requiredKeys('url').validate({
+    url: req.file.path.replace('\\', '/'),
+    productionId: req.body.productionId || null,
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Image.update(value, {
+        returning: true,
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(([, [image]]) => {
+          res.status(200).json(image);
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Patch image with the given id
 exports.patchImage = (req, res, next) => {
-    imageSchema.validate({
-        productionId: req.body.productionId,
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Image.update(value, {
-                where: {
-                    id: req.params.id,
-                },
-            })
-                .then(() => {
-                    res.status(204).end();
-                })
-                .catch(next);
-        }
-    });
+  imageSchema.validate({
+    productionId: req.body.productionId,
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Image.update(value, {
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(() => {
+          res.status(204).end();
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Delete image with the given id
 exports.deleteImage = (req, res, next) => {
-    Image.destroy({
-        where: {
-            id: req.params.id,
-        },
+  Image.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then(() => {
+      res.status(200).end();
     })
-        .then(() => {
-            res.status(200).end();
-        })
-        .catch(next);
+    .catch(next);
 };
 
 // Upload image file
 exports.uploadImage = (req, res, next) => {
-    upload(req, res, next, (err) => {
-        if (err) {
-            /* If there is argument passed to the next() function, Express regards
-            the current request as error and skip non-error handling routing and middleware. */
-            next(err);
-        } else {
-            next();
-        }
-    });
+  upload(req, res, next, (err) => {
+    if (err) {
+      /* If there is argument passed to the next() function, Express regards
+      the current request as error and skip non-error handling routing and middleware. */
+      next(err);
+    } else {
+      next();
+    }
+  });
 };
 
 // Get image file
 exports.getImageFile = (req, res, next) => {
-    Image.findByPk(req.params.id)
-        .then((image) => {
-            res.redirect(`http://localhost:${process.env.PORT}/${image.url}`);
-        })
-        .catch(next);
+  Image.findByPk(req.params.id)
+    .then((image) => {
+      res.redirect(`http://localhost:${process.env.PORT}/${image.url}`);
+    })
+    .catch(next);
 };

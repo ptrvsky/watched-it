@@ -12,478 +12,478 @@ const Production = require('../../src/models/production');
 const directory = process.env.DEVELOPMENT_UPLOADS_DIRECTORY;
 
 const wipeUploads = (done) => {
-    fs.readdir(directory, (err, files) => {
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+    files.forEach((file) => {
+      fs.unlink(path.join(directory, file), (err) => {
         if (err) throw err;
-        files.forEach((file) => {
-            fs.unlink(path.join(directory, file), (err) => {
-                if (err) throw err;
-            });
-        });
-        done();
+      });
     });
+    done();
+  });
 };
 
 const wipeImages = (done) => {
-    Image.destroy({
-        truncate: true,
-        cascade: true,
-        restartIdentity: true,
+  Image.destroy({
+    truncate: true,
+    cascade: true,
+    restartIdentity: true,
+  })
+    .then(() => {
+      done();
     })
-        .then(() => {
-            done();
-        })
-        .catch((err) => done(err));
+    .catch((err) => done(err));
 };
 
 const wipeProductions = (done) => {
-    Production.destroy({
-        truncate: true,
-        cascade: true,
-        restartIdentity: true,
+  Production.destroy({
+    truncate: true,
+    cascade: true,
+    restartIdentity: true,
+  })
+    .then(() => {
+      done();
     })
-        .then(() => {
-            done();
-        })
-        .catch((err) => done(err));
+    .catch((err) => done(err));
 };
 
 describe('/api/images', () => {
-    let productionId;
-    let secondProductionId;
+  let productionId;
+  let secondProductionId;
 
-    // Wipe images table before each test
-    beforeEach((done) => wipeImages(done));
+  // Wipe images table before each test
+  beforeEach((done) => wipeImages(done));
 
-    // Wipe uploads directory before each test
-    beforeEach((done) => wipeUploads(done));
+  // Wipe uploads directory before each test
+  beforeEach((done) => wipeUploads(done));
 
-    // Wipe productions table before tests
-    beforeEach((done) => wipeProductions(done));
+  // Wipe productions table before tests
+  beforeEach((done) => wipeProductions(done));
+
+  beforeEach((done) => {
+    Production.create({
+      title: 'Movie Title 1',
+    })
+      .then((production) => {
+        productionId = production.id;
+        done();
+      })
+      .catch((err) => done(err));
+  });
+
+  beforeEach((done) => {
+    Production.create({
+      title: 'Movie Title 2',
+    })
+      .then((production) => {
+        secondProductionId = production.id;
+        done();
+      })
+      .catch((err) => done(err));
+  });
+
+  describe('GET /api/images', () => {
+    let imageId;
 
     beforeEach((done) => {
-        Production.create({
-            title: 'Movie Title 1',
+      Image.create({
+        url: 'api/uploads/abcd1.png',
+        productionId,
+      })
+        .then(() => {
+          done();
         })
-            .then((production) => {
-                productionId = production.id;
-                done();
-            })
-            .catch((err) => done(err));
+        .catch((err) => done(err));
     });
 
     beforeEach((done) => {
-        Production.create({
-            title: 'Movie Title 2',
+      Image.create({
+        url: 'api/uploads/abcd2.png',
+        productionId,
+      })
+        .then((image) => {
+          imageId = image.id;
+          done();
         })
-            .then((production) => {
-                secondProductionId = production.id;
-                done();
-            })
-            .catch((err) => done(err));
+        .catch((err) => done(err));
     });
 
-    describe('GET /api/images', () => {
-        let imageId;
+    beforeEach((done) => {
+      Image.create({
+        url: 'api/uploads/abcd3.png',
+        productionId,
+      })
+        .then(() => {
+          done();
+        })
+        .catch((err) => done(err));
+    });
 
-        beforeEach((done) => {
-            Image.create({
-                url: 'api/uploads/abcd1.png',
-                productionId,
-            })
-                .then(() => {
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        beforeEach((done) => {
-            Image.create({
-                url: 'api/uploads/abcd2.png',
-                productionId,
-            })
-                .then((image) => {
-                    imageId = image.id;
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        beforeEach((done) => {
-            Image.create({
-                url: 'api/uploads/abcd3.png',
-                productionId,
-            })
-                .then(() => {
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        it('should respond with status 200 and json containing all objects', (done) => {
-            request(app)
-                .get('/api/images')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.length).to.be.equal(3);
-                    done();
-                });
-        });
-
-        it('should respond with status 200 and json containing object with the same id as it is in URI', (done) => {
-            request(app)
-                .get(`/api/images/${imageId}`)
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.id).to.be.equal(imageId);
-                    done();
-                });
+    it('should respond with status 200 and json containing all objects', (done) => {
+      request(app)
+        .get('/api/images')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.length).to.be.equal(3);
+          done();
         });
     });
 
-    describe('POST /api/images', () => {
-        it('should respond with status 201 and json containing new object for regular data with .png image', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.png')
-                .field('productionId', productionId)
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(productionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
+    it('should respond with status 200 and json containing object with the same id as it is in URI', (done) => {
+      request(app)
+        .get(`/api/images/${imageId}`)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.id).to.be.equal(imageId);
+          done();
         });
+    });
+  });
 
-        it('should respond with status 201 and json containing new object for regular data with .jpeg image', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.jpeg')
-                .field('productionId', productionId)
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(productionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 201 and json containing new object for regular data with .jpg image', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.jpg')
-                .field('productionId', productionId)
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(productionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 201 and json containing new object for data with missing productionId', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.png')
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(null);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-
-        it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testFile.txt')
-                .field('productionId', productionId)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of missing image file', (done) => {
-            request(app)
-                .post('/api/images')
-                .field('productionId', productionId)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
-            request(app)
-                .post('/api/images')
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
-            request(app)
-                .post('/api/images')
-                .attach('image', './tests/test-files/testImage.png')
-                .field('productionId', 3)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
+  describe('POST /api/images', () => {
+    it('should respond with status 201 and json containing new object for regular data with .png image', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testImage.png')
+        .field('productionId', productionId)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(productionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
         });
     });
 
-    describe('PUT /api/images/:id', () => {
-        let imageId;
-
-        beforeEach((done) => {
-            Image.create({
-                url: '/api/uploads/abcd1.png',
-                productionId,
-            })
-                .then((image) => {
-                    imageId = image.id;
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        it('should respond with status 200 and json containing new object for regular data with .png image', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.png')
-                .field('productionId', secondProductionId)
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(secondProductionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 200 and json containing new object for regular data with .jpeg image', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.jpeg')
-                .field('productionId', secondProductionId)
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(secondProductionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 200 and json containing new object for regular data with .jpg image', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.jpg')
-                .field('productionId', secondProductionId)
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(secondProductionId);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 200 and json containing new object for data with missing productionId', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.png')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body.productionId).to.be.equal(null);
-                    fs.readdir(directory, (err, files) => {
-                        if (err) return done(err);
-                        expect(files.length).to.be.greaterThan(0);
-                    });
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testFile.txt')
-                .field('productionId', secondProductionId)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of missing image file', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .field('productionId', secondProductionId)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
-        });
-
-        it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
-            request(app)
-                .put(`/api/images/${imageId}`)
-                .attach('image', './tests/test-files/testImage.png')
-                .field('productionId', 3)
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
+    it('should respond with status 201 and json containing new object for regular data with .jpeg image', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testImage.jpeg')
+        .field('productionId', productionId)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(productionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
         });
     });
 
-    describe('PATCH /api/images/:id', () => {
-        let imageId;
-
-        beforeEach((done) => {
-            Image.create({
-                url: '/api/uploads/abcd1.png',
-                productionId,
-            })
-                .then((image) => {
-                    imageId = image.id;
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        it('should respond with status 204 for regular data', (done) => {
-            request(app)
-                .patch(`/api/images/${imageId}`)
-                .field('productionId', secondProductionId)
-                .expect(204, done);
-        });
-
-        it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
-            request(app)
-                .patch(`/api/images/${imageId}`)
-                .send({
-                    productionId: 3,
-                })
-                .expect('Content-Type', /json/)
-                .expect(400)
-                .end((err, res) => {
-                    if (err) return done(err);
-                    expect(res.body).to.haveOwnProperty('error');
-                    done();
-                });
+    it('should respond with status 201 and json containing new object for regular data with .jpg image', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testImage.jpg')
+        .field('productionId', productionId)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(productionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
         });
     });
 
-    describe('DELETE /api/images', () => {
-        let imageId;
-
-        beforeEach((done) => {
-            Image.create({
-                url: '/api/uploads/abcd2.png',
-                productionId,
-            })
-                .then((image) => {
-                    imageId = image.id;
-                    done();
-                })
-                .catch((err) => done(err));
-        });
-
-        it('should respond with status 200 and remove object from database', (done) => {
-            request(app)
-                .delete(`/api/images/${imageId}`)
-                .expect(200)
-                .then(() => {
-                    Image.findByPk(imageId)
-                        .then((image) => {
-                            expect(image).to.be.null;
-                            done();
-                        });
-                });
+    it('should respond with status 201 and json containing new object for data with missing productionId', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testImage.png')
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(null);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
         });
     });
 
-    // Wipe images table after all tests
-    after((done) => wipeImages(done));
 
-    // Wipe productions table after all tests
-    after((done) => wipeProductions(done));
+    it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testFile.txt')
+        .field('productionId', productionId)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
 
-    // Wipe uploads directory after all tests
-    after((done) => wipeUploads(done));
+    it('should respond with status 400 and json containing error message because of missing image file', (done) => {
+      request(app)
+        .post('/api/images')
+        .field('productionId', productionId)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
+      request(app)
+        .post('/api/images')
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
+      request(app)
+        .post('/api/images')
+        .attach('image', './tests/test-files/testImage.png')
+        .field('productionId', 3)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+  });
+
+  describe('PUT /api/images/:id', () => {
+    let imageId;
+
+    beforeEach((done) => {
+      Image.create({
+        url: '/api/uploads/abcd1.png',
+        productionId,
+      })
+        .then((image) => {
+          imageId = image.id;
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should respond with status 200 and json containing new object for regular data with .png image', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testImage.png')
+        .field('productionId', secondProductionId)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(secondProductionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
+        });
+    });
+
+    it('should respond with status 200 and json containing new object for regular data with .jpeg image', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testImage.jpeg')
+        .field('productionId', secondProductionId)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(secondProductionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
+        });
+    });
+
+    it('should respond with status 200 and json containing new object for regular data with .jpg image', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testImage.jpg')
+        .field('productionId', secondProductionId)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(secondProductionId);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
+        });
+    });
+
+    it('should respond with status 200 and json containing new object for data with missing productionId', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testImage.png')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.productionId).to.be.equal(null);
+          fs.readdir(directory, (err, files) => {
+            if (err) return done(err);
+            expect(files.length).to.be.greaterThan(0);
+          });
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of wrong type image file', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testFile.txt')
+        .field('productionId', secondProductionId)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of missing image file', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .field('productionId', secondProductionId)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of missing arguments', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+
+    it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
+      request(app)
+        .put(`/api/images/${imageId}`)
+        .attach('image', './tests/test-files/testImage.png')
+        .field('productionId', 3)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+  });
+
+  describe('PATCH /api/images/:id', () => {
+    let imageId;
+
+    beforeEach((done) => {
+      Image.create({
+        url: '/api/uploads/abcd1.png',
+        productionId,
+      })
+        .then((image) => {
+          imageId = image.id;
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should respond with status 204 for regular data', (done) => {
+      request(app)
+        .patch(`/api/images/${imageId}`)
+        .field('productionId', secondProductionId)
+        .expect(204, done);
+    });
+
+    it('should respond with status 400 and json containing error message because of productionId that points for non-existent production', (done) => {
+      request(app)
+        .patch(`/api/images/${imageId}`)
+        .send({
+          productionId: 3,
+        })
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body).to.haveOwnProperty('error');
+          done();
+        });
+    });
+  });
+
+  describe('DELETE /api/images', () => {
+    let imageId;
+
+    beforeEach((done) => {
+      Image.create({
+        url: '/api/uploads/abcd2.png',
+        productionId,
+      })
+        .then((image) => {
+          imageId = image.id;
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should respond with status 200 and remove object from database', (done) => {
+      request(app)
+        .delete(`/api/images/${imageId}`)
+        .expect(200)
+        .then(() => {
+          Image.findByPk(imageId)
+            .then((image) => {
+              expect(image).to.be.null;
+              done();
+            });
+        });
+    });
+  });
+
+  // Wipe images table after all tests
+  after((done) => wipeImages(done));
+
+  // Wipe productions table after all tests
+  after((done) => wipeProductions(done));
+
+  // Wipe uploads directory after all tests
+  after((done) => wipeUploads(done));
 });

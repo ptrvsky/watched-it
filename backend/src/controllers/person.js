@@ -3,118 +3,118 @@ const personSchema = require('../schemas/person');
 
 // Get all productions
 exports.getAllPeople = (req, res, next) => {
-    Person.findAndCountAll({
-        limit: req.query.limit,
-        offset: req.query.offset,
+  Person.findAndCountAll({
+    limit: req.query.limit,
+    offset: req.query.offset,
+  })
+    .then((people) => {
+      res.json(people);
     })
-        .then((people) => {
-            res.json(people);
-        })
-        .catch(next);
+    .catch(next);
 };
 
 // Get person with the given id
 exports.getPerson = (req, res, next) => {
-    Person.findByPk(req.params.id)
-        .then((person) => {
-            res.json(person);
-        })
-        .catch(next);
+  Person.findByPk(req.params.id)
+    .then((person) => {
+      res.json(person);
+    })
+    .catch(next);
 };
 
 // Add person
 exports.createPerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
+  const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
-    personSchema.requiredKeys('name').validate({
-        name,
-        dob,
-        dod,
-        birthplace,
-        faceImageId,
-        biography,
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Person.create(value)
-                .then((person) => {
-                    res.status(201).json(person);
-                })
-                .catch(next);
-        }
-    });
+  personSchema.requiredKeys('name').validate({
+    name,
+    dob,
+    dod,
+    birthplace,
+    faceImageId,
+    biography,
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Person.create(value)
+        .then((person) => {
+          res.status(201).json(person);
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Update person with the given id
 exports.updatePerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
+  const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
-    personSchema.requiredKeys('name').validate({
-        name,
-        dob: dob || null,
-        dod: dod || null,
-        birthplace: birthplace || null,
-        faceImageId: faceImageId || null,
-        biography: biography || null,
-        /*  Nulls are added in case the request body doesn't contain unrequired attributes.
-            Without it, those attributes would remain as they are what is inconsistent
-            with PUT method specification. */
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Person.update(value, {
-                returning: true,
-                where: {
-                    id: req.params.id,
-                },
-            })
-                .then(([, [person]]) => {
-                    res.status(200).json(person);
-                })
-                .catch(next);
-        }
-    });
+  personSchema.requiredKeys('name').validate({
+    name,
+    dob: dob || null,
+    dod: dod || null,
+    birthplace: birthplace || null,
+    faceImageId: faceImageId || null,
+    biography: biography || null,
+    /*  Nulls are added in case the request body doesn't contain unrequired attributes.
+        Without it, those attributes would remain as they are what is inconsistent
+        with PUT method specification. */
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Person.update(value, {
+        returning: true,
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(([, [person]]) => {
+          res.status(200).json(person);
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Patch person with the given id
 exports.patchPerson = (req, res, next) => {
-    const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
+  const { name, dob, dod, birthplace, faceImageId, biography } = req.body;
 
-    personSchema.validate({
-        name,
-        dob,
-        dod,
-        birthplace,
-        faceImageId,
-        biography,
-    }, (err, value) => {
-        if (err) {
-            next(err);
-        } else {
-            Person.update(value, {
-                where: {
-                    id: req.params.id,
-                },
-            })
-                .then(() => {
-                    res.status(204).end();
-                })
-                .catch(next);
-        }
-    });
+  personSchema.validate({
+    name,
+    dob,
+    dod,
+    birthplace,
+    faceImageId,
+    biography,
+  }, (err, value) => {
+    if (err) {
+      next(err);
+    } else {
+      Person.update(value, {
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(() => {
+          res.status(204).end();
+        })
+        .catch(next);
+    }
+  });
 };
 
 // Delete person with the given id
 exports.deletePerson = (req, res, next) => {
-    Person.destroy({
-        where: {
-            id: req.params.id,
-        },
+  Person.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then(() => {
+      res.status(200).end();
     })
-        .then(() => {
-            res.status(200).end();
-        })
-        .catch(next);
+    .catch(next);
 };

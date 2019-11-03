@@ -16,7 +16,6 @@
         "ecmaVersion": 2018
     },
     "rules": {
-        "indent": ["error", 4],
         "object-curly-newline": ["error", {
             "ObjectPattern": { "multiline": true }
         }]
