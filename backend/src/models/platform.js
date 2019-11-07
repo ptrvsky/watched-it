@@ -6,6 +6,9 @@ const Platform = db.define('platform', {
   name: {
     type: Sequelize.STRING,
   },
+  logoId: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 module.exports = Platform;
