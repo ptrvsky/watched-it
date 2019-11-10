@@ -5,9 +5,11 @@ const db = require('../config/database.js');
 const ProductionPlatform = db.define('production_platform', {
   productionId: {
     type: Sequelize.INTEGER,
+    primaryKey: true,
   },
   platformId: {
     type: Sequelize.INTEGER,
+    primaryKey: true,
   },
 }, {
   tableName: 'productions_platforms',
