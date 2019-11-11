@@ -5,6 +5,7 @@ const ProductionController = require('../controllers/production');
 const ProductionPersonController = require('../controllers/productionPerson');
 const ImageController = require('../controllers/image');
 const ProductionRateController = require('../controllers/productionRate');
+const ProductionPlatformController = require('../controllers/productionPlatform');
 
 // Get all productions
 router.get('/', ProductionController.getAllProductions);
@@ -38,5 +39,8 @@ router.get('/:productionId/rates', ProductionRateController.getRatesByProduction
 
 // Get rating stats (average rating, rates quantity) for selected production
 router.get('/:productionId/rates/stats', ProductionRateController.getProductionRatingStats);
+
+// Get platforms assigned to the production
+router.get('/:productionId/platforms', ProductionPlatformController.getProductionPlatformAssignmentsByProduction);
 
 module.exports = router;

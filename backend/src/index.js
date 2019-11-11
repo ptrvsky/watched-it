@@ -48,6 +48,7 @@ app.use('/api/productions-rates/', require('./routes/productions-rates'));
 app.use('/api/people-rates/', require('./routes/people-rates'));
 app.use('/api/users-productions', require('./routes/users-productions'));
 app.use('/api/platforms', require('./routes/platforms'));
+app.use('/api/productions-platforms', require('./routes/productions-platforms'));
 
 // Error handling
 // eslint-disable-next-line no-unused-vars

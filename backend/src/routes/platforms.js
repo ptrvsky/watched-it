@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const PlatformController = require('../controllers/platform');
+const ProductionPlatformController = require('../controllers/productionPlatform');
 
 // Get all platform
 router.get('/', PlatformController.getAllPlatforms);
@@ -20,5 +21,8 @@ router.patch('/:id', PlatformController.patchPlatform);
 
 // Delete platform with the given id
 router.delete('/:id', PlatformController.deletePlatform);
+
+// Get productions assigned to the platform
+router.get('/:platformId/productions', ProductionPlatformController.getProductionPlatformAssignmentsByPlatform);
 
 module.exports = router;
