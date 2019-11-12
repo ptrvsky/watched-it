@@ -13,6 +13,7 @@ class ProductionDetailsMedium extends React.Component {
       averageRating: null,
       ratesQuantity: 0,
       isOnWatchlist: false,
+      platforms: [],
     }
     this.addToWatchlist = this.addToWatchlist.bind(this);
     this.removeFromWatchlist = this.removeFromWatchlist.bind(this);
@@ -24,6 +25,12 @@ class ProductionDetailsMedium extends React.Component {
       .then(poster => {
         this.setState({ poster: poster.url })
       });
+
+    fetch('/api/productions/' + this.props.production.id + '/platforms')
+      .then(productionPlatformAssignments => productionPlatformAssignments.json())
+      .then(productionPlatformAssignments => productionPlatformAssignments.map(productionPlatform =>
+        this.setState({ platforms: this.state.platforms.concat(productionPlatform.platformId) })
+      ));
 
     fetch('/api/productions/' + this.props.production.id + '/people')
       .then(people => people.json())
@@ -93,11 +100,15 @@ class ProductionDetailsMedium extends React.Component {
           <div className="eye-button" onClick={this.removeFromWatchlist} ><Eye size={28} /></div> :
           <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
         <div className="info">
-          <div className="title">{this.props.production.title} <span className="release-date"> {this.props.production.releaseDate ? " (" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</span></div>
+          <div className="title">{this.props.production.title}
+            <span className="release-date"> {this.props.production.releaseDate ? " (" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</span>
+          </div>
           <div className="rating-wrapper">
             <Star className="star" size={20} />
             <div className="average-rating"> {this.state.averageRating ? this.state.averageRating : null} </div>
-            <div className="votes-amount"> {this.state.ratesQuantity ? this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)" : "Not rated yet"} </div>
+            <div className="votes-amount"> {this.state.ratesQuantity ?
+              this.state.ratesQuantity === "1" ? "(" + this.state.ratesQuantity + " vote)" : "(" + this.state.ratesQuantity + " votes)"
+              : "Not rated yet"} </div>
           </div>
           <div className="details">
             <div><span className="category">Genre:</span> {this.props.production.genre.join(", ")}</div>
@@ -106,6 +117,14 @@ class ProductionDetailsMedium extends React.Component {
               {(this.props.production.length % 60 !== 0) ? this.props.production.length % 60 + "min" : null}</div>
             {this.state.director.length > 0 ? <div className="director"><span className="category">Director:</span> {this.state.director.join(", ")}</div> : null}
           </div>
+        </div>
+        <div className="platforms-list">
+          {this.state.platforms.length > 0 ?
+            this.state.platforms.sort().map(platformId =>
+              <div className="platform" key={"platform" + platformId}>
+                <img src={"/images/platforms/platform" + platformId + ".png"} alt="platformImage" />
+              </div>)
+            : null}
         </div>
       </div>
     );
