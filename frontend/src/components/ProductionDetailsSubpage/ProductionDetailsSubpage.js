@@ -14,6 +14,7 @@ export default class ProductionDetailsSubpage extends React.Component {
       poster: null,
       people: [],
       images: [],
+      platforms: [],
     }
   }
 
@@ -49,8 +50,13 @@ export default class ProductionDetailsSubpage extends React.Component {
               images: this.state.images.concat(image.url)
             })
           ));
-      })
-      .catch(err => console.log(err));
+      });
+
+    fetch('/api/productions/' + this.props.match.params.id + '/platforms')
+      .then(productionPlatformAssignments => productionPlatformAssignments.json())
+      .then(productionPlatformAssignments => productionPlatformAssignments.map(productionPlatform =>
+        this.setState({ platforms: this.state.platforms.concat(productionPlatform.platformId) })
+      ));
   }
 
   componentDidMount() {
@@ -91,6 +97,16 @@ export default class ProductionDetailsSubpage extends React.Component {
                   </div>
                   <div>
                     {directors ? <div><span className="category">Director: </span> {directors}</div> : null}
+                  </div>
+                  <div>
+                    <div className="platforms-list">
+                      {this.state.platforms.length > 0 ?
+                        this.state.platforms.sort().map(platformId =>
+                          <div className="platform" key={"platform" + platformId}>
+                            <img src={"/images/platforms/platform" + platformId + ".png"} alt="platformImage" />
+                          </div>)
+                        : null}
+                    </div>
                   </div>
                 </div>
               </div>

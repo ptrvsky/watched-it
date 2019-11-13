@@ -99,6 +99,27 @@
             .category {
               color: $purple;
             }
+
+            .platforms-list {
+              display: flex;
+              padding: 7px 0px 0px 0px;
+          
+              .platform {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                border: 2px solid $purple;
+                border-radius: 50%;
+                margin-right: 7px;
+          
+                img {
+                  height: 70%;
+                  width: 70%;
+                }
+              }
+            }
           }
 
         }
