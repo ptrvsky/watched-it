@@ -84,6 +84,28 @@
         flex-direction: row;
         flex-wrap: wrap;
         padding: 10px 5px 5px 0px;
+
+        .platform {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 30px;
+          height: 30px;
+          border: 1px solid $gray;
+          border-radius: 5px;
+          margin-right: 7px;
+          background: $light-gray2;
+
+          &--checked {
+            border: 1px solid $purple;
+          }
+
+          img {
+            height: 70%;
+            width: 70%;
+          }
+        }
+
       }
     }
   }

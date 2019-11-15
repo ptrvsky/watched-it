@@ -138,9 +138,9 @@ export default class ProductionsSubpage extends React.Component {
             </div>
             <div className="filter-category-wrapper">
               <h3>Platforms</h3>
-              <label className="btn-filter btn-filter--checked">Netflix</label>
-              <label className="btn-filter">HBO GO</label>
-              <label className="btn-filter">Prime Video</label>
+              <label className="platform platform--checked"><img src={"/images/platforms/platform1.png"} alt="netflix" /></label>
+              <label className="platform"><img src={"/images/platforms/platform2.png"} alt="hbogo" /></label>
+              <label className="platform"><img src={"/images/platforms/platform3.png"} alt="primevideo" /></label>
             </div>
             <div className="filter-category-wrapper">
               <h3>Genres</h3>
