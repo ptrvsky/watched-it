@@ -1,7 +1,11 @@
 const { Op } = require('sequelize');
 
 const Production = require('../models/production');
+const ProductionPlatform = require('../models/productionPlatform');
 const productionSchema = require('../schemas/production');
+
+Production.hasMany(ProductionPlatform);
+ProductionPlatform.belongsTo(Production);
 
 // Get all productions
 exports.getAllProductions = (req, res, next) => {
@@ -35,12 +39,21 @@ exports.getAllProductions = (req, res, next) => {
     },
   };
 
+  // Querying by platformId
+  const include = req.query.platformId ? [{
+    model: ProductionPlatform,
+    where: {
+      platformId: req.query.platformId,
+    },
+  }] : null;
+
   if (req.query.isSerie !== undefined) {
     where.isSerie = req.query.isSerie;
   }
 
-  Production.findAndCountAll({
+  Production.findAll({
     where,
+    include,
     limit: req.query.limit,
     offset: req.query.offset,
     order: order[req.query.order],
