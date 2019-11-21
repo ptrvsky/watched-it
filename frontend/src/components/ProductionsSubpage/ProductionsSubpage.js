@@ -24,17 +24,21 @@ export default class ProductionsSubpage extends React.Component {
       user: {
         status: 'NOT_LOGGED'
       },
+      platforms: [false, false, false],
       page: 0
     }
     this.handleOrderChange = this.handleOrderChange.bind(this);
+    this.handlePlatformChange = this.handlePlatformChange.bind(this);
     this.handleLengthFilterChange = this.handleLengthFilterChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   fetchProductions() {
-    fetch('/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order +
+    let url = '/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order +
       "&lengthMin=" + this.state.lengthMin + "&lengthMax=" + this.state.lengthMax +
-      "&limit=10&offset=" + this.state.page * 10)
+      "&limit=10&offset=" + this.state.page * 10;
+    this.state.platforms.map((platform, index) => platform ? url += "&platformId=" + (index + 1) : null);
+    fetch(url)
       .then(response => response.json())
       .then(productions => {
         if (Array.isArray(productions.rows)) {
@@ -51,18 +55,24 @@ export default class ProductionsSubpage extends React.Component {
     this.setState({ order: event.target.id });
   }
 
+  handlePlatformChange(event) {
+    let platforms = [...this.state.platforms];
+    platforms[event.currentTarget.id - 1] = !platforms[event.currentTarget.id - 1];
+    this.setState({ platforms });
+  }
+
   handlePageChange(event) {
     if (event.target.id === "next" && this.state.page * 10 + 10 < this.state.productionsCount) {
-      this.setState({ 
+      this.setState({
         productionsCount: null, // Delays loading of productionsCount so pagination buttons don't hide/show before productions load
-        page: this.state.page + 1 
+        page: this.state.page + 1
       })
     }
 
     if (event.target.id === "previous" && this.state.page > 0) {
-      this.setState({ 
+      this.setState({
         productionsCount: null, // Delays loading of productionsCount so pagination buttons don't hide/show before productions load
-        page: this.state.page - 1 
+        page: this.state.page - 1
       })
     }
   }
@@ -138,9 +148,18 @@ export default class ProductionsSubpage extends React.Component {
             </div>
             <div className="filter-category-wrapper">
               <h3>Platforms</h3>
-              <label className="platform platform--checked"><img src={"/images/platforms/platform1.png"} alt="netflix" /></label>
-              <label className="platform"><img src={"/images/platforms/platform2.png"} alt="hbogo" /></label>
-              <label className="platform"><img src={"/images/platforms/platform3.png"} alt="primevideo" /></label>
+              <label className={this.state.platforms[0] ? "platform platform--checked" : "platform"} id="1"
+                onClick={this.handlePlatformChange}>
+                <img src={"/images/platforms/platform1.png"} alt="netflix" />
+              </label>
+              <label className={this.state.platforms[1] ? "platform platform--checked" : "platform"} id="2"
+                onClick={this.handlePlatformChange}>
+                <img src={"/images/platforms/platform2.png"} alt="hbogo" />
+              </label>
+              <label className={this.state.platforms[2] ? "platform platform--checked" : "platform"} id="3"
+                onClick={this.handlePlatformChange}>
+                <img src={"/images/platforms/platform3.png"} alt="primevideo" />
+              </label>
             </div>
             <div className="filter-category-wrapper">
               <h3>Genres</h3>
