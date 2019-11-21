@@ -51,7 +51,7 @@ exports.getAllProductions = (req, res, next) => {
     where.isSerie = req.query.isSerie;
   }
 
-  Production.findAll({
+  Production.findAndCountAll({
     where,
     include,
     limit: req.query.limit,
