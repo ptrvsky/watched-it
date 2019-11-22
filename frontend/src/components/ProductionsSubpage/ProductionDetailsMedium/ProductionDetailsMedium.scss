@@ -40,6 +40,7 @@
     padding: 11px 13px 0px 0px;
     color: $purple;
     cursor: pointer;
+    transition: .3s;
 
     &--gray {
       color: $gray;
@@ -60,7 +61,7 @@
       align-items: center;
       width: 30px;
       height: 30px;
-      border: 2px solid $purple;
+      border: 1.6px solid $purple;
       border-radius: 50%;
       margin-left: 7px;
 

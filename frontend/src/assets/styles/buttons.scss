@@ -23,6 +23,7 @@
   min-width: 50px;
   text-align: center;
   cursor: pointer;
+  transition: .3s;
 
   &--checked {
     border: 1px solid $purple;
