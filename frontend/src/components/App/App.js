@@ -49,6 +49,11 @@ function App() {
             <Route path="/contact" component={NotFound} />
             <Route path="/faq" component={NotFound} />
             <Route path="/notfound" component={NotFound} />
+
+            <Route path="/netflix/" exact render={() => <ProductionsSubpage platform="Netflix" />} />
+            <Route path="/hbogo/" exact render={() => <ProductionsSubpage platform="HBO GO" />} />
+            <Route path="/primevideo/" exact render={() => <ProductionsSubpage platform="Prime Video" />} />
+
           </div>
         </div>
         <Footer />

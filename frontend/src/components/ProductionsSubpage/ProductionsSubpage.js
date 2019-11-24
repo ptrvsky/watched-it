@@ -27,6 +27,11 @@ export default class ProductionsSubpage extends React.Component {
       platforms: [false, false, false],
       page: 0
     }
+
+    if (this.props.platform === "Netflix") this.state.platforms = [true, false, false];
+    if (this.props.platform === "HBO GO") this.state.platforms = [false, true, false];
+    if (this.props.platform === "Prime Video") this.state.platforms = [false, false, true];
+
     this.handleOrderChange = this.handleOrderChange.bind(this);
     this.handlePlatformChange = this.handlePlatformChange.bind(this);
     this.handleLengthFilterChange = this.handleLengthFilterChange.bind(this);
@@ -34,9 +39,11 @@ export default class ProductionsSubpage extends React.Component {
   }
 
   fetchProductions() {
-    let url = '/api/productions?isSerie=' + this.props.isSerie + "&order=" + this.state.order +
-      "&lengthMin=" + this.state.lengthMin + "&lengthMax=" + this.state.lengthMax +
-      "&limit=10&offset=" + this.state.page * 10;
+    let url = '/api/productions?order=' + this.state.order +
+      (this.props.isSerie !== undefined ? ('&isSerie= ' + this.props.isSerie) : '') +
+      '&lengthMin=' + this.state.lengthMin +
+      '&lengthMax=' + this.state.lengthMax +
+      '&limit=10&offset=' + this.state.page * 10;
     this.state.platforms.map((platform, index) => platform ? url += "&platformId=" + (index + 1) : null);
     fetch(url)
       .then(response => response.json())
@@ -119,7 +126,7 @@ export default class ProductionsSubpage extends React.Component {
   render() {
     return (
       <div className="productions-subpage-wrapper">
-        <h1>{this.props.isSerie ? "TV Series" : "Movies"}</h1>
+        <h1>{this.props.platform ? this.props.platform : this.props.isSerie ? "TV Series" : "Movies"}</h1>
         <div className="title-underline" />
         <div className="content-wrapper">
           <div className="list-wrapper">
@@ -146,21 +153,23 @@ export default class ProductionsSubpage extends React.Component {
               <label className="btn-filter">6-5</label>
               <label className="btn-filter">5-0</label>
             </div>
-            <div className="filter-category-wrapper">
-              <h3>Platforms</h3>
-              <label className={this.state.platforms[0] ? "platform platform--checked" : "platform"} id="1"
-                onClick={this.handlePlatformChange}>
-                <img src={"/images/platforms/platform1.png"} alt="netflix" />
-              </label>
-              <label className={this.state.platforms[1] ? "platform platform--checked" : "platform"} id="2"
-                onClick={this.handlePlatformChange}>
-                <img src={"/images/platforms/platform2.png"} alt="hbogo" />
-              </label>
-              <label className={this.state.platforms[2] ? "platform platform--checked" : "platform"} id="3"
-                onClick={this.handlePlatformChange}>
-                <img src={"/images/platforms/platform3.png"} alt="primevideo" />
-              </label>
-            </div>
+            {this.props.platform ? null :
+              <div className="filter-category-wrapper">
+                <h3>Platforms</h3>
+                <label className={this.state.platforms[0] ? "platform platform--checked" : "platform"} id="1"
+                  onClick={this.handlePlatformChange}>
+                  <img src={"/images/platforms/platform1.png"} alt="netflix" />
+                </label>
+                <label className={this.state.platforms[1] ? "platform platform--checked" : "platform"} id="2"
+                  onClick={this.handlePlatformChange}>
+                  <img src={"/images/platforms/platform2.png"} alt="hbogo" />
+                </label>
+                <label className={this.state.platforms[2] ? "platform platform--checked" : "platform"} id="3"
+                  onClick={this.handlePlatformChange}>
+                  <img src={"/images/platforms/platform3.png"} alt="primevideo" />
+                </label>
+              </div>
+            }
             <div className="filter-category-wrapper">
               <h3>Genres</h3>
               <label className="btn-filter">Action</label>
