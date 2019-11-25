@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProductionDetailsMedium.scss';
 import { Star, Eye } from 'react-feather';
-import { withRouter } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 
 class ProductionDetailsMedium extends React.Component {
 
@@ -121,9 +121,11 @@ class ProductionDetailsMedium extends React.Component {
         <div className="platforms-list">
           {this.state.platforms.length > 0 ?
             this.state.platforms.sort().map(platformId =>
-              <div className="platform" key={"platform" + platformId}>
-                <img src={"/images/platforms/platform" + platformId + ".png"} alt="platformImage" />
-              </div>)
+              <Link to={"/platform/" + platformId} key={"platform" + platformId}>
+                <div className="platform">
+                  <img src={"/images/platforms/platform" + platformId + ".png"} alt="platformImage" />
+                </div>
+              </Link>)
             : null}
         </div>
       </div>

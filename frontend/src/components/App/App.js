@@ -50,9 +50,12 @@ function App() {
             <Route path="/faq" component={NotFound} />
             <Route path="/notfound" component={NotFound} />
 
-            <Route path="/netflix/" exact render={() => <ProductionsSubpage platform="Netflix" />} />
-            <Route path="/hbogo/" exact render={() => <ProductionsSubpage platform="HBO GO" />} />
-            <Route path="/primevideo/" exact render={() => <ProductionsSubpage platform="Prime Video" />} />
+            <Route path="/netflix" exact render={() => <ProductionsSubpage platform="Netflix" />} />
+            <Route path="/hbogo" exact render={() => <ProductionsSubpage platform="HBO GO" />} />
+            <Route path="/primevideo" exact render={() => <ProductionsSubpage platform="Prime Video" />} />
+            <Route path="/platform/1" exact render={() => <ProductionsSubpage platform="Netflix" />}></Route>
+            <Route path="/platform/2" exact render={() => <ProductionsSubpage platform="HBO GO" />}></Route>
+            <Route path="/platform/3" exact render={() => <ProductionsSubpage platform="Prime Video" />}></Route>
 
           </div>
         </div>
