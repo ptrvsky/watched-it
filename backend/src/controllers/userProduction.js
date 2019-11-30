@@ -1,5 +1,8 @@
+const Production = require('../models/production');
 const UserProduction = require('../models/userProduction');
 const userProductionSchema = require('../schemas/userProduction');
+
+UserProduction.belongsTo(Production);
 
 // Get user-production assignments of selected user
 exports.getUserProductionAssignmentsByUser = (req, res, next) => {
@@ -7,6 +10,7 @@ exports.getUserProductionAssignmentsByUser = (req, res, next) => {
     where: {
       userId: req.params.userId,
     },
+    include: Production,
     limit: req.query.limit,
     offset: req.query.offset,
   })
