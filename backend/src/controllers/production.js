@@ -51,6 +51,12 @@ exports.getAllProductions = (req, res, next) => {
     where.isSerie = req.query.isSerie;
   }
 
+  if (req.query.ids !== undefined) {
+    where.id = {
+      [Op.in]: req.query.ids.split(',').map(Number),
+    };
+  }
+
   Production.findAndCountAll({
     where,
     include,
