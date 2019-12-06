@@ -38,7 +38,7 @@ function App() {
             <Route path="/people/" exact component={PeopleSubpage} />
             <Route path="/people/:id" exact component={PersonDetailsSubpage} />
             <Route path="/rankings/" component={NotFound} />
-            <Route path="/watchlist" component={NotFound} />
+            <Route path="/watchlist" render={() => <ProductionsSubpage isWatchlist={true} />} />
             <Route path="/ratings" component={NotFound} />
             <Route path="/settings" component={NotFound} />
             <Route path="/register" component={RegisterSubpage} />

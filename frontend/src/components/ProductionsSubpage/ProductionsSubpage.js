@@ -38,13 +38,22 @@ export default class ProductionsSubpage extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
-  fetchProductions() {
+  async fetchProductions() {
     let url = '/api/productions?order=' + this.state.order +
       (this.props.isSerie !== undefined ? ('&isSerie= ' + this.props.isSerie) : '') +
       '&lengthMin=' + this.state.lengthMin +
       '&lengthMax=' + this.state.lengthMax +
       '&limit=10&offset=' + this.state.page * 10;
+      
     this.state.platforms.map((platform, index) => platform ? url += "&platformId=" + (index + 1) : null);
+
+    if (this.props.isWatchlist && this.state.user.status === 'LOGGED') {
+      await fetch('/api/users/' + this.state.user.id + '/watchlist')
+        .then(response => response.json())
+        .then(usersProductions => usersProductions.map(userProduction => userProduction.productionId))
+        .then(productionsIds => url += "&ids=" + productionsIds.join(","));
+    }
+
     fetch(url)
       .then(response => response.json())
       .then(productions => {
@@ -124,9 +133,12 @@ export default class ProductionsSubpage extends React.Component {
   }
 
   render() {
+    const title = this.props.isWatchlist ?
+      "Your watchlist" : this.props.platform ? this.props.platform : this.props.isSerie ? "TV Series" : "Movies";
+
     return (
       <div className="productions-subpage-wrapper">
-        <h1>{this.props.platform ? this.props.platform : this.props.isSerie ? "TV Series" : "Movies"}</h1>
+        <h1>{title}</h1>
         <div className="title-underline" />
         <div className="content-wrapper">
           <div className="list-wrapper">
