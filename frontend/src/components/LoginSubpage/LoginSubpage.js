@@ -23,6 +23,8 @@ export default class LoginSubpage extends React.Component {
         {this.props.location.search === "?failure=true" ? <div className="error">Incorrect e-mail or password. Try again.</div> : null}
         {this.props.location.search === "?unauthenticatedRateTry=true" ? <div className="error">You have to be logged in to rate production.</div> : null}
         {this.props.location.search === "?unauthenticatedAddToWatchlistTry=true" ? <div className="error">You have to be logged in to add production to your watchlist.</div> : null}
+        {this.props.location.search === "?unauthenticatedWatchlistAccessTry=true" ? <div className="error">You have to be logged in to see your watchlist.</div> : null}
+
         <form action="/api/users/login" method="POST">
           <div className="form-element">
             <label>E-mail</label>

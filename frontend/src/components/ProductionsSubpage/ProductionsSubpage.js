@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import '../../assets/styles/buttons.scss';
 import '../../assets/styles/labels.scss';
 import './ProductionsSubpage.scss';
@@ -25,7 +25,8 @@ export default class ProductionsSubpage extends React.Component {
         status: 'NOT_LOGGED'
       },
       platforms: [false, false, false],
-      page: 0
+      page: 0,
+      redirect: false,
     }
 
     if (this.props.platform === "Netflix") this.state.platforms = [true, false, false];
@@ -44,7 +45,7 @@ export default class ProductionsSubpage extends React.Component {
       '&lengthMin=' + this.state.lengthMin +
       '&lengthMax=' + this.state.lengthMax +
       '&limit=10&offset=' + this.state.page * 10;
-      
+
     this.state.platforms.map((platform, index) => platform ? url += "&platformId=" + (index + 1) : null);
 
     if (this.props.isWatchlist && this.state.user.status === 'LOGGED') {
@@ -119,22 +120,42 @@ export default class ProductionsSubpage extends React.Component {
   componentDidMount() {
     fetch('/api/users/auth')
       .then((user) => user.json())
-      .then((user) => this.setState({ user }))
-      .then(() => this.fetchProductions());
+      .then((user) => {
+        this.setState({ user });
+        return user;
+      })
+      .then((user) => {
+        if (this.props.isWatchlist && user.status === 'NOT_LOGGED') {
+          this.setState({ redirect: true });
+        } else {
+          this.fetchProductions();
+        }
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (JSON.stringify(prevState) !== JSON.stringify(this.state)) {
       fetch('/api/users/auth')
         .then((user) => user.json())
-        .then((user) => this.setState({ user }))
-        .then(() => this.fetchProductions());
+        .then((user) => {
+          this.setState({ user });
+          return user;
+        })
+        .then((user) => {
+          if (this.props.isWatchlist && user.status === 'NOT_LOGGED') {
+            this.setState({ redirect: true });
+          } else {
+            this.fetchProductions();
+          }
+        });
     }
   }
 
   render() {
     const title = this.props.isWatchlist ?
       "Your watchlist" : this.props.platform ? this.props.platform : this.props.isSerie ? "TV Series" : "Movies";
+
+    if (this.state.redirect) return <Redirect to='/login?unauthenticatedWatchlistAccessTry=true' />;
 
     return (
       <div className="productions-subpage-wrapper">
