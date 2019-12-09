@@ -37,6 +37,7 @@ export default class ProductionsSubpage extends React.Component {
     this.handlePlatformChange = this.handlePlatformChange.bind(this);
     this.handleLengthFilterChange = this.handleLengthFilterChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleRemovingProductionFromWatchlist = this.handleRemovingProductionFromWatchlist.bind(this);
   }
 
   async fetchProductions() {
@@ -117,6 +118,10 @@ export default class ProductionsSubpage extends React.Component {
     });
   }
 
+  handleRemovingProductionFromWatchlist() {
+    if (this.props.isWatchlist) this.fetchProductions();
+  }
+
   componentDidMount() {
     fetch('/api/users/auth')
       .then((user) => user.json())
@@ -163,7 +168,9 @@ export default class ProductionsSubpage extends React.Component {
         <div className="title-underline" />
         <div className="content-wrapper">
           <div className="list-wrapper">
-            {this.state.productions.map((production) => <Link to={(this.props.isSerie ? "/tvseries/" : "/movies/") + production.id} key={production.id} ><ProductionDetailsMedium production={production} user={this.state.user} /></Link>)}
+            {this.state.productions.map((production) => <Link to={(this.props.isSerie ? "/tvseries/" : "/movies/") + production.id} key={production.id} >
+              <ProductionDetailsMedium production={production} user={this.state.user} handleRemovingProductionFromWatchlist={this.handleRemovingProductionFromWatchlist} />
+            </Link>)}
             <div className="page-buttons-wrapper">
               {this.state.page > 0 && this.state.productionsCount ? <button className="btn-primary page-button" id="previous" onClick={this.handlePageChange} >Previous page</button> : null}
               {this.state.page * 10 + 10 < this.state.productionsCount && this.state.productionsCount ? <button className="btn-primary page-button page-button--next" id="next" onClick={this.handlePageChange} >Next page</button> : null}

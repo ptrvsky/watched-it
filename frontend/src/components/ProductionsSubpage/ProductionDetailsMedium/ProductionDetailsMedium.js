@@ -89,7 +89,9 @@ class ProductionDetailsMedium extends React.Component {
       fetch('/api/users-productions/users/' + this.props.user.id + '/productions/' + this.props.production.id, {
         method: 'DELETE'
       })
+      .then(() => this.props.handleRemovingProductionFromWatchlist());
     }
+
   }
 
   render() {
