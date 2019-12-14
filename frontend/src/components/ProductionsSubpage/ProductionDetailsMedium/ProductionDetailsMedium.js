@@ -14,6 +14,7 @@ class ProductionDetailsMedium extends React.Component {
       ratesQuantity: 0,
       isOnWatchlist: false,
       platforms: [],
+      rate: null,
     }
     this.addToWatchlist = this.addToWatchlist.bind(this);
     this.removeFromWatchlist = this.removeFromWatchlist.bind(this);
@@ -59,7 +60,13 @@ class ProductionDetailsMedium extends React.Component {
           if (userProductionAssignment) {
             this.setState({ isOnWatchlist: true })
           }
-        })
+        });
+
+      fetch('/api/productions-rates/productions/' + this.props.production.id + '/users/' + this.props.user.id)
+        .then(rate => rate.json())
+        .then(rate => {
+          if (rate) this.setState({ rate: rate.value });
+        });
     }
   };
 
@@ -89,7 +96,7 @@ class ProductionDetailsMedium extends React.Component {
       fetch('/api/users-productions/users/' + this.props.user.id + '/productions/' + this.props.production.id, {
         method: 'DELETE'
       })
-      .then(() => this.props.handleRemovingProductionFromWatchlist());
+        .then(() => this.props.handleRemovingProductionFromWatchlist());
     }
 
   }
@@ -98,9 +105,11 @@ class ProductionDetailsMedium extends React.Component {
     return (
       <div className="production-details-medium-wrapper">
         <div className="poster">{this.state.poster ? <img src={"/api/" + this.state.poster} alt="poster" /> : null}</div>
-        {this.state.isOnWatchlist ?
-          <div className="eye-button" onClick={this.removeFromWatchlist} ><Eye size={28} /></div> :
-          <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
+        {this.state.rate ?
+          <div className="rate-value">{this.state.rate}</div> :
+          this.state.isOnWatchlist ?
+            <div className="eye-button" onClick={this.removeFromWatchlist} ><Eye size={28} /></div> :
+            <div className="eye-button eye-button--gray" onClick={this.addToWatchlist} ><Eye size={28} /></div>}
         <div className="info">
           <div className="title">{this.props.production.title}
             <span className="release-date"> {this.props.production.releaseDate ? " (" + this.props.production.releaseDate.slice(0, 4) + ")" : null}</span>
