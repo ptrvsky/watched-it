@@ -43,7 +43,12 @@ class RateButton extends React.Component {
         productionId: this.props.id,
         userId: this.state.user.id,
         value: newRating,
-      })
+      });
+
+      // Remove production after user rates it
+      fetch('/api/users-productions/users/' + this.state.user.id + '/productions/' + this.props.id, {
+        method: 'DELETE'
+      });
     }
 
     if (fetchURL) {
