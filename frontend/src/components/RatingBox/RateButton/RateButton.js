@@ -10,6 +10,7 @@ class RateButton extends React.Component {
     this.state = {
       rateHovered: null,
       userRating: null,
+      dateOfRate: null,
       user: {
         status: 'NOT_LOGGED',
       },
@@ -110,6 +111,7 @@ class RateButton extends React.Component {
                 this.setState({
                   rateHovered: rate.value,
                   userRating: rate.value,
+                  dateOfRate: rate.updatedAt,
                 });
               };
             });
@@ -118,18 +120,24 @@ class RateButton extends React.Component {
   }
 
   render() {
+    let dateOfRate = this.state.dateOfRate ? new Date(this.state.dateOfRate) : null;
     return (
-      <div className="rate-button-wrapper" onMouseLeave={this.onLeave} >
-        <Star className={this.state.rateHovered >= 1 ? "star star--checked" : "star"} id="1" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 2 ? "star star--checked" : "star"} id="2" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 3 ? "star star--checked" : "star"} id="3" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 4 ? "star star--checked" : "star"} id="4" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 5 ? "star star--checked" : "star"} id="5" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 6 ? "star star--checked" : "star"} id="6" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 7 ? "star star--checked" : "star"} id="7" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 8 ? "star star--checked" : "star"} id="8" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 9 ? "star star--checked" : "star"} id="9" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
-        <Star className={this.state.rateHovered >= 10 ? "star star--checked" : "star"} id="10" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+      <div>
+        <div className="rate-button-wrapper" onMouseLeave={this.onLeave} >
+          <Star className={this.state.rateHovered >= 1 ? "star star--checked" : "star"} id="1" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 2 ? "star star--checked" : "star"} id="2" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 3 ? "star star--checked" : "star"} id="3" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 4 ? "star star--checked" : "star"} id="4" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 5 ? "star star--checked" : "star"} id="5" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 6 ? "star star--checked" : "star"} id="6" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 7 ? "star star--checked" : "star"} id="7" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 8 ? "star star--checked" : "star"} id="8" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 9 ? "star star--checked" : "star"} id="9" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+          <Star className={this.state.rateHovered >= 10 ? "star star--checked" : "star"} id="10" onMouseEnter={this.onHover} onClick={this.onClick} size={22} />
+        </div>
+        <div className="date-of-rate">
+          {dateOfRate ? "Rated " + dateOfRate.toLocaleDateString('en-UK', { year: 'numeric', month: 'long', day: 'numeric' }) : null}
+        </div>
       </div>
     );
   }
