@@ -38,8 +38,8 @@ function App() {
             <Route path="/people/" exact component={PeopleSubpage} />
             <Route path="/people/:id" exact component={PersonDetailsSubpage} />
             <Route path="/rankings/" component={NotFound} />
-            <Route path="/watchlist" render={() => <ProductionsSubpage isWatchlist={true} />} />
-            <Route path="/ratings" component={NotFound} />
+            <Route path="/watchlist" render={() => <ProductionsSubpage type="watchlist" />} />
+            <Route path="/ratings" render={() => <ProductionsSubpage type="ratings" />} />
             <Route path="/settings" component={NotFound} />
             <Route path="/register" component={RegisterSubpage} />
             <Route path="/login" component={LoginSubpage} />

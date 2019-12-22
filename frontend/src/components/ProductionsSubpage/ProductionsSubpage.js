@@ -49,11 +49,18 @@ export default class ProductionsSubpage extends React.Component {
 
     this.state.platforms.map((platform, index) => platform ? url += "&platformId=" + (index + 1) : null);
 
-    if (this.props.isWatchlist && this.state.user.status === 'LOGGED') {
-      await fetch('/api/users/' + this.state.user.id + '/watchlist')
-        .then(response => response.json())
-        .then(usersProductions => usersProductions.map(userProduction => userProduction.productionId))
-        .then(productionsIds => url += "&ids=" + productionsIds.join(","));
+    if (this.state.user.status === 'LOGGED') {
+      if (this.props.type === 'watchlist') {
+        await fetch('/api/users/' + this.state.user.id + '/watchlist')
+          .then(response => response.json())
+          .then(usersProductions => usersProductions.map(userProduction => userProduction.productionId))
+          .then(productionsIds => url += "&ids=" + productionsIds.join(","));
+      } else if (this.props.type === 'ratings') {
+        await fetch('/api/users/' + this.state.user.id + '/productions-rates')
+          .then(response => response.json())
+          .then(usersProductions => usersProductions.map(userProduction => userProduction.productionId))
+          .then(productionsIds => url += "&ids=" + productionsIds.join(","));
+      }
     }
 
     fetch(url)
@@ -119,7 +126,7 @@ export default class ProductionsSubpage extends React.Component {
   }
 
   handleRemovingProductionFromWatchlist() {
-    if (this.props.isWatchlist) this.fetchProductions();
+    if (this.props.type === 'watchlist') this.fetchProductions();
   }
 
   componentDidMount() {
@@ -130,7 +137,7 @@ export default class ProductionsSubpage extends React.Component {
         return user;
       })
       .then((user) => {
-        if (this.props.isWatchlist && user.status === 'NOT_LOGGED') {
+        if (this.props.type && user.status === 'NOT_LOGGED') {
           this.setState({ redirect: true });
         } else {
           this.fetchProductions();
@@ -147,7 +154,7 @@ export default class ProductionsSubpage extends React.Component {
           return user;
         })
         .then((user) => {
-          if (this.props.isWatchlist && user.status === 'NOT_LOGGED') {
+          if (this.props.type && user.status === 'NOT_LOGGED') {
             this.setState({ redirect: true });
           } else {
             this.fetchProductions();
@@ -157,10 +164,13 @@ export default class ProductionsSubpage extends React.Component {
   }
 
   render() {
-    const title = this.props.isWatchlist ?
-      "Your watchlist" : this.props.platform ? this.props.platform : this.props.isSerie ? "TV Series" : "Movies";
+    const title = this.props.type === 'watchlist' ? "Your watchlist" :
+      this.props.type === 'ratings' ? "Your ratings" :
+        this.props.platform ? this.props.platform :
+          this.props.isSerie ? "TV Series" :
+            "Movies";
 
-    if (this.state.redirect) return <Redirect to='/login?unauthenticatedWatchlistAccessTry=true' />;
+    if (this.state.redirect) return <Redirect to='/login?unauthenticatedAccessTry=true' />;
 
     return (
       <div className="productions-subpage-wrapper">
