@@ -57,6 +57,12 @@ exports.getAllProductions = (req, res, next) => {
     };
   }
 
+  if (req.query.search !== undefined) {
+    where.title = {
+      [Op.iLike]: `%${req.query.search}%`,
+    };
+  }
+
   Production.findAndCountAll({
     where,
     include,
