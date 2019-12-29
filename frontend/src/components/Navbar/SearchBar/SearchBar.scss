@@ -1,0 +1,11 @@
+@import '../../../assets/styles/colors.scss';
+
+.search-bar {
+  width: 100%;
+  border: 1px solid $dark-purple;
+  border-radius: 5px;
+
+  &--desktop {
+    margin: 0px 35px 0px 20px;
+  }
+}

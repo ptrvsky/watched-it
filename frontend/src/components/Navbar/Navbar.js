@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Navbar, Form, NavDropdown } from 'react-bootstrap';
-import { Search, User, LogIn } from 'react-feather';
+import { Navbar, NavDropdown } from 'react-bootstrap';
+import { User, LogIn } from 'react-feather';
 import { useMediaQuery } from 'react-responsive'
 import './Navbar.scss';
+import SearchBar from './SearchBar/SearchBar';
 
 const Desktop = ({ children }) => {
   const isDesktop = useMediaQuery({ minWidth: 992 })
@@ -80,12 +81,7 @@ class NavigationBar extends React.Component {
                 <Link to="/people" className="nav-link">People</Link>
                 <Link to="/rankings" className="nav-link">Rankings</Link>
               </Navbar.Collapse>
-              <div className="search-bar" >
-                <Form inline >
-                  <input className="search-input" type="text" placeholder="Search" />
-                  <button className="btn"><Search /></button>
-                </Form>
-              </div>
+              <SearchBar isMobile={true}/>
             </Mobile>
 
             <Desktop>
@@ -93,12 +89,7 @@ class NavigationBar extends React.Component {
               <Link to="/tvseries" className="nav-link">TV Series</Link>
               <Link to="/people" className="nav-link">People</Link>
               <Link to="/rankings" className="nav-link">Rankings</Link>
-              <div className="search-bar search-bar--desktop" >
-                <Form inline >
-                  <input className="search-input" type="text" placeholder="Search" />
-                  <button className="btn"><Search /></button>
-                </Form>
-              </div>
+              <SearchBar />
               {this.state.user.status === 'LOGGED' ?
                 <NavDropdown alignRight title={<User />} className="ml-auto">
                   <Link to="/watchlist" className="dropdown-item">Watchlist</Link>
