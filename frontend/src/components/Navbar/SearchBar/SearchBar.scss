@@ -20,12 +20,31 @@
     width: calc(100% - 40px);
   }
 
-  .search-results {
-    background-color: $light-gray;
+  .search-results-wrapper {
     position: absolute;
     top: 40px;
     border: 1px solid $dark-purple;
     border-radius: 5px;
     width: 100%;
+    background-color: $light-gray3;
+  }
+
+  .search-result {
+    font-size: 17px;
+    margin: 1px;
+    background-color: $light-gray;
+
+    &:hover {
+      background-color: $light-gray3;
+      color: $purple;
+      transition: .2s;
+    }
+
+    img {
+      height: 80px;
+      width: 55px;
+      margin-right: 5px;
+      border-radius: 5px 0px 0px 5px;
+    }
   }
 }

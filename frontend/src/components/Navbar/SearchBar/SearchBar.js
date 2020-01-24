@@ -8,33 +8,43 @@ export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null,
+      results: [],
       posters: [],
     }
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputLostFocus = this.handleInputLostFocus.bind(this);
   }
 
   handleInputChange(event) {
+    this.setState({
+      results: [],
+      posters: [],
+    });
     if (event.target.value) {
       fetch('/api/productions?limit=3&search=' + event.target.value)
         .then(response => response.json())
-        .then(response => {
-          this.setState({
-            result: response.rows,
-          });
-          // Fetch posters of all 3 productions
-          response.rows.map(production => fetch('/api/images/' + production.id)
-            .then(poster => poster.json())
-            .then(poster => {
-              this.setState({ posters: this.state.posters.concat(poster.url) })
-            }));
-        });
+        .then(response => response.rows.map(production => fetch('/api/images/' + production.id)
+          .then(poster => poster.json())
+          .then(poster => {
+            this.setState({
+              results: this.state.results.concat(production),
+              posters: this.state.posters.concat(poster.url)
+            })
+          })));
     } else {
       this.setState({
-        result: null,
+        results: [],
         posters: [],
       })
     }
+  }
+
+  handleInputLostFocus(event) {
+    event.target.value = null;
+    this.setState({
+      results: [],
+      posters: [],
+    })
   }
 
   render() {
@@ -44,7 +54,13 @@ export default class SearchBar extends React.Component {
           <input className="search-input" type="text" placeholder="Search" onInput={this.handleInputChange} />
           <button className="btn"><Search /></button>
         </Form>
-        {this.state.result ? <div className="search-results"></div> : null}
+        {this.state.results.length !== 0 ? <div className="search-results-wrapper">
+          {this.state.results.map((production, index) =>
+            <div className="search-result">
+              {this.state.posters[index] ? <img src={"/api/" + this.state.posters[index]} alt="poster" /> : null} {production.title}
+            </div>
+          )}
+        </div> : null}
       </div>
     );
   }
