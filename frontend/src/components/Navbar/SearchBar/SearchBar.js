@@ -21,6 +21,7 @@ export default class SearchBar extends React.Component {
       results: [],
       posters: [],
     });
+    
     if (event.target.value) {
       fetch('/api/productions?limit=3&search=' + event.target.value)
         .then(response => response.json())
@@ -32,11 +33,6 @@ export default class SearchBar extends React.Component {
               posters: this.state.posters.concat(poster.url)
             })
           })));
-    } else {
-      this.setState({
-        results: [],
-        posters: [],
-      })
     }
   }
 
