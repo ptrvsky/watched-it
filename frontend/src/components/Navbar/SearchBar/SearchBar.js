@@ -21,7 +21,7 @@ export default class SearchBar extends React.Component {
       results: [],
       posters: [],
     });
-    
+
     if (event.target.value) {
       fetch('/api/productions?limit=3&search=' + event.target.value)
         .then(response => response.json())
@@ -49,14 +49,22 @@ export default class SearchBar extends React.Component {
     return (
       <div className={this.props.isMobile ? "search-bar" : "search-bar search-bar--desktop"} >
         <Form inline >
-          <input className="search-input" type="text" placeholder="Search" onInput={this.handleInputChange} onBlur={this.handleInputLostFocus} />
+          <input className="search-input" type="text" placeholder="Search" onInput={this.handleInputChange}
+            onBlur={this.handleInputLostFocus} />
           <button className="btn"><Search /></button>
         </Form>
         {this.state.results.length !== 0 ? <div className="search-results-wrapper">
           {this.state.results.map((production, index) =>
             <Link to={'/movies/' + production.id} key={production.id} >
               <div className="search-result">
-                {this.state.posters[index] ? <img src={"/api/" + this.state.posters[index]} alt="poster" /> : null} {production.title}
+                {this.state.posters[index] ? <img src={"/api/" + this.state.posters[index]} alt="poster" /> : null}
+                <div className="production-details-wrapper">
+                  <div className="production-title">{production.title}</div>
+                  <div className="production-info">{production.releaseDate.slice(0, 4) + ", "}
+                    {(production.length >= 60) ? parseInt(production.length / 60) + "h " : null}
+                    {(production.length % 60 !== 0) ? production.length % 60 + "min" : null}
+                  </div>
+                </div>
               </div>
             </Link>
           )}

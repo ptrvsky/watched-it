@@ -37,6 +37,7 @@
     font-size: 17px;
     margin: 1px;
     background-color: $light-gray;
+    display: flex;
 
     &:hover {
       background-color: $light-gray3;
@@ -49,6 +50,18 @@
       width: 55px;
       margin-right: 5px;
       border-radius: 5px 0px 0px 5px;
+    }
+
+    .production-details-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+      .production-info {
+        color: $gray2;
+        font-size: 13px;
+      }
+
     }
   }
 }
