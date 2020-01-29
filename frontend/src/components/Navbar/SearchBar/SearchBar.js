@@ -42,7 +42,7 @@ export default class SearchBar extends React.Component {
     setTimeout(() => this.setState({
       results: [],
       posters: [],
-    }), 100);
+    }), 250);
   }
 
   render() {
