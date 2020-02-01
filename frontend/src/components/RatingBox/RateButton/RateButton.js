@@ -65,6 +65,7 @@ class RateButton extends React.Component {
           this.setState({
             rateHovered: rate.value,
             userRating: rate.value,
+            dateOfRate: rate.updatedAt,
           })
           this.props.fetchRatingStats();  // Refresh average rating
         });
