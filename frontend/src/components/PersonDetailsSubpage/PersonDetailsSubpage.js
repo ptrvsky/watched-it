@@ -74,6 +74,12 @@ export default class PersonDetailsSubpage extends React.Component {
   render() {
     const age = this.state.person ? countPersonAge(this.state.person.dob, this.state.person.dod) : null;
 
+    const productionsDateCompare = (a, b) => {
+      if (a.releaseDate < b.releaseDate) return 1;
+      if (a.releaseDate > b.releaseDate) return -1;
+      return 0;
+    }
+
     return (
       <div className="person-details-subpage-wrapper">
         <div className="bg-image"></div>
@@ -112,12 +118,18 @@ export default class PersonDetailsSubpage extends React.Component {
               <div className="known-for-list">
                 {this.state.productions !== null ? this.state.productions
                   .slice(0, 5)
-                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} ><ProductionSmallBox production={production} /></Link>) : null}
+                  .sort(productionsDateCompare)
+                  .map((production) =>
+                    <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} >
+                      <ProductionSmallBox production={production} /></Link>) : null}
               </div>
               <Link to={this.props.match.params.id + "/productions"}><h2>Productions</h2></Link>
               <div className="productions-list">
                 {this.state.productions !== null ? this.state.productions
-                  .map((production) => <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} ><ProductionSmallWide production={production} /></Link>) : null}
+                  .sort(productionsDateCompare)
+                  .map((production) =>
+                    <Link to={production.isSerie ? '/tvseries/' + production.id : '/movies/' + production.id} key={production.id} >
+                      <ProductionSmallWide production={production} /></Link>) : null}
               </div>
             </div>
 
