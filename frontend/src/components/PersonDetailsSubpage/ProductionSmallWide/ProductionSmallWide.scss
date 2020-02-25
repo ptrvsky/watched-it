@@ -52,3 +52,18 @@
   }
 
 }
+
+@media (max-width: "991px") {
+
+  .production-small-wide-wrapper .info-wrapper {
+
+    .title {
+      min-width: 100%;
+    }
+
+    .description {
+      padding-left: 0px;
+    }
+
+  }
+}
