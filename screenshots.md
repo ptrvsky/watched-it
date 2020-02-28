@@ -1,5 +1,7 @@
 # Screenshots
 
+Desktop | [Mobile](https://github.com/ptrvsky/watched-it/blob/readme-files/screenshots-mobile.md)
+
 <img src="https://user-images.githubusercontent.com/27224945/75067166-bd1c8780-54ec-11ea-9d85-c4971acefd93.png" width="100%"> 
 <img src="https://user-images.githubusercontent.com/27224945/75067221-d9b8bf80-54ec-11ea-91dd-5dfa47212e4a.png" width="100%"> 
 <img src="https://user-images.githubusercontent.com/27224945/75067224-da515600-54ec-11ea-969f-d75c8ce1d956.png" width="100%"> 
